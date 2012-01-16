@@ -24,12 +24,17 @@ public class ManualAim extends CommandBase
     }
 
     // Called repeatedly when this Command is scheduled to run
+
+    /*
+     * Repeatedly obtains the Shooter Joystick's values and adjusts the shooter;
+     * if the trigger is pulled, it shoots the ball
+     */
     protected void execute() 
     {
-        shooter.setAngle(OI.rightJoystick.getY());
+        shooter.setAngle(OI.shooterJoystick.getY());
 
-        if (OI.rightJoystick.getTrigger())
-            shooter.shoot(0);
+        if (OI.shooterJoystick.getTrigger())
+            shooter.shoot(1);
     }
 
     // Make this return true when this Command no longer needs to run execute()

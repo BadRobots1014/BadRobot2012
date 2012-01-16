@@ -12,7 +12,8 @@ import edu.wpi.first.wpilibj.templates.OI;
  *
  * @author Jon Buckley
  */
-public class MoveWithJoysticks extends CommandBase {
+public class MoveWithJoysticks extends CommandBase
+{
 
     public MoveWithJoysticks()
     {

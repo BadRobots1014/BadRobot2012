@@ -28,7 +28,10 @@ public class DriveTrain extends Subsystem
         }
         return instance;
     }
-    
+
+    /*
+     * initailizes four Jauguars
+     */
     private DriveTrain()
     {
         lFront = new Jaguar(RobotMap.lFront, RobotMap.cRIOsidecar);
@@ -38,12 +41,18 @@ public class DriveTrain extends Subsystem
     }
 
     /*
+     * @param left = left Joystick Y-axis input,
+     *        right = right Joystick Y-axis input,
+     *        leftX = left Joystick X-axis input,
+     *        rightX = right Joystick X-axis input
      *
+     * Takes in four values from the joysticks, and converts it into tank drive (mecanum)
+     * instructions.
      */
     public void tankDrive(double left, double right, double leftX, double rightX)
     {
-        double frontSpeed = (leftX + rightX)/2;
-        double backSpeed = (-1)*frontSpeed;
+        double frontSpeed = (leftX + rightX)/2; // average of both sticks lateral position
+        double backSpeed = (-1)*frontSpeed;     // oposite of front speed
 
         double lFrontSpeed = frontSpeed + (left/2);
         double rFrontSpeed = frontSpeed + (left/2);
@@ -57,6 +66,12 @@ public class DriveTrain extends Subsystem
         rBack.set(rBackSpeed);
     }
 
+    /*
+     * @param left = left back wheel speed,
+     *        right = right back wheel speed
+     *
+     * Sets the back wheels to the designated speeds
+     */
     public void backWheelDrive(double left, double right)
     {
         lBack.set(left);

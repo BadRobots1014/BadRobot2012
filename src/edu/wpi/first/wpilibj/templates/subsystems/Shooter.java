@@ -27,16 +27,25 @@ public class Shooter extends Subsystem
         return instance;
     }
 
+    /*
+     * initializes shooterMotor Jaguar
+     */
     private Shooter()
     {
         shooterMotor = new Jaguar(RobotMap.shooterMotor, RobotMap.cRIOsidecar);
     }
 
+    /*
+     * blank code for shooting
+     */
     public void shoot(double x)
     {
 
     }
 
+    /*
+     * blank code for setting angle
+     */
     public void setAngle(double ang)
     {
         
