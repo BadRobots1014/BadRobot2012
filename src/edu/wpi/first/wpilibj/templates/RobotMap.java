@@ -8,20 +8,22 @@ package edu.wpi.first.wpilibj.templates;
  */
 public class RobotMap
 {
-    public static final int cRIOsidecar = 3; // port for the cRIO to the digital
+    public static final int cRIOsidecar = 1; // port from the cRIO to the digital
                                              // sidecar
 
-    public static final int lFront = 0;
-    public static final int rFront = 0;
-    public static final int lBack = 2;
-    public static final int rBack = 1;
+    public static final int lFront = 4;
+    public static final int rFront = 1;
+    public static final int lBack = 3;
+    public static final int rBack = 2;
 
-    public static final int leftJoystick = 3;
-    public static final int rightJoystick = 1;
+    public static final int leftJoystick = 1;
+    public static final int rightJoystick = 2;
 
     public static final int shooterJoystick = 4;
 
     public static final int shooter = 7;
 
     public static final int shooterMotor = 8;
+
+    public static final int camera = 4;
 }

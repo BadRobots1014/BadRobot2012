@@ -3,6 +3,7 @@ package edu.wpi.first.wpilibj.templates.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.OI;
+import edu.wpi.first.wpilibj.templates.subsystems.ArenaSensors;
 import edu.wpi.first.wpilibj.templates.subsystems.Shooter;
 import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
 
@@ -17,6 +18,7 @@ public abstract class CommandBase extends Command
     // Create a single static instance of all of your subsystems
     public static DriveTrain driveTrain;
     public static Shooter shooter;
+    public static ArenaSensors sensors;
 
     public static void init()
     {
@@ -27,7 +29,8 @@ public abstract class CommandBase extends Command
         // news. Don't move it.
         OI.init();
         driveTrain = DriveTrain.getInstance();
-        shooter = Shooter.getInstance();
+        //shooter = Shooter.getInstance();
+        //sensors = ArenaSensors.getInstance();
         // Show what command your subsystem is running on the SmartDashboard
         SmartDashboard.putData(driveTrain);
     }

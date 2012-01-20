@@ -3,7 +3,9 @@
  * and open the template in the editor.
  */
 package edu.wpi.first.wpilibj.templates.subsystems;
-import edu.wpi.first.wpilibj.Jaguar;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.templates.commands.MoveWithJoysticks;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.templates.OI;
@@ -18,7 +20,8 @@ public class DriveTrain extends Subsystem
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     private static DriveTrain instance;
-    public static Jaguar lFront, lBack, rFront, rBack;
+    private static RobotDrive drive;
+    public Joystick lJoystick, rJoystick;
 
     public static DriveTrain getInstance()
     {
@@ -30,58 +33,49 @@ public class DriveTrain extends Subsystem
     }
 
     /*
-     * initailizes four Jauguars
+     * initailizes four Victors, and makes a local instance of joysticks for
+     * convenience of access
      */
     private DriveTrain()
     {
-        lFront = new Jaguar(RobotMap.lFront, RobotMap.cRIOsidecar);
-        rFront = new Jaguar(RobotMap.rFront, RobotMap.cRIOsidecar);
-        lBack = new Jaguar(RobotMap.lBack, RobotMap.cRIOsidecar);
-        rBack = new Jaguar(RobotMap.rBack, RobotMap.cRIOsidecar);
+        lJoystick = OI.leftJoystick;
+        rJoystick = OI.rightJoystick;
+
+        drive = new RobotDrive(RobotMap.lFront, RobotMap.lBack, RobotMap.rFront, RobotMap.rBack);
     }
 
     /*
-     * @param left = left Joystick Y-axis input,
-     *        right = right Joystick Y-axis input,
-     *        leftX = left Joystick X-axis input,
-     *        rightX = right Joystick X-axis input
-     *
      * Takes in four values from the joysticks, and converts it into tank drive (mecanum)
      * instructions.
      */
-    public void tankDrive(double left, double right, double leftX, double rightX)
+    public void tankDrive()
     {
-        double frontSpeed = (leftX + rightX)/2; // average of both sticks lateral position
-        double backSpeed = (-1)*frontSpeed;     // oposite of front speed
-
-        double lFrontSpeed = frontSpeed + (left/2);
-        double rFrontSpeed = frontSpeed + (left/2);
-        double lBackSpeed = backSpeed + (right/2);
-        double rBackSpeed = backSpeed + (right/2);
-
-        lFront.set(lFrontSpeed);
-        rFront.set(rFrontSpeed);
-
-        lBack.set(lBackSpeed);
-        rBack.set(rBackSpeed);
+       drive.mecanumDrive_Cartesian(lJoystick.getX(),lJoystick.getY(), rJoystick.getX(), 0.0);
     }
 
     /*
-     * @param left = left back wheel speed,
-     *        right = right back wheel speed
+     * @param mag the speed desired to be moved,
+     *        theta the angle that the robot will move towards,
+     *        rate the speed at which the robot is turning
      *
-     * Sets the back wheels to the designated speeds
+     * Moves the robot using polar coordinates - takes in three components and moves
+     * the robot accordingly
      */
-    public void backWheelDrive(double left, double right)
+    public void tankDrive(double mag, double theta, double rate)
     {
-        lBack.set(left);
-        rBack.set(right);
+        drive.mecanumDrive_Polar(mag, theta, rate);
+    }
+
+    /*
+     * Arcade drives using left j joystick controls
+     */
+    public void backWheelDrive(Joystick j)
+    {
+        drive.arcadeDrive(j);
     }
 
     public void initDefaultCommand()
     {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
         setDefaultCommand(new MoveWithJoysticks());
     }
 }

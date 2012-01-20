@@ -12,9 +12,17 @@ public class OI
      */
     public static void init()
     {
-        leftJoystick = new Joystick(RobotMap.leftJoystick);
-        rightJoystick = new Joystick(RobotMap.rightJoystick);
-        shooterJoystick = new Joystick(RobotMap.shooterJoystick);
+        try
+        {
+           leftJoystick = new Joystick(RobotMap.leftJoystick);
+           rightJoystick = new Joystick(RobotMap.rightJoystick);
+           shooterJoystick = new Joystick(RobotMap.shooterJoystick);
+        }
+
+        catch (Exception e) {System.out.println(e.toString());}
+        
+        
+        
     }
    
     
