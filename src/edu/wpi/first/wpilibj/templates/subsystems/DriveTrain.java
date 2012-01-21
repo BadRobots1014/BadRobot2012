@@ -22,6 +22,7 @@ public class DriveTrain extends Subsystem
     private static DriveTrain instance;
     private static RobotDrive drive;
     public Joystick lJoystick, rJoystick;
+    public Victor lFront, lBack, rFront, rBack;
 
     public static DriveTrain getInstance()
     {
@@ -38,10 +39,16 @@ public class DriveTrain extends Subsystem
      */
     private DriveTrain()
     {
+        super();
         lJoystick = OI.leftJoystick;
         rJoystick = OI.rightJoystick;
 
-        drive = new RobotDrive(RobotMap.lFront, RobotMap.lBack, RobotMap.rFront, RobotMap.rBack);
+        lFront = new Victor(RobotMap.lFront);
+        lBack = new Victor(RobotMap.lBack);
+        rFront = new Victor(RobotMap.rFront);
+        rBack = new Victor(RobotMap.rBack);
+
+        drive = new RobotDrive(lFront, lBack, rFront, rBack);
     }
 
     /*

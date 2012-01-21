@@ -38,6 +38,8 @@ public class RobotTemplate extends IterativeRobot {
         CommandBase.init();
         // instantiate the command used for the autonomous period
         autonomousCommand = new MoveWithJoysticks();
+        //Scheduler.getInstance().add(autonomousCommand);
+
         System.out.println("initializing...");
         
     }
@@ -45,6 +47,7 @@ public class RobotTemplate extends IterativeRobot {
     public void autonomousInit()
     {
         // schedule the autonomous command (example)
+        Scheduler.getInstance().add(autonomousCommand);
         autonomousCommand.start();
     }
 
@@ -62,9 +65,8 @@ public class RobotTemplate extends IterativeRobot {
 		// teleop starts running. If you want the autonomous to 
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
+                autonomousCommand.start();
                         
-                        autonomousCommand.start();
-                        System.out.println("teleop start");
 
     }
 
@@ -74,7 +76,7 @@ public class RobotTemplate extends IterativeRobot {
     public void teleopPeriodic() 
     {
                 System.out.println("teleop running");
-                Scheduler.getInstance().run();
+                
 
     }
 }
