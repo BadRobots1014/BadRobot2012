@@ -62,6 +62,8 @@ public class RobotTemplate extends IterativeRobot {
 		// teleop starts running. If you want the autonomous to 
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
+                        
+                        autonomousCommand.start();
                         System.out.println("teleop start");
 
     }
@@ -71,8 +73,8 @@ public class RobotTemplate extends IterativeRobot {
      */
     public void teleopPeriodic() 
     {
-        autonomousCommand.start();
                 System.out.println("teleop running");
+                Scheduler.getInstance().run();
 
     }
 }

@@ -50,6 +50,7 @@ public class DriveTrain extends Subsystem
      */
     public void tankDrive()
     {
+       System.out.println("Left stick: " + lJoystick.getX());
        drive.mecanumDrive_Cartesian(lJoystick.getX(),lJoystick.getY(), rJoystick.getX(), 0.0);
     }
 

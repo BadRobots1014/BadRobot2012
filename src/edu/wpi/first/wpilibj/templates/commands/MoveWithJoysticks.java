@@ -26,6 +26,8 @@ public class MoveWithJoysticks extends CommandBase
     protected void execute() 
     {
         driveTrain.tankDrive();
+        System.out.println("tank driving");
+
     }
 
     // Make this return true when this Command no longer needs to run execute()

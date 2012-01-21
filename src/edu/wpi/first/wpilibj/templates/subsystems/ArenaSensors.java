@@ -10,9 +10,12 @@ import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
 import edu.wpi.first.wpilibj.camera.AxisCameraException;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.image.BinaryImage;
 import edu.wpi.first.wpilibj.image.ColorImage;
 import edu.wpi.first.wpilibj.image.NIVisionException;
+import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
 import edu.wpi.first.wpilibj.templates.RobotMap;
+import edu.wpi.first.wpilibj.templates.commands.AutoAim;
 
 /**
  *
@@ -68,21 +71,33 @@ public class ArenaSensors extends Subsystem
         return theta;
     }
 
-    public Point4[] getRectanglePoints() throws AxisCameraException
+    public ParticleAnalysisReport[] getRectangleParticles() throws AxisCameraException
     {
-        Point4[] points = new Point4[4];
+        ParticleAnalysisReport[] toReturn = new ParticleAnalysisReport[4];
         
         ColorImage img;
-        int height, width = 0;
+        int current = 0;
         
         try 
         {
             img = camera.getImage();
-            img.getBluePlane();
-            img.thresholdRGB(0, 10, 0, 10, 200, 256);
+            img = AxisCamera.getInstance().getImage();
+            BinaryImage binary =  img.thresholdHSL(0, 180, 0, 100, 0, 5);
+            ParticleAnalysisReport[] particles = binary.getOrderedParticleAnalysisReports();
 
-            height = img.getHeight();
-            width = img.getWidth();
+            for (int i = 0; i < particles.length; i++)
+            {
+                ParticleAnalysisReport test = particles[i];
+                if (test.particleToImagePercent > .1 && test.particleToImagePercent < .4)
+                {
+                    double ratio = test.boundingRectWidth/test.boundingRectHeight;
+                    if (ratio > ((4/3) - .2) && ratio < ((4/3) + .2))
+                    {
+                        toReturn[current] = test;
+                        current++;
+                    }
+                }
+            }
         }
         
         catch (NIVisionException ex)
@@ -90,11 +105,11 @@ public class ArenaSensors extends Subsystem
             ex.printStackTrace();
         }
 
-        return points;
+        return toReturn;
     }
 
-    public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
+    public void initDefaultCommand()
+    {
+        setDefaultCommand(new AutoAim());
     }
 }
