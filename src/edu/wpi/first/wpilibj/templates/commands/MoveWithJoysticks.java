@@ -4,13 +4,15 @@
  */
 package edu.wpi.first.wpilibj.templates.commands;
 
+import edu.wpi.first.wpilibj.templates.OI;
+
 /**
  *
- * @author Jon Buckley
+ * @author Jon Buckley, TheGaur
  */
 public class MoveWithJoysticks extends CommandBase
 {
-
+    boolean tankDrive = false;
     public MoveWithJoysticks()
     {
         // Use requires() here to declare subsystem dependencies
@@ -25,7 +27,11 @@ public class MoveWithJoysticks extends CommandBase
     // Called repeatedly when this Command is scheduled to run
     protected void execute() 
     {
-        driveTrain.tankDrive();
+        //tankDrive = OI.leftJoystick.getRawButton(10);
+
+        if (tankDrive) driveTrain.tankDrive();
+        else driveTrain.mechanumDrive();
+
         System.out.println("tank driving");
 
     }

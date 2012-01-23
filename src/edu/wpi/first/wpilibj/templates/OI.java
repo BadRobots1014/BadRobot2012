@@ -2,11 +2,11 @@
 package edu.wpi.first.wpilibj.templates;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Victor;
 
 public class OI
 {
     public static Joystick leftJoystick, rightJoystick, shooterJoystick;
-
     /*
      * initializes all input methods (eg. joysticks)
      */
