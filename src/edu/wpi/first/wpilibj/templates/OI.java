@@ -11,7 +11,7 @@ public class OI
      * initializes all input methods (eg. joysticks)
      */
     public static void init()
-    {
+    {//tiny change
         try
         {
            leftJoystick = new Joystick(RobotMap.leftJoystick);
