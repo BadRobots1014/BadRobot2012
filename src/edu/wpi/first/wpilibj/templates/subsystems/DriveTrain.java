@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.wpi.first.wpilibj.templates.subsystems;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -17,8 +13,7 @@ import edu.wpi.first.wpilibj.templates.RobotMap;
  */
 public class DriveTrain extends Subsystem
 {
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
+  
     private static DriveTrain instance;
     private static RobotDrive drive;
     public Joystick lJoystick, rJoystick;
@@ -34,7 +29,7 @@ public class DriveTrain extends Subsystem
     }
 
     /*
-     * initailizes four Victors, and makes a local instance of joysticks for
+     * Initailizes four Victors, and makes a local instance of joysticks for
      * convenience of access
      */
     private DriveTrain()
@@ -52,13 +47,26 @@ public class DriveTrain extends Subsystem
     }
 
     /*
-     * Takes in four values from the joysticks, and converts it into tank drive (mecanum)
-     * instructions.
+     * Takes in four values from the joysticks, and converts it into tank drive
+     * Status:Untested
      */
     public void tankDrive()
     {
-       System.out.println("Left stick: " + lJoystick.getX());
-       drive.mecanumDrive_Cartesian(lJoystick.getX(),lJoystick.getY(), rJoystick.getX(), 0.0);
+        lFront.set(deadzone(lJoystick.getY()));
+        lBack.set(deadzone(lJoystick.getY()));
+        rFront.set(deadzone(rJoystick.getY()));
+        rBack.set(deadzone(rJoystick.getY()));
+
+    }
+
+    /*
+     * Takes in Joystick values and converts it into mechanum drive
+     * Status:Untested
+     */
+    public void mechanumDrive()
+    {
+        System.out.println("Left stick: " + lJoystick.getX());
+        drive.mecanumDrive_Cartesian(deadzone(lJoystick.getX()),deadzone(lJoystick.getY()),deadzone(rJoystick.getX()), 0.0);
     }
 
     /*
@@ -68,22 +76,35 @@ public class DriveTrain extends Subsystem
      *
      * Moves the robot using polar coordinates - takes in three components and moves
      * the robot accordingly
+     * Status: Untested
      */
-    public void tankDrive(double mag, double theta, double rate)
+    public void polarMechanum(double mag, double theta, double rate)
     {
         drive.mecanumDrive_Polar(mag, theta, rate);
     }
 
     /*
      * Arcade drives using left j joystick controls
+     * Status:Untested
      */
-    public void backWheelDrive(Joystick j)
+    public void arcadeDrive(Joystick j)
     {
-        drive.arcadeDrive(j);
+        drive.arcadeDrive(j);//Note: This will not have deadzone
     }
 
     public void initDefaultCommand()
     {
         setDefaultCommand(new MoveWithJoysticks());
+    }
+
+    /*
+     * Creates a deadzone for joysticks
+     * Status:Tested, accurate for joysticks 1/21/12
+     */
+    private double deadzone(double d)
+    {
+        if (Math.abs(d) < 0.10)
+            return 0;
+        return d / Math.abs(d) * ((Math.abs(d) - .10) / .90);
     }
 }

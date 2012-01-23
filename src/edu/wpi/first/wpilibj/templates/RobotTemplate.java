@@ -12,10 +12,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.templates.buttons.FireTrigger;
-import edu.wpi.first.wpilibj.templates.commands.BackWheelDrive;
-import edu.wpi.first.wpilibj.templates.commands.CommandBase;
-import edu.wpi.first.wpilibj.templates.commands.MoveWithJoysticks;
-import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
+import edu.wpi.first.wpilibj.templates.commands.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -61,13 +58,11 @@ public class RobotTemplate extends IterativeRobot {
     }
 
     public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to 
-		// continue until interrupted by another command, remove
-		// this line or comment it out.
-                autonomousCommand.start();
-                        
-
+	// This makes sure that the autonomous stops running when
+	// teleop starts running. If you want the autonomous to 
+	// continue until interrupted by another command, remove
+	// this line or comment it out.
+        autonomousCommand.start();
     }
 
     /**
