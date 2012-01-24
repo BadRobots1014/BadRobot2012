@@ -31,10 +31,10 @@ public class AutoOrrient extends CommandBase
 //        distance = sensors.getDifferenceInSensorsFromWall(true);
 
         if (distance > 3)
-            driveTrain.tankDrive(0, 0, Math.sin(distance)); // sin has range of -1 to 1
+            driveTrain.polarMechanum(0, 0, Math.sin(distance)); // sin has range of -1 to 1
 
         else
-            driveTrain.tankDrive(0, 0, -(Math.sin(distance)));
+            driveTrain.polarMechanum(0, 0, -(Math.sin(distance)));
     }
 
     // Make this return true when this Command no longer needs to run execute()

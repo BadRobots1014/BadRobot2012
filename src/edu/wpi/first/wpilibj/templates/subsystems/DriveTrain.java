@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.wpi.first.wpilibj.templates.subsystems;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
@@ -17,6 +13,7 @@ import edu.wpi.first.wpilibj.templates.RobotMap;
  */
 public class DriveTrain extends Subsystem
 {
+
     private static DriveTrain instance;
     private static RobotDrive drive;
     public Joystick lJoystick, rJoystick;
@@ -32,7 +29,7 @@ public class DriveTrain extends Subsystem
     }
 
     /*
-     * initailizes four Victors, and makes a local instance of joysticks for
+     * Initailizes four Victors, and makes a local instance of joysticks for
      * convenience of access
      */
     private DriveTrain()
@@ -51,11 +48,12 @@ public class DriveTrain extends Subsystem
     }
 
     /*
-     * Takes in four values from the joysticks, and converts it into tank drive (mecanum)
-     * instructions.
+     * Takes in four values from the joysticks, and converts it into tank drive
+     * Status:Untested
      */
     public void mecanumDrive()
     {
+
        System.out.println("Left stick: " + OI.leftJoystick.getX());
        drive.mecanumDrive_Cartesian(deadzone(-rJoystick.getX()), deadzone(-lJoystick.getX()), deadzone(rJoystick.getY()), 0);
     }
@@ -67,8 +65,9 @@ public class DriveTrain extends Subsystem
      *
      * Moves the robot using polar coordinates - takes in three components and moves
      * the robot accordingly
+     * Status: Untested
      */
-    public void tankDrive(double mag, double theta, double rate)
+    public void polarMechanum(double mag, double theta, double rate)
     {
         drive.mecanumDrive_Polar(mag, theta, rate);
     }
@@ -85,19 +84,19 @@ public class DriveTrain extends Subsystem
         lBack.set(deadzone(OI.rightJoystick.getY()));
     }
 
-    /*
-     * @param d the number to be converted into a more accurate joystick value
-     */
-    public double deadzone(double d)
-    {
-        if (Math.abs(d) < 0.10)
-            return 0;
-        
-        return d / Math.abs(d) * ((Math.abs(d) - .10) / .90);
-    }
-
     public void initDefaultCommand()
     {
         setDefaultCommand(new MecanumDrive());
+    }
+
+    /*
+     * Creates a deadzone for joysticks
+     * Status:Tested, accurate for joysticks 1/21/12
+     */
+    private double deadzone(double d)
+    {
+        if (Math.abs(d) < 0.10)
+            return 0;
+        return d / Math.abs(d) * ((Math.abs(d) - .10) / .90);
     }
 }
