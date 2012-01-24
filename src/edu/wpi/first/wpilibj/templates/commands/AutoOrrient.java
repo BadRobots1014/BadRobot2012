@@ -15,7 +15,7 @@ public class AutoOrrient extends CommandBase
 
     public AutoOrrient()
     {
-        requires(sensors);
+       // requires(sensors);
         requires(driveTrain);
     }
 
@@ -28,7 +28,7 @@ public class AutoOrrient extends CommandBase
     // Called repeatedly when this Command is scheduled to run
     protected void execute()
     {
-        distance = sensors.getDifferenceInSensorsFromWall(true);
+//        distance = sensors.getDifferenceInSensorsFromWall(true);
 
         if (distance > 3)
             driveTrain.polarMechanum(0, 0, Math.sin(distance)); // sin has range of -1 to 1
@@ -40,10 +40,10 @@ public class AutoOrrient extends CommandBase
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished()
     {
-        if (sensors.getDifferenceInSensorsFromWall(true) < 3) // difference is negligble
+       // if (sensors.getDifferenceInSensorsFromWall(true) < 3) // difference is negligble
             return true;
 
-        return false;
+       // return false;
     }
 
     // Called once after isFinished returns true

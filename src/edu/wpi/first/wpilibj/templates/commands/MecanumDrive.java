@@ -4,28 +4,29 @@
  */
 package edu.wpi.first.wpilibj.templates.commands;
 
-import edu.wpi.first.wpilibj.templates.OI;
-
-
 /**
  *
  * @author Jon Buckley
  */
-public class BackWheelDrive extends CommandBase {
+public class MecanumDrive extends CommandBase
+{
 
-    public BackWheelDrive()
+    public MecanumDrive()
     {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
         requires(driveTrain);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() 
     {
-        driveTrain.backWheelDrive(OI.leftJoystick);
+        driveTrain.mecanumDrive();
     }
 
     // Make this return true when this Command no longer needs to run execute()

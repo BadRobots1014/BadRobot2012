@@ -9,10 +9,16 @@ package edu.wpi.first.wpilibj.templates;
 
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Watchdog;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
+<<<<<<< HEAD
 import edu.wpi.first.wpilibj.templates.buttons.FireTrigger;
 import edu.wpi.first.wpilibj.templates.commands.*;
+=======
+import edu.wpi.first.wpilibj.templates.commands.CommandBase;
+import edu.wpi.first.wpilibj.templates.commands.MecanumDrive;
+>>>>>>> f242af576b25aa402d429afdbfac2cd6fc371a8c
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -34,16 +40,11 @@ public class RobotTemplate extends IterativeRobot {
         // Initialize all subsystems
         CommandBase.init();
         // instantiate the command used for the autonomous period
-        autonomousCommand = new MoveWithJoysticks();
-        //Scheduler.getInstance().add(autonomousCommand);
-
-        System.out.println("initializing...");
-        
+        autonomousCommand = new MecanumDrive();
     }
 
     public void autonomousInit()
     {
-        // schedule the autonomous command (example)
         Scheduler.getInstance().add(autonomousCommand);
         autonomousCommand.start();
     }
@@ -51,18 +52,30 @@ public class RobotTemplate extends IterativeRobot {
     /**
      * This function is called periodically during autonomous
      */
-    public void autonomousPeriodic() {
+    public void autonomousPeriodic()
+    {
         Scheduler.getInstance().run();
-                System.out.println("autoing");
+
 
     }
 
+<<<<<<< HEAD
     public void teleopInit() {
 	// This makes sure that the autonomous stops running when
 	// teleop starts running. If you want the autonomous to 
 	// continue until interrupted by another command, remove
 	// this line or comment it out.
         autonomousCommand.start();
+=======
+    public void teleopInit()
+    {
+		// This makes sure that the autonomous stops running when
+		// teleop starts running. If you want the autonomous to 
+		// continue until interrupted by another command, remove
+		// this line or comment it out.
+                Scheduler.getInstance().add(autonomousCommand);
+
+>>>>>>> f242af576b25aa402d429afdbfac2cd6fc371a8c
     }
 
     /**
@@ -70,8 +83,7 @@ public class RobotTemplate extends IterativeRobot {
      */
     public void teleopPeriodic() 
     {
-                System.out.println("teleop running");
-                
-
+        Watchdog.getInstance().feed();
+        Scheduler.getInstance().run();         
     }
 }

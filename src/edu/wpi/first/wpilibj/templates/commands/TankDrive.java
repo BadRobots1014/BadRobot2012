@@ -4,18 +4,16 @@
  */
 package edu.wpi.first.wpilibj.templates.commands;
 
+
 /**
  *
  * @author Jon Buckley
  */
-public class MoveWithJoysticks extends CommandBase
-{
+public class TankDrive extends CommandBase {
 
-    public MoveWithJoysticks()
+    public TankDrive()
     {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-        requires(driveTrain);
+       requires(driveTrain);
     }
 
     // Called just before this Command runs the first time
@@ -26,8 +24,6 @@ public class MoveWithJoysticks extends CommandBase
     protected void execute() 
     {
         driveTrain.tankDrive();
-        System.out.println("tank driving");
-
     }
 
     // Make this return true when this Command no longer needs to run execute()
