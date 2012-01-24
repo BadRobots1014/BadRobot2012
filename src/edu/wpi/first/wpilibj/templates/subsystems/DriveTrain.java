@@ -14,10 +14,7 @@ import edu.wpi.first.wpilibj.templates.commands.TankDrive;
  */
 public class DriveTrain extends Subsystem
 {
-<<<<<<< HEAD
-  
-=======
->>>>>>> f242af576b25aa402d429afdbfac2cd6fc371a8c
+
     private static DriveTrain instance;
     private static RobotDrive drive;
     public Joystick lJoystick, rJoystick;
@@ -57,26 +54,9 @@ public class DriveTrain extends Subsystem
      */
     public void mecanumDrive()
     {
-<<<<<<< HEAD
-        lFront.set(deadzone(lJoystick.getY()));
-        lBack.set(deadzone(lJoystick.getY()));
-        rFront.set(deadzone(rJoystick.getY()));
-        rBack.set(deadzone(rJoystick.getY()));
 
-    }
-
-    /*
-     * Takes in Joystick values and converts it into mechanum drive
-     * Status:Untested
-     */
-    public void mechanumDrive()
-    {
-        System.out.println("Left stick: " + lJoystick.getX());
-        drive.mecanumDrive_Cartesian(deadzone(lJoystick.getX()),deadzone(lJoystick.getY()),deadzone(rJoystick.getX()), 0.0);
-=======
        System.out.println("Left stick: " + OI.leftJoystick.getX());
        drive.mecanumDrive_Cartesian(deadzone(-rJoystick.getX()), deadzone(-lJoystick.getX()), deadzone(rJoystick.getY()), 0);
->>>>>>> f242af576b25aa402d429afdbfac2cd6fc371a8c
     }
 
     /*
@@ -94,14 +74,6 @@ public class DriveTrain extends Subsystem
     }
 
     /*
-<<<<<<< HEAD
-     * Arcade drives using left j joystick controls
-     * Status:Untested
-     */
-    public void arcadeDrive(Joystick j)
-    {
-        drive.arcadeDrive(j);//Note: This will not have deadzone
-=======
      * Tank drives using joystick controls
      */
     public void tankDrive()
@@ -111,18 +83,6 @@ public class DriveTrain extends Subsystem
 
         lFront.set(deadzone(OI.rightJoystick.getY()));
         lBack.set(deadzone(OI.rightJoystick.getY()));
-    }
-
-    /*
-     * @param d the number to be converted into a more accurate joystick value
-     */
-    public double deadzone(double d)
-    {
-        if (Math.abs(d) < 0.10)
-            return 0;
-        
-        return d / Math.abs(d) * ((Math.abs(d) - .10) / .90);
->>>>>>> f242af576b25aa402d429afdbfac2cd6fc371a8c
     }
 
     public void initDefaultCommand()
