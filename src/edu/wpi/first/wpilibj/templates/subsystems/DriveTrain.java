@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.templates.commands.MecanumDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.templates.OI;
 import edu.wpi.first.wpilibj.templates.RobotMap;
-import edu.wpi.first.wpilibj.templates.commands.TankDrive;
 
 /**
  *
