@@ -17,7 +17,7 @@ public class FireTrigger extends Button
 {
     public FireTrigger()
     {
-        super.whileHeld(new ManualAim());
+       /// super.whileHeld(new ManualAim());
     }
 
     public boolean get()

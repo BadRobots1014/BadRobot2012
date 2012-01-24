@@ -17,8 +17,8 @@ public abstract class CommandBase extends Command
 {
     // Create a single static instance of all of your subsystems
     public static DriveTrain driveTrain;
-    public static Shooter shooter;
-    public static ArenaSensors sensors;
+    //public static Shooter shooter;
+    //public static ArenaSensors sensors;
 
     public static void init()
     {
@@ -27,8 +27,11 @@ public abstract class CommandBase extends Command
         // which commands extend), subsystems are not guaranteed to be
         // yet. Thus, their requires() statements may grab null pointers. Bad
         // news. Don't move it.
-        driveTrain = DriveTrain.getInstance();
         OI.init();
+        driveTrain = DriveTrain.getInstance();
+
+        System.out.println("Command base initting");
+        
         
         //shooter = Shooter.getInstance();
         //sensors = ArenaSensors.getInstance();

@@ -32,7 +32,7 @@ public class Shooter extends Subsystem
      */
     private Shooter()
     {
-        shooterMotor = new Jaguar(RobotMap.shooterMotor, RobotMap.cRIOsidecar);
+        //shooterMotor = new Jaguar(RobotMap.shooterMotor, RobotMap.cRIOsidecar);
     }
 
     /*

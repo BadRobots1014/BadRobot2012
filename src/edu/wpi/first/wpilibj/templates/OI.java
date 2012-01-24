@@ -16,7 +16,10 @@ public class OI
         {
            leftJoystick = new Joystick(RobotMap.leftJoystick);
            rightJoystick = new Joystick(RobotMap.rightJoystick);
-           shooterJoystick = new Joystick(RobotMap.shooterJoystick);
+
+           System.out.println("leftJoystick" + leftJoystick.getX());
+           System.out.println("OI initting");
+           //shooterJoystick = new Joystick(RobotMap.shooterJoystick);
         }
 
         catch (Exception e) {System.out.println(e.toString());}
@@ -24,6 +27,28 @@ public class OI
         
         
     }
+
+    public double getLeftX()
+    {
+        return leftJoystick.getX();
+    }
+
+    public double getLeftY()
+    {
+        return leftJoystick.getY();
+    }
+
+    public double getRightX()
+    {
+        return rightJoystick.getX();
+    }
+
+    public double getRightY()
+    {
+        return rightJoystick.getY();
+    }
+
+
    
     
 }

@@ -6,10 +6,11 @@ package edu.wpi.first.wpilibj.templates.subsystems;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Victor;
-import edu.wpi.first.wpilibj.templates.commands.MoveWithJoysticks;
+import edu.wpi.first.wpilibj.templates.commands.MecanumDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.templates.OI;
 import edu.wpi.first.wpilibj.templates.RobotMap;
+import edu.wpi.first.wpilibj.templates.commands.TankDrive;
 
 /**
  *
@@ -17,8 +18,6 @@ import edu.wpi.first.wpilibj.templates.RobotMap;
  */
 public class DriveTrain extends Subsystem
 {
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
     private static DriveTrain instance;
     private static RobotDrive drive;
     public Joystick lJoystick, rJoystick;
@@ -49,16 +48,17 @@ public class DriveTrain extends Subsystem
         rBack = new Victor(RobotMap.rBack);
 
         drive = new RobotDrive(lFront, lBack, rFront, rBack);
+        drive.setSafetyEnabled(false);
     }
 
     /*
      * Takes in four values from the joysticks, and converts it into tank drive (mecanum)
      * instructions.
      */
-    public void tankDrive()
+    public void mecanumDrive()
     {
-       System.out.println("Left stick: " + lJoystick.getX());
-       drive.mecanumDrive_Cartesian(lJoystick.getX(),lJoystick.getY(), rJoystick.getX(), 0.0);
+       System.out.println("Left stick: " + OI.leftJoystick.getX());
+       drive.mecanumDrive_Cartesian(deadzone(-rJoystick.getX()), deadzone(-lJoystick.getX()), deadzone(rJoystick.getY()), 0);
     }
 
     /*
@@ -75,15 +75,30 @@ public class DriveTrain extends Subsystem
     }
 
     /*
-     * Arcade drives using left j joystick controls
+     * Tank drives using joystick controls
      */
-    public void backWheelDrive(Joystick j)
+    public void tankDrive()
     {
-        drive.arcadeDrive(j);
+        rFront.set(-deadzone(OI.leftJoystick.getY()));
+        rBack.set(-deadzone(OI.leftJoystick.getY()));
+
+        lFront.set(deadzone(OI.rightJoystick.getY()));
+        lBack.set(deadzone(OI.rightJoystick.getY()));
+    }
+
+    /*
+     * @param d the number to be converted into a more accurate joystick value
+     */
+    public double deadzone(double d)
+    {
+        if (Math.abs(d) < 0.10)
+            return 0;
+        
+        return d / Math.abs(d) * ((Math.abs(d) - .10) / .90);
     }
 
     public void initDefaultCommand()
     {
-        setDefaultCommand(new MoveWithJoysticks());
+        setDefaultCommand(new MecanumDrive());
     }
 }
