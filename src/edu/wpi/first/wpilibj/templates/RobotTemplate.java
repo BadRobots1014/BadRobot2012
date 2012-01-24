@@ -10,10 +10,14 @@ package edu.wpi.first.wpilibj.templates;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Watchdog;
+import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.templates.buttons.FireTrigger;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.templates.buttons.MecanumDriveTrigger;
+import edu.wpi.first.wpilibj.templates.buttons.TankDriveTrigger;
 import edu.wpi.first.wpilibj.templates.commands.*;
+import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,7 +28,8 @@ import edu.wpi.first.wpilibj.templates.commands.*;
  */
 public class RobotTemplate extends IterativeRobot {
 
-    Command autonomousCommand;
+    Command firstCommand;
+    Button mecanumDriveTrigger, tankDriveTrigger;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -35,13 +40,16 @@ public class RobotTemplate extends IterativeRobot {
         // Initialize all subsystems
         CommandBase.init();
         // instantiate the command used for the autonomous period
-        autonomousCommand = new MecanumDrive();
+        firstCommand = new MecanumDrive();
+
+        //Initializes triggers
+        mecanumDriveTrigger = new MecanumDriveTrigger();
+        tankDriveTrigger = new TankDriveTrigger();
     }
 
     public void autonomousInit()
     {
-        Scheduler.getInstance().add(autonomousCommand);
-        autonomousCommand.start();
+
     }
 
     /**
@@ -49,9 +57,7 @@ public class RobotTemplate extends IterativeRobot {
      */
     public void autonomousPeriodic()
     {
-        Scheduler.getInstance().run();
-
-
+        
     }
 
     public void teleopInit()
@@ -60,7 +66,7 @@ public class RobotTemplate extends IterativeRobot {
 	// teleop starts running. If you want the autonomous to 
 	// continue until interrupted by another command, remove
 	// this line or comment it out.
-        Scheduler.getInstance().add(autonomousCommand);
+        Scheduler.getInstance().add(firstCommand);
     }
 
     /**
@@ -69,6 +75,18 @@ public class RobotTemplate extends IterativeRobot {
     public void teleopPeriodic() 
     {
         Watchdog.getInstance().feed();
-        Scheduler.getInstance().run();         
+        Scheduler.getInstance().run();
+
+        //Polls the buttons to see if they are active, if they are, it adds the
+        //command to the Scheduler.
+        if (mecanumDriveTrigger.get())        
+            Scheduler.getInstance().add(new MecanumDrive());
+
+        else if (tankDriveTrigger.get())
+            Scheduler.getInstance().add(new TankDrive());
+
+        //Puts the current command being run by DriveTrain into the SmartDashboard
+        SmartDashboard.putData(DriveTrain.getInstance().getCurrentCommand());
+
     }
 }
