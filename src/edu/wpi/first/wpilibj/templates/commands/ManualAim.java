@@ -15,7 +15,7 @@ public class ManualAim extends CommandBase
 
     public ManualAim()
     {
-       // requires(shooter);
+       requires(shooter);
     }
 
     // Called just before this Command runs the first time
@@ -23,7 +23,6 @@ public class ManualAim extends CommandBase
     {
     }
 
-    // Called repeatedly when this Command is scheduled to run
 
     /*
      * Repeatedly obtains the Shooter Joystick's values and adjusts the shooter;
@@ -31,10 +30,11 @@ public class ManualAim extends CommandBase
      */
     protected void execute() 
     {
-        //shooter.setAngle(OI.shooterJoystick.getY());
+        shooter.rotateAngle(OI.getShooterY());
+        shooter.rotateBase(OI.getShooterX());
 
-        //if (OI.shooterJoystick.getTrigger())
-           // shooter.shoot(1);
+        if (OI.shooterJoystick.getTrigger())
+            shooter.shoot(1);
     }
 
     // Make this return true when this Command no longer needs to run execute()

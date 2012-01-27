@@ -16,40 +16,53 @@ public class OI
         {
            leftJoystick = new Joystick(RobotMap.leftJoystick);
            rightJoystick = new Joystick(RobotMap.rightJoystick);
-
-           System.out.println("leftJoystick" + leftJoystick.getX());
-           System.out.println("OI initting");
            //shooterJoystick = new Joystick(RobotMap.shooterJoystick);
         }
 
         catch (Exception e) {System.out.println(e.toString());}
         
-        
-        
     }
 
-    public double getLeftX()
+    public static double getLeftX()
     {
-        return leftJoystick.getX();
+        return deadzone(leftJoystick.getX());
     }
 
-    public double getLeftY()
+    public static double getLeftY()
     {
-        return leftJoystick.getY();
+        return deadzone(leftJoystick.getY());
     }
 
-    public double getRightX()
+    public static double getRightX()
     {
-        return rightJoystick.getX();
+        return deadzone(rightJoystick.getX());
     }
 
-    public double getRightY()
+    public static double getRightY()
     {
-        return rightJoystick.getY();
+        return deadzone(rightJoystick.getY());
     }
 
+    public static double getShooterX()
+    {
+        return deadzone(shooterJoystick.getX());
+    }
 
-   
+    public static double getShooterY()
+    {
+        return deadzone(shooterJoystick.getY());
+    }
+
+    /*
+     * Creates a deadzone for joysticks
+     * Status:Tested, accurate for joysticks 1/21/12
+     */
+    private static double deadzone(double d)
+    {
+        if (Math.abs(d) < 0.10)
+            return 0;
+        return d / Math.abs(d) * ((Math.abs(d) - .10) / .90);
+    }
     
 }
 

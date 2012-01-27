@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.templates.buttons.MecanumDriveTrigger;
+import edu.wpi.first.wpilibj.templates.buttons.MechanumDriveTrigger;
 import edu.wpi.first.wpilibj.templates.buttons.TankDriveTrigger;
 import edu.wpi.first.wpilibj.templates.commands.*;
 import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
@@ -40,10 +40,10 @@ public class RobotTemplate extends IterativeRobot {
         // Initialize all subsystems
         CommandBase.init();
         // instantiate the command used for the autonomous period
-        firstCommand = new MecanumDrive();
+        firstCommand = new PolarMechanumDrive();
 
         //Initializes triggers
-        mecanumDriveTrigger = new MecanumDriveTrigger();
+        mecanumDriveTrigger = new MechanumDriveTrigger();
         tankDriveTrigger = new TankDriveTrigger();
     }
 
@@ -66,7 +66,7 @@ public class RobotTemplate extends IterativeRobot {
 	// teleop starts running. If you want the autonomous to 
 	// continue until interrupted by another command, remove
 	// this line or comment it out.
-        Scheduler.getInstance().add(firstCommand);
+        //Scheduler.getInstance().add(firstCommand);
     }
 
     /**
@@ -80,13 +80,19 @@ public class RobotTemplate extends IterativeRobot {
         //Polls the buttons to see if they are active, if they are, it adds the
         //command to the Scheduler.
         if (mecanumDriveTrigger.get())        
-            Scheduler.getInstance().add(new MecanumDrive());
+            Scheduler.getInstance().add(new MechanumDrive());
 
         else if (tankDriveTrigger.get())
             Scheduler.getInstance().add(new TankDrive());
+        
+        else if (OI.rightJoystick.getRawButton(2))
+            Scheduler.getInstance().add(new PolarMechanumDrive());
 
         //Puts the current command being run by DriveTrain into the SmartDashboard
         SmartDashboard.putData(DriveTrain.getInstance().getCurrentCommand());
+        
+        SmartDashboard.putString(ERRORS_TO_DRIVERSTATION_PROP, "Test String");
+
 
     }
 }

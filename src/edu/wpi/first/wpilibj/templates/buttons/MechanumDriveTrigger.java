@@ -7,17 +7,17 @@ package edu.wpi.first.wpilibj.templates.buttons;
 
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.templates.OI;
-import edu.wpi.first.wpilibj.templates.commands.MecanumDrive;
+import edu.wpi.first.wpilibj.templates.commands.MechanumDrive;
 
 /**
  *
  * @author Jon Buckley
  */
-public class MecanumDriveTrigger extends Button
+public class MechanumDriveTrigger extends Button
 {
-    public MecanumDriveTrigger()
+    public MechanumDriveTrigger()
     {
-        super.whenPressed(new MecanumDrive());
+        super.whenPressed(new MechanumDrive());
     }
 
     public boolean get()

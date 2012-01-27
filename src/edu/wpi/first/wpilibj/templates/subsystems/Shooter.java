@@ -7,6 +7,7 @@ package edu.wpi.first.wpilibj.templates.subsystems;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.templates.RobotMap;
+import edu.wpi.first.wpilibj.templates.commands.AutoAim;
 
 /**
  *
@@ -44,15 +45,23 @@ public class Shooter extends Subsystem
     }
 
     /*
-     * blank code for setting angle
+     * adjusts the angle at which the shooter is aiming up and down
      */
-    public void setAngle(double ang)
+    public void rotateAngle(double ang)
     {
         
     }
 
-    public void initDefaultCommand() {
-        // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
+    /*
+     * rotates the shooter left and right
+     */
+    public void rotateBase(double rate)
+    {
+
+    }
+
+    public void initDefaultCommand()
+    {
+        setDefaultCommand(new AutoAim());
     }
 }

@@ -2,7 +2,7 @@ package edu.wpi.first.wpilibj.templates.subsystems;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Victor;
-import edu.wpi.first.wpilibj.templates.commands.MecanumDrive;
+import edu.wpi.first.wpilibj.templates.commands.MechanumDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.templates.OI;
 import edu.wpi.first.wpilibj.templates.RobotMap;
@@ -51,11 +51,9 @@ public class DriveTrain extends Subsystem
      * Takes in four values from the joysticks, and converts it into tank drive
      * Status:Untested
      */
-    public void mecanumDrive()
+    public void mechanumDrive()
     {
-
-       System.out.println("Left stick: " + OI.leftJoystick.getX());
-       drive.mecanumDrive_Cartesian(deadzone(-rJoystick.getX()), deadzone(-lJoystick.getX()), deadzone(rJoystick.getY()), 0);
+       drive.mecanumDrive_Cartesian(-OI.getRightX(), -OI.getLeftX(), OI.getRightY(), 0);// (deadzone(-rJoystick.getX()), deadzone(-lJoystick.getX()), deadzone(rJoystick.getY()), 0);
     }
 
     /*
@@ -73,30 +71,20 @@ public class DriveTrain extends Subsystem
     }
 
     /*
-     * Tank drives using joystick controls
+     * Tank drives using joystick controls, sets left side to Y value of left joystick
+     * and right side as Y value of right joystick
      */
     public void tankDrive()
     {
-        rFront.set(-deadzone(OI.leftJoystick.getY()));
-        rBack.set(-deadzone(OI.leftJoystick.getY()));
+        lFront.set(OI.getLeftY()); //deadzone(OI.leftJoystick.getY()));
+        lBack.set(OI.getLeftY()); //-deadzone(OI.leftJoystick.getY()));
 
-        lFront.set(deadzone(OI.rightJoystick.getY()));
-        lBack.set(deadzone(OI.rightJoystick.getY()));
+        rFront.set(-OI.getRightY()); //deadzone(OI.rightJoystick.getY()));
+        rBack.set(-OI.getRightY()); //deadzone(OI.rightJoystick.getY()));
     }
 
     public void initDefaultCommand()
     {
-        setDefaultCommand(new MecanumDrive());
-    }
-
-    /*
-     * Creates a deadzone for joysticks
-     * Status:Tested, accurate for joysticks 1/21/12
-     */
-    private double deadzone(double d)
-    {
-        if (Math.abs(d) < 0.10)
-            return 0;
-        return d / Math.abs(d) * ((Math.abs(d) - .10) / .90);
+        setDefaultCommand(new MechanumDrive());
     }
 }

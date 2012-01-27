@@ -4,46 +4,36 @@
  */
 package edu.wpi.first.wpilibj.templates.commands;
 
+import edu.wpi.first.wpilibj.templates.OI;
 
 /**
  *
- * @author Jon Buckley
+ * @author Jon Buckley, TheGaur
  */
-public class AutoOrrient extends CommandBase
+public class MechanumDrive extends CommandBase
 {
-    double distance = 0;
+    public MechanumDrive()
 
-    public AutoOrrient()
     {
-       // requires(sensors);
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
         requires(driveTrain);
     }
 
     // Called just before this Command runs the first time
-    protected void initialize() 
-    {
+    protected void initialize() {
         
     }
 
     // Called repeatedly when this Command is scheduled to run
-    protected void execute()
+    protected void execute() 
     {
-//        distance = sensors.getDifferenceInSensorsFromWall(true);
-
-        if (distance > 3)
-            driveTrain.polarMechanum(0, 0, Math.sin(distance)); // sin has range of -1 to 1
-
-        else
-            driveTrain.polarMechanum(0, 0, -(Math.sin(distance)));
+        driveTrain.mechanumDrive();
     }
 
     // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished()
-    {
-       // if (sensors.getDifferenceInSensorsFromWall(true) < 3) // difference is negligble
-            return true;
-
-       // return false;
+    protected boolean isFinished() {
+        return false;
     }
 
     // Called once after isFinished returns true
