@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj.Victor;
 public class OI
 {
     public static Joystick leftJoystick, rightJoystick, shooterJoystick;
+
+    public static Joystick controller;
     /*
      * initializes all input methods (eg. joysticks)
      */
@@ -16,6 +18,9 @@ public class OI
         {
            leftJoystick = new Joystick(RobotMap.leftJoystick);
            rightJoystick = new Joystick(RobotMap.rightJoystick);
+           controller = new Joystick(RobotMap.controller);
+
+           controller = new Joystick(3); //XBOX Controller
            //shooterJoystick = new Joystick(RobotMap.shooterJoystick);
         }
 
@@ -51,6 +56,26 @@ public class OI
     public static double getShooterY()
     {
         return deadzone(shooterJoystick.getY());
+    }
+
+    public static double getXboxLeftX()
+    {
+        return -controller.getRawAxis(1);
+    }
+
+    public static double getXboxLeftY()
+    {
+        return controller.getRawAxis(2);
+    }
+
+    public static double getXboxRightX()
+    {
+        return -controller.getRawAxis(4);
+    }
+
+    public static double getXboxRightY()
+    {
+        return controller.getRawAxis(5);
     }
 
     /*

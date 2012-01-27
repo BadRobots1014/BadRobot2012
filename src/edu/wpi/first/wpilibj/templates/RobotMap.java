@@ -18,6 +18,7 @@ public class RobotMap
 
     public static final int leftJoystick = 1;
     public static final int rightJoystick = 2;
+    public static final int controller = 3;
 
     public static final int shooterJoystick = 4;
 

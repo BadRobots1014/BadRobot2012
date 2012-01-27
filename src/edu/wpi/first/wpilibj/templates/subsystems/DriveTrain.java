@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.templates.RobotMap;
 
 /**
  *
- * @author Jon Buckley
+ * @author Jon Buckley, Lucas Beaufore, Gautam RiCantSpellYourLastName
  */
 public class DriveTrain extends Subsystem
 {
@@ -53,7 +53,8 @@ public class DriveTrain extends Subsystem
      */
     public void mechanumDrive()
     {
-       drive.mecanumDrive_Cartesian(-OI.getRightX(), -OI.getLeftX(), OI.getRightY(), 0);// (deadzone(-rJoystick.getX()), deadzone(-lJoystick.getX()), deadzone(rJoystick.getY()), 0);
+        //NEEDS REORDERING
+       drive.mecanumDrive_Cartesian(deadzone(OI.getXboxRightX()), deadzone(OI.getXboxLeftX()), deadzone(OI.getXboxRightY()), 0);// (deadzone(-rJoystick.getX()), deadzone(-lJoystick.getX()), deadzone(rJoystick.getY()), 0);
     }
 
     /*
@@ -86,5 +87,13 @@ public class DriveTrain extends Subsystem
     public void initDefaultCommand()
     {
         setDefaultCommand(new MechanumDrive());
+    }
+
+    public double deadzone(double d)
+    {
+        if (Math.abs(d) < 0.10)
+            return 0;
+        //return d / Math.abs(d) * ((Math.abs(d) - 0.5) / .5);
+        return d / Math.abs(d) * ((Math.abs(d) - .10) / .90);
     }
 }
