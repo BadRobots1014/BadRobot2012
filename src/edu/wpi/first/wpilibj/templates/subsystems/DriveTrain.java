@@ -53,7 +53,7 @@ public class DriveTrain extends Subsystem
      */
     public void mechanumDrive()
     {
-        //NEEDS REORDERING
+        //WORKS: Right stick controls movement, left stick controls rotation.  Needs ground test. #w00t
        drive.mecanumDrive_Cartesian(deadzone(OI.getXboxRightX()), deadzone(OI.getXboxLeftX()), deadzone(OI.getXboxRightY()), 0);// (deadzone(-rJoystick.getX()), deadzone(-lJoystick.getX()), deadzone(rJoystick.getY()), 0);
     }
 
