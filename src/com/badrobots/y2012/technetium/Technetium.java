@@ -5,22 +5,22 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package org.badrobots.y2012.technetium;
+package com.badrobots.y2012.technetium;
 
 
-import org.badrobots.y2012.technetium.commands.PolarMechanumDrive;
-import org.badrobots.y2012.technetium.commands.TankDrive;
-import org.badrobots.y2012.technetium.commands.MechanumDrive;
-import org.badrobots.y2012.technetium.commands.CommandBase;
-import org.badrobots.y2012.technetium.subsystems.DriveTrain;
-import org.badrobots.y2012.technetium.buttons.TankDriveTrigger;
+import com.badrobots.y2012.technetium.commands.PolarMechanumDrive;
+import com.badrobots.y2012.technetium.commands.TankDrive;
+import com.badrobots.y2012.technetium.commands.MechanumDrive;
+import com.badrobots.y2012.technetium.commands.CommandBase;
+import com.badrobots.y2012.technetium.subsystems.DriveTrain;
+import com.badrobots.y2012.technetium.buttons.TankDriveTrigger;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Watchdog;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.badrobots.y2012.technetium.buttons.MechanumDriveTrigger;
+import com.badrobots.y2012.technetium.buttons.MechanumDriveTrigger;
 
 /**
  * The VM is configured to automatically run this class, and to call the

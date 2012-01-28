@@ -2,10 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.badrobots.y2012.technetium.commands;
+package com.badrobots.y2012.technetium.commands;
 
 import com.sun.squawk.util.MathUtils;
-import org.badrobots.y2012.technetium.OI;
+import com.badrobots.y2012.technetium.OI;
 
 /**
  *

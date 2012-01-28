@@ -2,12 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.badrobots.y2012.technetium.subsystems;
+package com.badrobots.y2012.technetium.subsystems;
 
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import org.badrobots.y2012.technetium.RobotMap;
-import org.badrobots.y2012.technetium.commands.AutoAim;
+import com.badrobots.y2012.technetium.RobotMap;
+import com.badrobots.y2012.technetium.commands.AutoAim;
 
 /**
  *

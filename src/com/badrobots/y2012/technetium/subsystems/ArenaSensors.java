@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.badrobots.y2012.technetium.subsystems;
+package com.badrobots.y2012.technetium.subsystems;
 
 import com.sun.squawk.util.MathUtils;
 import edu.wpi.first.wpilibj.Kinect.Point4;
@@ -14,8 +14,8 @@ import edu.wpi.first.wpilibj.image.BinaryImage;
 import edu.wpi.first.wpilibj.image.ColorImage;
 import edu.wpi.first.wpilibj.image.NIVisionException;
 import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
-import org.badrobots.y2012.technetium.RobotMap;
-import org.badrobots.y2012.technetium.commands.AutoAim;
+import com.badrobots.y2012.technetium.RobotMap;
+import com.badrobots.y2012.technetium.commands.AutoAim;
 
 /**
  *

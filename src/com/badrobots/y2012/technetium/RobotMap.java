@@ -1,4 +1,4 @@
-package org.badrobots.y2012.technetium;
+package com.badrobots.y2012.technetium;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into

@@ -1,5 +1,5 @@
 
-package org.badrobots.y2012.technetium;
+package com.badrobots.y2012.technetium;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Victor;

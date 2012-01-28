@@ -2,30 +2,39 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.badrobots.y2012.technetium.commands;
+package com.badrobots.y2012.technetium.commands;
+import com.badrobots.y2012.technetium.OI;
 
 
 /**
  *
  * @author Jon Buckley
  */
-public class AutoAim extends CommandBase {
+public class ManualAim extends CommandBase
+{
 
-    public AutoAim()
+    public ManualAim()
     {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-        requires(shooter);
+       requires(shooter);
     }
 
     // Called just before this Command runs the first time
-    protected void initialize() {
+    protected void initialize()
+    {
     }
 
-    // Called repeatedly when this Command is scheduled to run
+
+    /*
+     * Repeatedly obtains the Shooter Joystick's values and adjusts the shooter;
+     * if the trigger is pulled, it shoots the ball
+     */
     protected void execute() 
     {
-        //TODO: add autoaim code
+        shooter.rotateAngle(OI.getShooterY());
+        shooter.rotateBase(OI.getShooterX());
+
+        if (OI.shooterJoystick.getTrigger())
+            shooter.shoot(1);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -39,6 +48,8 @@ public class AutoAim extends CommandBase {
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
-    protected void interrupted() {
+    protected void interrupted() 
+    {
+        return;
     }
 }

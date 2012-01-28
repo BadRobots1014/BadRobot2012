@@ -3,11 +3,11 @@
  * and open the template in the editor.
  */
 
-package org.badrobots.y2012.technetium.buttons;
+package com.badrobots.y2012.technetium.buttons;
 
 import edu.wpi.first.wpilibj.buttons.Button;
-import org.badrobots.y2012.technetium.OI;
-import org.badrobots.y2012.technetium.commands.MechanumDrive;
+import com.badrobots.y2012.technetium.OI;
+import com.badrobots.y2012.technetium.commands.MechanumDrive;
 
 /**
  *

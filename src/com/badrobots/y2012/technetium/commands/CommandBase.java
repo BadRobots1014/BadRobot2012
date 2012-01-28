@@ -1,11 +1,11 @@
-package org.badrobots.y2012.technetium.commands;
+package com.badrobots.y2012.technetium.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.badrobots.y2012.technetium.OI;
-import org.badrobots.y2012.technetium.subsystems.ArenaSensors;
-import org.badrobots.y2012.technetium.subsystems.Shooter;
-import org.badrobots.y2012.technetium.subsystems.DriveTrain;
+import com.badrobots.y2012.technetium.OI;
+import com.badrobots.y2012.technetium.subsystems.ArenaSensors;
+import com.badrobots.y2012.technetium.subsystems.Shooter;
+import com.badrobots.y2012.technetium.subsystems.DriveTrain;
 
 /**
  * The base for all commands. All atomic commands should subclass CommandBase.

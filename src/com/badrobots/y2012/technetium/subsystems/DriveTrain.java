@@ -1,11 +1,11 @@
-package org.badrobots.y2012.technetium.subsystems;
+package com.badrobots.y2012.technetium.subsystems;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Victor;
-import org.badrobots.y2012.technetium.commands.MechanumDrive;
+import com.badrobots.y2012.technetium.commands.MechanumDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import org.badrobots.y2012.technetium.OI;
-import org.badrobots.y2012.technetium.RobotMap;
+import com.badrobots.y2012.technetium.OI;
+import com.badrobots.y2012.technetium.RobotMap;
 
 /**
  *

@@ -1,6 +1,6 @@
 MIDlet-Name: Technetium
 MIDlet-Version: 1.0.0
 MIDlet-Vendor: FIRST
-MIDlet-1: Technetium, ,  org.badrobots.y2012.technetium.Technetium
+MIDlet-1: Technetium, ,  com.badrobots.y2012.technetium.Technetium
 MicroEdition-Profile: IMP-1.0
 MicroEdition-Configuration: CLDC-1.1
