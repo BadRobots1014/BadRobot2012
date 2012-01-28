@@ -15,9 +15,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.templates.buttons.MechanumDriveTrigger;
-import edu.wpi.first.wpilibj.templates.buttons.TankDriveTrigger;
+import edu.wpi.first.wpilibj.templates.buttons.*;
 import edu.wpi.first.wpilibj.templates.commands.*;
-import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
+import edu.wpi.first.wpilibj.templates.subsystems.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -29,7 +29,7 @@ import edu.wpi.first.wpilibj.templates.subsystems.DriveTrain;
 public class RobotTemplate extends IterativeRobot {
 
     Command firstCommand;
-    Button mecanumDriveTrigger, tankDriveTrigger;
+    Button mecanumDriveTrigger, tankDriveTrigger, switchHand, switchController;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -45,6 +45,8 @@ public class RobotTemplate extends IterativeRobot {
         //Initializes triggers
         mecanumDriveTrigger = new MechanumDriveTrigger();
         tankDriveTrigger = new TankDriveTrigger();
+        switchHand = new SwitchHand();
+        switchController = new SwitchController();
     }
 
     public void autonomousInit()
@@ -87,6 +89,9 @@ public class RobotTemplate extends IterativeRobot {
         
         else if (OI.rightJoystick.getRawButton(2))
             Scheduler.getInstance().add(new PolarMechanumDrive());
+
+        switchHand.get();//leave it
+        switchController.get();
 
         //Puts the current command being run by DriveTrain into the SmartDashboard
         SmartDashboard.putData(DriveTrain.getInstance().getCurrentCommand());

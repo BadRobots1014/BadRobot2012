@@ -60,22 +60,23 @@ public class OI
 
     public static double getXboxLeftX()
     {
-        return -controller.getRawAxis(1);
+        detectAxis();
+        return deadzone(-controller.getRawAxis(1));
     }
 
     public static double getXboxLeftY()
     {
-        return controller.getRawAxis(2);
+        return deadzone(controller.getRawAxis(2));
     }
 
     public static double getXboxRightX()
     {
-        return -controller.getRawAxis(4);
+        return deadzone(-controller.getRawAxis(4));
     }
 
     public static double getXboxRightY()
     {
-        return controller.getRawAxis(5);
+        return deadzone(controller.getRawAxis(5));
     }
 
     /*
@@ -87,6 +88,15 @@ public class OI
         if (Math.abs(d) < 0.10)
             return 0;
         return d / Math.abs(d) * ((Math.abs(d) - .10) / .90);
+    }
+
+    public static void detectAxis()
+    {
+        for(int i=0; i<=12; i++)
+        {
+            if(Math.abs(controller.getRawAxis(i)) > .1)
+                System.out.println(i + " : " + controller.getRawAxis(i));
+        }
     }
     
 }

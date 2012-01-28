@@ -18,6 +18,8 @@ public class DriveTrain extends Subsystem
     private static RobotDrive drive;
     public Joystick lJoystick, rJoystick;
     public Victor lFront, lBack, rFront, rBack;
+    private boolean xbox, rightStickStrafe;
+
 
     public static DriveTrain getInstance()
     {
@@ -35,6 +37,8 @@ public class DriveTrain extends Subsystem
     private DriveTrain()
     {
         super();
+        xbox = false;
+        rightStickStrafe = false;
         lJoystick = OI.leftJoystick;
         rJoystick = OI.rightJoystick;
 
@@ -54,7 +58,15 @@ public class DriveTrain extends Subsystem
     public void mechanumDrive()
     {
         //WORKS: Right stick controls movement, left stick controls rotation.  Needs ground test. #w00t
-       drive.mecanumDrive_Cartesian(deadzone(OI.getXboxRightX()), deadzone(OI.getXboxLeftX()), deadzone(OI.getXboxRightY()), 0);// (deadzone(-rJoystick.getX()), deadzone(-lJoystick.getX()), deadzone(rJoystick.getY()), 0);
+        if(xbox && rightStickStrafe)
+            drive.mecanumDrive_Cartesian(OI.getXboxRightX(), OI.getXboxLeftX(), OI.getXboxRightY(), 0);
+        else if(xbox)
+            drive.mecanumDrive_Cartesian(OI.getXboxLeftX(), OI.getXboxRightX(), OI.getXboxLeftY(), 0);
+        else if(!xbox && rightStickStrafe)
+            drive.mecanumDrive_Cartesian(-rJoystick.getX(), -lJoystick.getX(), rJoystick.getY(), 0);
+        else
+            drive.mecanumDrive_Cartesian(-lJoystick.getX(), -rJoystick.getX(), lJoystick.getY(), 0);
+
     }
 
     /*
@@ -89,11 +101,15 @@ public class DriveTrain extends Subsystem
         setDefaultCommand(new MechanumDrive());
     }
 
-    public double deadzone(double d)
+    public void changeController()
     {
-        if (Math.abs(d) < 0.10)
-            return 0;
-        //return d / Math.abs(d) * ((Math.abs(d) - 0.5) / .5);
-        return d / Math.abs(d) * ((Math.abs(d) - .10) / .90);
+        xbox = !xbox;
     }
+
+     public void changeStrafe()
+    {
+        rightStickStrafe = !rightStickStrafe;
+    }
+
+
 }

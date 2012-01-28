@@ -18,6 +18,7 @@ public class MechanumDriveTrigger extends Button
     public MechanumDriveTrigger()
     {
         super.whenPressed(new MechanumDrive());
+
     }
 
     public boolean get()

@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.templates.OI;
 
 /**
  *
- * @author Jon Buckley, TheGaur
+ * @author Jon Buckley, TheGaur, Lucas Beaufore
  */
 public class MechanumDrive extends CommandBase
 {
@@ -16,8 +16,7 @@ public class MechanumDrive extends CommandBase
     public MechanumDrive()
 
     {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+
         requires(driveTrain);
     }
 
@@ -29,6 +28,7 @@ public class MechanumDrive extends CommandBase
     // Called repeatedly when this Command is scheduled to run
     protected void execute() 
     {
+
         driveTrain.mechanumDrive();
     }
 
