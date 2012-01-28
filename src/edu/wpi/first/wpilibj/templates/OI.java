@@ -3,25 +3,27 @@ package edu.wpi.first.wpilibj.templates;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.DriverStation;
 
 public class OI
 {
     public static Joystick leftJoystick, rightJoystick, shooterJoystick;
+    public static DriverStation ds;
 
     public static Joystick controller;
     /*
      * initializes all input methods (eg. joysticks)
      */
     public static void init()
-    {//tiny change
+    {
         try
         {
            leftJoystick = new Joystick(RobotMap.leftJoystick);
            rightJoystick = new Joystick(RobotMap.rightJoystick);
            controller = new Joystick(RobotMap.controller);
+           ds = DriverStation.getInstance();//Drivers Station
 
            controller = new Joystick(3); //XBOX Controller
-           //shooterJoystick = new Joystick(RobotMap.shooterJoystick);
         }
 
         catch (Exception e) {System.out.println(e.toString());}
@@ -77,6 +79,16 @@ public class OI
     public static double getXboxRightY()
     {
         return deadzone(controller.getRawAxis(5));
+    }
+
+    public static boolean xboxControl()
+    {
+        return ds.getDigitalIn(1);
+    }
+
+    public static boolean rightStrafe()
+    {
+        return ds.getDigitalIn(2);
     }
 
     /*

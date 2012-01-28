@@ -53,16 +53,15 @@ public class DriveTrain extends Subsystem
 
     /*
      * Takes in four values from the joysticks, and converts it into tank drive
-     * Status:Untested
+     * Status:Working
      */
     public void mechanumDrive()
     {
-        //WORKS: Right stick controls movement, left stick controls rotation.  Needs ground test. #w00t
-        if(xbox && rightStickStrafe)
+        if(OI.xboxControl() && OI.rightStrafe())
             drive.mecanumDrive_Cartesian(OI.getXboxRightX(), OI.getXboxLeftX(), OI.getXboxRightY(), 0);
-        else if(xbox)
+        else if(OI.xboxControl())
             drive.mecanumDrive_Cartesian(OI.getXboxLeftX(), OI.getXboxRightX(), OI.getXboxLeftY(), 0);
-        else if(!xbox && rightStickStrafe)
+        else if(!OI.xboxControl() && OI.rightStrafe())
             drive.mecanumDrive_Cartesian(-rJoystick.getX(), -lJoystick.getX(), rJoystick.getY(), 0);
         else
             drive.mecanumDrive_Cartesian(-lJoystick.getX(), -rJoystick.getX(), lJoystick.getY(), 0);
@@ -86,6 +85,7 @@ public class DriveTrain extends Subsystem
     /*
      * Tank drives using joystick controls, sets left side to Y value of left joystick
      * and right side as Y value of right joystick
+     * Status:Working
      */
     public void tankDrive()
     {
