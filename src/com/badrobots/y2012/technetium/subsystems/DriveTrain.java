@@ -62,9 +62,10 @@ public class DriveTrain extends Subsystem
         else if(OI.xboxControl())
             drive.mecanumDrive_Cartesian(OI.getXboxLeftX(), OI.getXboxRightX(), OI.getXboxLeftY(), 0);
         else if(!OI.xboxControl() && OI.rightStrafe())
-            drive.mecanumDrive_Cartesian(-rJoystick.getX(), -lJoystick.getX(), rJoystick.getY(), 0);
-        else
             drive.mecanumDrive_Cartesian(-lJoystick.getX(), -rJoystick.getX(), lJoystick.getY(), 0);
+        else
+            drive.mecanumDrive_Cartesian(-rJoystick.getX(), -lJoystick.getX(), rJoystick.getY(), 0);
+            
 
     }
 
