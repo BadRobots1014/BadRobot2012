@@ -132,10 +132,19 @@ public class OI
      */
     private static double deadzone(double d)
     {
-        if (Math.abs(d) < 0.10 && !xboxControl())
+        double jsSensitivity = getJoystickSensitivty();
+        double xboxSensitivity = getXboxSensitivity();
+        
+        if (jsSensitivity > .9)
+            jsSensitivity = .1;
+        
+        if (xboxSensitivity > .9)
+            xboxSensitivity = .5;
+        
+        if (Math.abs(d) < jsSensitivity && !xboxControl())
             return 0;
         
-        else if (Math.abs(d) < 0.70 && xboxControl())
+        else if (Math.abs(d) < xboxSensitivity && xboxControl())
             return 0;
         
         return d / Math.abs(d) * ((Math.abs(d) - .10) / .90);
@@ -148,6 +157,16 @@ public class OI
             if(Math.abs(controller.getRawAxis(i)) > .1)
                 System.out.println(i + " : " + controller.getRawAxis(i));
         }
+    }
+    
+    public static double getJoystickSensitivty()
+    {
+        return ds.getAnalogIn(1);
+    }
+    
+    public static double getXboxSensitivity()
+    {
+        return ds.getAnalogIn(2);
     }
     
 }
