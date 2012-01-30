@@ -18,6 +18,7 @@ public class SwitchHand extends Button
 {
     boolean rightStrafe;
     boolean toChange;
+    
     public SwitchHand()
     {
         rightStrafe = false;
@@ -30,10 +31,10 @@ public class SwitchHand extends Button
           toChange = true;
           return true;
         }
+        
         else if(toChange)
         {
             toChange = false;
-            DriveTrain.getInstance().changeStrafe();
         }
 
         return false;

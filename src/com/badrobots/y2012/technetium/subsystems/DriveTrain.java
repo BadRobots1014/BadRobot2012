@@ -37,8 +37,6 @@ public class DriveTrain extends Subsystem
     private DriveTrain()
     {
         super();
-        xbox = false;
-        rightStickStrafe = false;
         lJoystick = OI.leftJoystick;
         rJoystick = OI.rightJoystick;
 
@@ -53,20 +51,15 @@ public class DriveTrain extends Subsystem
 
     /*
      * Takes in four values from the joysticks, and converts it into tank drive
-     * Status:Working
+     * Status:Untested
      */
     public void mechanumDrive()
     {
-        if(OI.xboxControl() && OI.rightStrafe())
-            drive.mecanumDrive_Cartesian(OI.getXboxRightX(), OI.getXboxLeftX(), OI.getXboxRightY(), 0);
-        else if(OI.xboxControl())
-            drive.mecanumDrive_Cartesian(OI.getXboxLeftX(), OI.getXboxRightX(), OI.getXboxLeftY(), 0);
-        else if(!OI.xboxControl() && OI.rightStrafe())
-            drive.mecanumDrive_Cartesian(-lJoystick.getX(), -rJoystick.getX(), lJoystick.getY(), 0);
-        else
-            drive.mecanumDrive_Cartesian(-rJoystick.getX(), -lJoystick.getX(), rJoystick.getY(), 0);
-            
+        if (OI.rightStrafe())
+            drive.mecanumDrive_Cartesian(OI.getUsedRightX(), OI.getUsedLeftX(), OI.getUsedRightY(), 0);
 
+        else
+            drive.mecanumDrive_Cartesian(-OI.getUsedLeftX(), -OI.getUsedRightX(), OI.getUsedLeftY(), 0);   
     }
 
     /*
@@ -86,31 +79,20 @@ public class DriveTrain extends Subsystem
     /*
      * Tank drives using joystick controls, sets left side to Y value of left joystick
      * and right side as Y value of right joystick
-     * Status:Working
+     * Status:Xbox tank drive untested
      */
     public void tankDrive()
     {
-        lFront.set(OI.getLeftY()); //deadzone(OI.leftJoystick.getY()));
-        lBack.set(OI.getLeftY()); //-deadzone(OI.leftJoystick.getY()));
+        lFront.set(OI.getUsedLeftY()); //deadzone(OI.leftJoystick.getY()));
+        lBack.set(OI.getUsedLeftY()); //-deadzone(OI.leftJoystick.getY()));
 
-        rFront.set(-OI.getRightY()); //deadzone(OI.rightJoystick.getY()));
-        rBack.set(-OI.getRightY()); //deadzone(OI.rightJoystick.getY()));
+        rFront.set(-OI.getUsedRightY()); //deadzone(OI.rightJoystick.getY()));
+        rBack.set(-OI.getUsedRightY()); //deadzone(OI.rightJoystick.getY()));
+        
     }
 
     public void initDefaultCommand()
     {
         setDefaultCommand(new MechanumDrive());
     }
-
-    public void changeController()
-    {
-        xbox = !xbox;
-    }
-
-     public void changeStrafe()
-    {
-        rightStickStrafe = !rightStickStrafe;
-    }
-
-
 }

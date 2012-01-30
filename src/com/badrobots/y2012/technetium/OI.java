@@ -26,7 +26,7 @@ public class OI
            controller = new Joystick(3); //XBOX Controller
         }
 
-        catch (Exception e) {System.out.println(e.toString());}
+        catch (Exception e) {System.out.println(e);}
         
     }
 
@@ -90,15 +90,54 @@ public class OI
     {
         return ds.getDigitalIn(2);
     }
+    
+    public static double getUsedLeftX()
+    {
+        if (xboxControl())
+            return controller.getRawAxis(1);
+        
+        return leftJoystick.getX();
+        
+    }
+    
+    public static double getUsedLeftY()
+    {
+        if (xboxControl())
+            return controller.getRawAxis(2);
+        
+        return leftJoystick.getY();
+    }
+    
+    public static double getUsedRightX()
+    {
+        if (xboxControl())
+            return controller.getRawAxis(4);
+        
+        return rightJoystick.getX();
+    }
+    
+    public static double getUsedRightY()
+    {
+        if (xboxControl())
+            return controller.getRawAxis(5);
+        
+        return rightJoystick.getY();
+    }
+    
 
     /*
      * Creates a deadzone for joysticks
-     * Status:Tested, accurate for joysticks 1/21/12
+     * Status:Tested, accurate for joysticks 1/21/12, inaccurate for xbox 1/29/12
+     * 
      */
     private static double deadzone(double d)
     {
-        if (Math.abs(d) < 0.10)
+        if (Math.abs(d) < 0.10 && !xboxControl())
             return 0;
+        
+        else if (Math.abs(d) < 0.70 && xboxControl())
+            return 0;
+        
         return d / Math.abs(d) * ((Math.abs(d) - .10) / .90);
     }
 
