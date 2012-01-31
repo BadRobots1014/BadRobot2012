@@ -27,4 +27,6 @@ public class RobotMap
     public static final int shooterMotor = 8;
 
     public static final int camera = 4;
+    
+    public static final int gyro = 1;
 }

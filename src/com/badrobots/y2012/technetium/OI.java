@@ -91,6 +91,10 @@ public class OI
         return ds.getDigitalIn(2);
     }
     
+    /*
+     * @return the currently used controller left x value
+     * status: all tested 1/30/12
+     */
     public static double getUsedLeftX()
     {
         if (xboxControl())
@@ -100,6 +104,9 @@ public class OI
         
     }
     
+    /*
+     * @return the currently used controller left y value
+     */
     public static double getUsedLeftY()
     {
         if (xboxControl())
@@ -108,6 +115,9 @@ public class OI
         return leftJoystick.getY();
     }
     
+    /*
+     * @return the currently used controller right x value
+     */
     public static double getUsedRightX()
     {
         if (xboxControl())
@@ -116,6 +126,9 @@ public class OI
         return rightJoystick.getX();
     }
     
+    /*
+     * @return the currently used controller right y value
+     */
     public static double getUsedRightY()
     {
         if (xboxControl())
@@ -159,11 +172,17 @@ public class OI
         }
     }
     
+    /*
+     * @return the deadzone for the Joysticks controller
+     */
     public static double getJoystickSensitivty()
     {
         return ds.getAnalogIn(1);
     }
     
+    /*
+     * @return the deadzone for the Xbox controller
+     */
     public static double getXboxSensitivity()
     {
         return ds.getAnalogIn(2);

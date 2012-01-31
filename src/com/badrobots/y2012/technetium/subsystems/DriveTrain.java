@@ -6,6 +6,7 @@ import com.badrobots.y2012.technetium.commands.MechanumDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import com.badrobots.y2012.technetium.OI;
 import com.badrobots.y2012.technetium.RobotMap;
+import edu.wpi.first.wpilibj.*;
 
 /**
  *
@@ -19,6 +20,8 @@ public class DriveTrain extends Subsystem
     public Joystick lJoystick, rJoystick;
     public Victor lFront, lBack, rFront, rBack;
     private boolean xbox, rightStickStrafe;
+    private Gyro gyro;
+    private Accelerometer accel;
 
 
     public static DriveTrain getInstance()
@@ -46,6 +49,7 @@ public class DriveTrain extends Subsystem
         rBack = new Victor(RobotMap.rBack);
 
         drive = new RobotDrive(lFront, lBack, rFront, rBack);
+        gyro = new Gyro(RobotMap.gyro);
         drive.setSafetyEnabled(false);
     }
 
@@ -56,10 +60,10 @@ public class DriveTrain extends Subsystem
     public void mechanumDrive()
     {
         if (OI.rightStrafe())
-            drive.mecanumDrive_Cartesian(OI.getUsedRightX(), OI.getUsedLeftX(), OI.getUsedRightY(), 0);
+            drive.mecanumDrive_Cartesian(OI.getUsedRightX(), OI.getUsedLeftX(), OI.getUsedRightY(), gyro.getAngle());
 
         else
-            drive.mecanumDrive_Cartesian(-OI.getUsedLeftX(), -OI.getUsedRightX(), OI.getUsedLeftY(), 0);   
+            drive.mecanumDrive_Cartesian(-OI.getUsedLeftX(), -OI.getUsedRightX(), OI.getUsedLeftY(), gyro.getAngle());   
     }
 
     /*
@@ -89,6 +93,11 @@ public class DriveTrain extends Subsystem
         rFront.set(-OI.getUsedRightY()); //deadzone(OI.rightJoystick.getY()));
         rBack.set(-OI.getUsedRightY()); //deadzone(OI.rightJoystick.getY()));
         
+    }
+    
+    public double getMovement()
+    {
+        return accel.getAcceleration();
     }
 
     public void initDefaultCommand()

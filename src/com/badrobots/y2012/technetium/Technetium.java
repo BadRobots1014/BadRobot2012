@@ -43,8 +43,6 @@ public class Technetium extends IterativeRobot {
         // Initialize all subsystems
         CommandBase.init();
         // instantiate the command used for the autonomous period
-        firstCommand = new PolarMechanumDrive();
-
         //Initializes triggers
         mecanumDriveTrigger = new MechanumDriveTrigger();
         tankDriveTrigger = new TankDriveTrigger();
