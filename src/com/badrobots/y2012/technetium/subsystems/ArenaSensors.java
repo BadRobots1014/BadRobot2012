@@ -70,6 +70,16 @@ public class ArenaSensors extends Subsystem
 
         return theta;
     }
+    
+    public double getDistancceToWall()
+    {
+        return 0;
+    }
+    
+    public double getAngleToTarget()
+    {
+        return 3.14;
+    }
 
     public ParticleAnalysisReport[] getRectangleParticles() throws AxisCameraException
     {

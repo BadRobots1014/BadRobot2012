@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.badrobots.y2012.technetium.buttons.MechanumDriveTrigger;
+import com.badrobots.y2012.technetium.buttons.ResetGyro;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -32,7 +33,7 @@ import com.badrobots.y2012.technetium.buttons.MechanumDriveTrigger;
 public class Technetium extends IterativeRobot {
 
     Command firstCommand;
-    Button mecanumDriveTrigger, tankDriveTrigger;
+    Button mecanumDriveTrigger, tankDriveTrigger, resetGyro;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -46,6 +47,7 @@ public class Technetium extends IterativeRobot {
         //Initializes triggers
         mecanumDriveTrigger = new MechanumDriveTrigger();
         tankDriveTrigger = new TankDriveTrigger();
+        resetGyro = new ResetGyro();
     }
 
     public void autonomousInit()
@@ -85,7 +87,8 @@ public class Technetium extends IterativeRobot {
         else if (OI.rightJoystick.getRawButton(2))
             Scheduler.getInstance().add(new PolarMechanumDrive());
 
-
+        resetGyro.get();
+        
         //Puts the current command being run by DriveTrain into the SmartDashboard
         SmartDashboard.putData(DriveTrain.getInstance().getCurrentCommand());
         

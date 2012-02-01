@@ -60,10 +60,12 @@ public class DriveTrain extends Subsystem
     public void mechanumDrive()
     {
         if (OI.rightStrafe())
-            drive.mecanumDrive_Cartesian(OI.getUsedRightX(), OI.getUsedLeftX(), OI.getUsedRightY(), gyro.getAngle());
+            drive.mecanumDrive_Cartesian(OI.getUsedRightX(), -OI.getUsedLeftX(), OI.getUsedRightY(), gyro.getAngle());
 
         else
-            drive.mecanumDrive_Cartesian(-OI.getUsedLeftX(), -OI.getUsedRightX(), OI.getUsedLeftY(), gyro.getAngle());   
+            drive.mecanumDrive_Cartesian(OI.getUsedLeftX(), -OI.getUsedRightX(), OI.getUsedLeftY(), gyro.getAngle());  
+        
+        System.out.println("Gyro: " + gyro.getAngle());
     }
 
     /*
@@ -98,6 +100,11 @@ public class DriveTrain extends Subsystem
     public double getMovement()
     {
         return accel.getAcceleration();
+    }
+    
+    public void resetGyro()
+    {
+        gyro.reset();
     }
 
     public void initDefaultCommand()
