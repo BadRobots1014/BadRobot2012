@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.badrobots.y2012.technetium.buttons.MechanumDriveTrigger;
-import com.badrobots.y2012.technetium.buttons.ResetGyro;
+//import com.badrobots.y2012.technetium.buttons.ResetGyro;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -47,7 +47,7 @@ public class Technetium extends IterativeRobot {
         //Initializes triggers
         mecanumDriveTrigger = new MechanumDriveTrigger();
         tankDriveTrigger = new TankDriveTrigger();
-        resetGyro = new ResetGyro();
+        //resetGyro = new ResetGyro();
     }
 
     public void autonomousInit()
