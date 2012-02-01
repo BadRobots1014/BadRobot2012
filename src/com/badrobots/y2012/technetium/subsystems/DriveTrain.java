@@ -49,6 +49,8 @@ public class DriveTrain extends Subsystem
         rBack = new Victor(RobotMap.rBack);
 
         drive = new RobotDrive(lFront, lBack, rFront, rBack);
+        drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
+        drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);        
         gyro = new Gyro(RobotMap.gyro);
         drive.setSafetyEnabled(false);
     }
@@ -65,7 +67,7 @@ public class DriveTrain extends Subsystem
         else
             drive.mecanumDrive_Cartesian(OI.getUsedLeftX(), OI.getUsedLeftY(), OI.getUsedRightX(), gyro.getAngle());  
         
-        System.out.println("Gyro: " + gyro.getAngle());
+        System.out.println("Used Left X " + OI.getUsedLeftX() + "  Used left Y: " + OI.getUsedLeftY());
     }
 
     /*
