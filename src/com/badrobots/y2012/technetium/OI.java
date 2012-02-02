@@ -98,9 +98,9 @@ public class OI
     public static double getUsedLeftX()
     {
         if (xboxControl())
-            return controller.getRawAxis(1);
+            return deadzone(controller.getRawAxis(1));
         
-        return leftJoystick.getX();
+        return deadzone(leftJoystick.getX());
         
     }
     
@@ -110,9 +110,9 @@ public class OI
     public static double getUsedLeftY()
     {
         if (xboxControl())
-            return controller.getRawAxis(2);
+            return deadzone(controller.getRawAxis(2));
         
-        return leftJoystick.getY();
+        return deadzone(leftJoystick.getY());
     }
     
     /*
@@ -121,9 +121,9 @@ public class OI
     public static double getUsedRightX()
     {
         if (xboxControl())
-            return controller.getRawAxis(4);
+            return deadzone(controller.getRawAxis(4));
         
-        return rightJoystick.getX();
+        return deadzone(rightJoystick.getX());
     }
     
     /*
@@ -132,9 +132,9 @@ public class OI
     public static double getUsedRightY()
     {
         if (xboxControl())
-            return controller.getRawAxis(5);
+            return deadzone(controller.getRawAxis(5));
         
-        return rightJoystick.getY();
+        return deadzone(rightJoystick.getY());
     }
     
 
@@ -148,10 +148,10 @@ public class OI
         double jsSensitivity = getJoystickSensitivty();
         double xboxSensitivity = getXboxSensitivity();
         
-        if (jsSensitivity > .9)
+        if (jsSensitivity > .9 || jsSensitivity < .1)
             jsSensitivity = .1;
         
-        if (xboxSensitivity > .9)
+        if (xboxSensitivity > .9 || xboxSensitivity < .1)
             xboxSensitivity = .5;
         
         if (Math.abs(d) < jsSensitivity && !xboxControl())
@@ -177,6 +177,7 @@ public class OI
      */
     public static double getJoystickSensitivty()
     {
+        System.out.println("Digital in: " + ds.getAnalogIn(1));
         return ds.getAnalogIn(1);
     }
     
@@ -185,8 +186,14 @@ public class OI
      */
     public static double getXboxSensitivity()
     {
+        System.out.println("Digital in 2: " + ds.getAnalogIn(2));
         return ds.getAnalogIn(2);
     }
     
+    
+    public static double getAnalogIn(int channel)
+    {
+        return ds.getAnalogIn(channel);
+    }
 }
 

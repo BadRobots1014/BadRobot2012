@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.badrobots.y2012.technetium.buttons.MechanumDriveTrigger;
 import com.badrobots.y2012.technetium.buttons.ResetGyro;
+import edu.wpi.first.wpilibj.Timer;
 //import com.badrobots.y2012.technetium.buttons.ResetGyro;
 
 /**
@@ -35,6 +36,7 @@ public class Technetium extends IterativeRobot {
 
     Command firstCommand;
     Button mecanumDriveTrigger, tankDriveTrigger, resetGyro;
+    double time;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -67,6 +69,7 @@ public class Technetium extends IterativeRobot {
     public void teleopInit()
     {
         //Scheduler.getInstance().add(firstCommand);
+        time = Timer.getUsClock();
     }
 
     /**
@@ -76,6 +79,13 @@ public class Technetium extends IterativeRobot {
     {
         Watchdog.getInstance().feed();
         Scheduler.getInstance().run();
+        
+        double currentTime = Timer.getUsClock();
+        if (time-currentTime > OI.getAnalogIn(3)*1000000)
+        {
+            DriveTrain.getInstance().resetGyro();
+            time = currentTime;
+        }
 
         //Polls the buttons to see if they are active, if they are, it adds the
         //command to the Scheduler.
@@ -89,6 +99,8 @@ public class Technetium extends IterativeRobot {
             Scheduler.getInstance().add(new PolarMechanumDrive());
 
         resetGyro.get();
+        
+        
         
         //Puts the current command being run by DriveTrain into the SmartDashboard
         SmartDashboard.putData(DriveTrain.getInstance().getCurrentCommand());

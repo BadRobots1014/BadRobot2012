@@ -65,9 +65,7 @@ public class DriveTrain extends Subsystem
             drive.mecanumDrive_Cartesian(OI.getUsedRightX(), OI.getUsedRightY(), OI.getUsedLeftX(), gyro.getAngle());
 
         else
-            drive.mecanumDrive_Cartesian(OI.getUsedLeftX(), OI.getUsedLeftY(), OI.getUsedRightX(), gyro.getAngle());  
-        
-        System.out.println("Used Left X " + OI.getUsedLeftX() + "  Used left Y: " + OI.getUsedLeftY());
+            drive.mecanumDrive_Cartesian(OI.getUsedLeftX(), OI.getUsedLeftY(), OI.getUsedRightX(), gyro.getAngle());          
     }
 
     /*
