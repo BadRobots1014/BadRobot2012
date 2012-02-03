@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.badrobots.y2012.technetium.buttons.MechanumDriveTrigger;
 import com.badrobots.y2012.technetium.buttons.ResetGyro;
-import edu.wpi.first.wpilibj.Timer;
+
 //import com.badrobots.y2012.technetium.buttons.ResetGyro;
 
 /**
@@ -68,8 +68,7 @@ public class Technetium extends IterativeRobot {
 
     public void teleopInit()
     {
-        //Scheduler.getInstance().add(firstCommand);
-        time = Timer.getUsClock();
+
     }
 
     /**
@@ -82,6 +81,7 @@ public class Technetium extends IterativeRobot {
         
         double currentTime = Timer.getUsClock();
         if (time-currentTime > OI.getAnalogIn(3)*1000000)//Isn't this backwards? -Lucas
+
         {
             DriveTrain.getInstance().resetGyro();
             time = currentTime;

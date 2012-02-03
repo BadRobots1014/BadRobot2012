@@ -20,6 +20,7 @@ public class ResetGyro extends Button
         if (OI.leftJoystick.getRawButton(4) && OI.rightJoystick.getRawButton(4))
         {
             DriveTrain.getInstance().resetGyro();
+
             return true;
         }
         
