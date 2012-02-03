@@ -62,13 +62,13 @@ public class DriveTrain extends Subsystem
     boolean waitToChangeGyro = false;
     public void mechanumDrive() 
     {
+
         if (OI.absoluteGyro())
         {
             if (OI.rightStrafe())
-            drive.mecanumDrive_Cartesian(OI.getUsedRightX(), OI.getUsedRightY(), OI.getUsedLeftX(), gyro.getAngle());
+                drive.mecanumDrive_Cartesian(OI.getUsedRightX(), OI.getUsedRightY(), OI.getUsedLeftX(), gyro.getAngle());
             else
-            drive.mecanumDrive_Cartesian(OI.getUsedLeftX(), OI.getUsedLeftY(), OI.getUsedRightX(), gyro.getAngle());
-        
+                drive.mecanumDrive_Cartesian(OI.getUsedLeftX(), OI.getUsedLeftY(), OI.getUsedRightX(), gyro.getAngle());
         }
         else 
         {
@@ -122,8 +122,19 @@ public class DriveTrain extends Subsystem
     
     public void resetGyro()
     {
-        System.out.println("Resetting Gyro");
         gyro.reset();
+    }
+    
+    public void checkGyro()
+    {
+        if (OI.getUsedLeftX() != 0) 
+            waitToChangeGyro = true;
+        
+        if (OI.getUsedLeftX() < 0.03 && waitToChangeGyro)
+        {
+            waitToChangeGyro = false;
+            gyro.reset();
+        }
     }
 
     public void initDefaultCommand()
