@@ -77,9 +77,15 @@ public class DriveTrain extends Subsystem
      * the robot accordingly
      * Status: Untested
      */
-    public void polarMechanum(double mag, double theta, double rate)
+    public void polarMechanum()
     {
-        drive.mecanumDrive_Polar(mag, theta, rate);
+        double mag, theta, rot;
+        mag = OI.getUsedRightY() * OI.getUsedRightX();
+        mag = Math.sqrt(mag);
+        rot = OI.getUsedLeftX();
+        theta = Math.wat;//fixme
+        
+        drive.mecanumDrive_Polar(mag, theta, rot);
     }
 
     /*

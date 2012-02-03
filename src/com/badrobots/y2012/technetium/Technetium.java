@@ -81,7 +81,7 @@ public class Technetium extends IterativeRobot {
         Scheduler.getInstance().run();
         
         double currentTime = Timer.getUsClock();
-        if (time-currentTime > OI.getAnalogIn(3)*1000000)
+        if (time-currentTime > OI.getAnalogIn(3)*1000000)//Isn't this backwards? -Lucas
         {
             DriveTrain.getInstance().resetGyro();
             time = currentTime;
