@@ -30,11 +30,7 @@ public class ManualAim extends CommandBase
      */
     protected void execute() 
     {
-        shooter.rotateAngle(OI.getShooterY());
-        shooter.rotateBase(OI.getShooterX());
 
-        if (OI.shooterJoystick.getTrigger())
-            shooter.shoot(1);
     }
 
     // Make this return true when this Command no longer needs to run execute()

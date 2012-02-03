@@ -9,7 +9,7 @@ import com.badrobots.y2012.technetium.RobotMap;
 
 /**
  *
- * @author Jon Buckley, Lucas Beaufore, Gautam RiCantSpellYourLastName
+ * @author Jon Buckley, Lucas Beaufore, Gautam Rangavajla (there you go)
  */
 public class DriveTrain extends Subsystem
 {
@@ -66,6 +66,7 @@ public class DriveTrain extends Subsystem
         else
             drive.mecanumDrive_Cartesian(-lJoystick.getX(), -rJoystick.getX(), lJoystick.getY(), 0);
 
+        System.out.println(-rJoystick.getX() + " " + lJoystick.getX() + " " + rJoystick.getY());
     }
 
     /*
