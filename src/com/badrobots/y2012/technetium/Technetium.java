@@ -36,7 +36,6 @@ public class Technetium extends IterativeRobot {
 
     Command firstCommand;
     Button mecanumDriveTrigger, tankDriveTrigger, resetGyro;
-    double time, currentTime;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -68,8 +67,7 @@ public class Technetium extends IterativeRobot {
 
     public void teleopInit()
     {
-        //Scheduler.getInstance().add(firstCommand);
-        time = Timer.getFPGATimestamp();
+
     }
 
     /**
@@ -79,13 +77,6 @@ public class Technetium extends IterativeRobot {
     {
         Watchdog.getInstance().feed();
         Scheduler.getInstance().run();
-        
-        currentTime = Timer.getFPGATimestamp();
-        if ((currentTime-time) > OI.getAnalogIn(3))
-        {
-            DriveTrain.getInstance().resetGyro();
-            time = currentTime;
-        }
 
         //Polls the buttons to see if they are active, if they are, it adds the
         //command to the Scheduler.

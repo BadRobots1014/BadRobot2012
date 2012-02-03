@@ -19,7 +19,7 @@ public class DriveTrain extends Subsystem
     private static RobotDrive drive;
     public Joystick lJoystick, rJoystick;
     public Victor lFront, lBack, rFront, rBack;
-    private boolean xbox, rightStickStrafe;
+    private boolean xbox, rightStickStrafe, waitToChangeGyro;
     private Gyro gyro;
     private Accelerometer accel;
 
@@ -61,6 +61,8 @@ public class DriveTrain extends Subsystem
      */
     public void mechanumDrive()
     {
+        checkGyro();
+        
         if (OI.rightStrafe())
             drive.mecanumDrive_Cartesian(OI.getUsedRightX(), OI.getUsedRightY(), OI.getUsedLeftX(), gyro.getAngle());
 
@@ -104,8 +106,19 @@ public class DriveTrain extends Subsystem
     
     public void resetGyro()
     {
-        System.out.println("Resetting Gyro");
         gyro.reset();
+    }
+    
+    public void checkGyro()
+    {
+        if (OI.getUsedLeftX() != 0) 
+            waitToChangeGyro = true;
+        
+        if (OI.getUsedLeftX() < 0.03 && waitToChangeGyro)
+        {
+            waitToChangeGyro = false;
+            gyro.reset();
+        }
     }
 
     public void initDefaultCommand()
