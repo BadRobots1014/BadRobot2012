@@ -59,18 +59,30 @@ public class DriveTrain extends Subsystem
      * Takes in four values from the joysticks, and converts it into tank drive
      * Status:Untested
      */
-    public void mechanumDrive()
+    boolean waitToChangeGyro = false;
+    public void mechanumDrive(boolean NoSticky) // controls whether we want mech drive to not stick the gyro angle
     {
-        if (OI.rightStrafe())
+        if (!NoSticky)
+        {
+            if (OI.rightStrafe())
             drive.mecanumDrive_Cartesian(OI.getUsedRightX(), OI.getUsedRightY(), OI.getUsedLeftX(), gyro.getAngle());
-
-<<<<<<< HEAD
-        System.out.println(-rJoystick.getX() + " " + lJoystick.getX() + " " + rJoystick.getY());
-=======
-        else
-            drive.mecanumDrive_Cartesian(OI.getUsedLeftX(), OI.getUsedLeftY(), OI.getUsedRightX(), gyro.getAngle());          
->>>>>>> 2994515fc04b3ea34a3647a887350a650fe4747d
+            else
+            drive.mecanumDrive_Cartesian(OI.getUsedLeftX(), OI.getUsedLeftY(), OI.getUsedRightX(), gyro.getAngle());
+        
+        }
+        else 
+        {
+            if (OI.getUsedLeftX() != 0) waitToChangeGyro = true;
+            if (OI.getUsedLeftX() < 0.03 && waitToChangeGyro)
+            {
+                waitToChangeGyro = false;
+                gyro.reset();
+            }
+        }
+        
     }
+    
+
 
     /*
      * @param mag the speed desired to be moved,

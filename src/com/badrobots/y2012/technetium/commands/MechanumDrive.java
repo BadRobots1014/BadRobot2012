@@ -25,9 +25,11 @@ public class MechanumDrive extends CommandBase
     }
 
     // Called repeatedly when this Command is scheduled to run
+    public static boolean stickyGyro = false;
     protected void execute() 
     {
-        driveTrain.mechanumDrive();
+        driveTrain.mechanumDrive(stickyGyro); // controls whether you want gyro to stick the robot in one orientation
+        stickyGyro = false;
     }
 
     // Make this return true when this Command no longer needs to run execute()

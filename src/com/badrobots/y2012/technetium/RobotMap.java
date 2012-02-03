@@ -25,11 +25,9 @@ public class RobotMap
     public static final int ultrasonicIn = 0; // TODO
     public static final int shooterMotor = 8;
 
-<<<<<<< HEAD
-    public static final int camera = 4; // TODO
-=======
+
     public static final int camera = 4;
     
     public static final int gyro = 1;
->>>>>>> 2994515fc04b3ea34a3647a887350a650fe4747d
+
 }
