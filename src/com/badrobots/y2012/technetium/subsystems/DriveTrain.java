@@ -60,9 +60,9 @@ public class DriveTrain extends Subsystem
      * Status:Untested
      */
     boolean waitToChangeGyro = false;
-    public void mechanumDrive(boolean NoSticky) // controls whether we want mech drive to not stick the gyro angle
+    public void mechanumDrive() 
     {
-        if (!NoSticky)
+        if (OI.absoluteGyro())
         {
             if (OI.rightStrafe())
             drive.mecanumDrive_Cartesian(OI.getUsedRightX(), OI.getUsedRightY(), OI.getUsedLeftX(), gyro.getAngle());
@@ -72,11 +72,13 @@ public class DriveTrain extends Subsystem
         }
         else 
         {
-            if (OI.getUsedLeftX() != 0) waitToChangeGyro = true;
-            if (OI.getUsedLeftX() < 0.03 && waitToChangeGyro)
+            if (OI.getUsedLeftX() != 0)
+                waitToChangeGyro = true;
+            else if(waitToChangeGyro)
             {
-                waitToChangeGyro = false;
                 gyro.reset();
+                waitToChangeGyro = false;
+                System.out.println("Gyro reset");
             }
         }
         
@@ -87,21 +89,15 @@ public class DriveTrain extends Subsystem
     /*
      * @param mag the speed desired to be moved,
      *        theta the angle that the robot will move towards,
-     *        rate the speed at which the robot is turning
+     *        rotation the speed at which the robot is turning
      *
      * Moves the robot using polar coordinates - takes in three components and moves
      * the robot accordingly
      * Status: Untested
      */
-    public void polarMechanum()
+    public void polarMechanum(double mag, double theta, double rotation)
     {
-        double mag, theta, rot;
-        mag = OI.getUsedRightY() * OI.getUsedRightX();
-        mag = Math.sqrt(mag);
-        rot = OI.getUsedLeftX();
-        theta = Math.wat;//fixme
-        
-        drive.mecanumDrive_Polar(mag, theta, rot);
+        drive.mecanumDrive_Polar(mag, theta, rotation);
     }
 
     /*
@@ -111,11 +107,11 @@ public class DriveTrain extends Subsystem
      */
     public void tankDrive()
     {
-        lFront.set(OI.getUsedLeftY()); //deadzone(OI.leftJoystick.getY()));
-        lBack.set(OI.getUsedLeftY()); //-deadzone(OI.leftJoystick.getY()));
+        lFront.set(-OI.getUsedLeftY()); //deadzone(OI.leftJoystick.getY()));
+        lBack.set(-OI.getUsedLeftY()); //-deadzone(OI.leftJoystick.getY()));
 
-        rFront.set(-OI.getUsedRightY()); //deadzone(OI.rightJoystick.getY()));
-        rBack.set(-OI.getUsedRightY()); //deadzone(OI.rightJoystick.getY()));
+        rFront.set(OI.getUsedRightY()); //deadzone(OI.rightJoystick.getY()));
+        rBack.set(OI.getUsedRightY()); //deadzone(OI.rightJoystick.getY()));
         
     }
     
@@ -126,6 +122,7 @@ public class DriveTrain extends Subsystem
     
     public void resetGyro()
     {
+        System.out.println("Resetting Gyro");
         gyro.reset();
     }
 

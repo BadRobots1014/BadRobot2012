@@ -4,11 +4,13 @@ package com.badrobots.y2012.technetium;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStationLCD;
 
 public class OI
 {
     public static Joystick leftJoystick, rightJoystick, shooterJoystick;
     public static DriverStation ds;
+    public static DriverStationLCD screen;
 
     public static Joystick controller;
     /*
@@ -22,12 +24,17 @@ public class OI
            rightJoystick = new Joystick(RobotMap.rightJoystick);
            controller = new Joystick(RobotMap.controller);
            ds = DriverStation.getInstance();//Drivers Station
-
+           screen = DriverStationLCD.getInstance();//Output on DS
            controller = new Joystick(3); //XBOX Controller
         }
 
         catch (Exception e) {System.out.println(e);}
         
+    }
+
+    public static void printToDS(String out)
+    {
+        screen.println(DriverStationLCD.Line.kMain6,1, out);
     }
 
     public static double getLeftX()
@@ -89,6 +96,11 @@ public class OI
     public static boolean rightStrafe()
     {
         return ds.getDigitalIn(2);
+    }
+
+    public static boolean absoluteGyro()
+    {
+        return ds.getDigitalIn(3);
     }
     
     /*
@@ -177,7 +189,6 @@ public class OI
      */
     public static double getJoystickSensitivty()
     {
-        System.out.println("Digital in: " + ds.getAnalogIn(1));
         return ds.getAnalogIn(1);
     }
     
@@ -186,7 +197,6 @@ public class OI
      */
     public static double getXboxSensitivity()
     {
-        System.out.println("Digital in 2: " + ds.getAnalogIn(2));
         return ds.getAnalogIn(2);
     }
     

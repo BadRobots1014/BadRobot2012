@@ -22,6 +22,8 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.badrobots.y2012.technetium.buttons.MechanumDriveTrigger;
 import com.badrobots.y2012.technetium.buttons.ResetGyro;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStationLCD;
 
 //import com.badrobots.y2012.technetium.buttons.ResetGyro;
 
@@ -36,7 +38,7 @@ public class Technetium extends IterativeRobot {
 
     Command firstCommand;
     Button mecanumDriveTrigger, tankDriveTrigger, resetGyro;
-    double time;
+    double time, currentTime;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -68,7 +70,8 @@ public class Technetium extends IterativeRobot {
 
     public void teleopInit()
     {
-
+        //Scheduler.getInstance().add(firstCommand);
+        time = Timer.getFPGATimestamp();
     }
 
     /**
@@ -76,16 +79,25 @@ public class Technetium extends IterativeRobot {
      */
     public void teleopPeriodic() 
     {
+        OI.printToDS("Watchdog was fed:" + Watchdog.getInstance().getTimer());
+        if(Watchdog.getInstance().getTimer() < Watchdog.getInstance().getExpiration())
+            OI.printToDS("Missed an update:" + Watchdog.getInstance().getTimer());
         Watchdog.getInstance().feed();
-        Scheduler.getInstance().run();
-        
-        double currentTime = Timer.getUsClock();
-        if (time-currentTime > OI.getAnalogIn(3)*1000000)//Isn't this backwards? -Lucas
 
+        //Runs the correct commands with their subsytems
+        Scheduler.getInstance().run();
+
+        
+        //This is to be used if the code in the Drive class doesn't work. Delete later
+        //if it does.
+        /*
+        currentTime = Timer.getFPGATimestamp();
+        if ((currentTime-time) > OI.getAnalogIn(3))
         {
             DriveTrain.getInstance().resetGyro();
             time = currentTime;
         }
+         */
 
         //Polls the buttons to see if they are active, if they are, it adds the
         //command to the Scheduler.
@@ -94,9 +106,6 @@ public class Technetium extends IterativeRobot {
 
         else if (tankDriveTrigger.get())
             Scheduler.getInstance().add(new TankDrive());
-        
-        else if (OI.rightJoystick.getRawButton(2))
-            Scheduler.getInstance().add(new PolarMechanumDrive());
 
         resetGyro.get();
         

@@ -23,7 +23,7 @@ public class TankDriveTrigger extends Button
 
     public boolean get()
     {
-       if (OI.leftJoystick.getTrigger())
+       if (OI.leftJoystick.getTrigger() || OI.controller.getRawButton(1))
            return true;
 
        return false;
