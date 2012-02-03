@@ -18,7 +18,7 @@ public abstract class CommandBase extends Command
     // Create a single static instance of all of your subsystems
     public static DriveTrain driveTrain;
     public static Shooter shooter;
-    //public static ArenaSensors sensors;
+    public static ArenaSensors sensors;
 
     public static void init()
     {

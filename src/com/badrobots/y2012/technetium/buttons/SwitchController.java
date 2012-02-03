@@ -18,6 +18,7 @@ public class SwitchController extends Button
 {
     boolean xbox;
     boolean toChange;
+    
     public SwitchController()
     {
         xbox = false;
@@ -25,15 +26,16 @@ public class SwitchController extends Button
 
     public boolean get()
     {
-        if (OI.leftJoystick.getRawButton(3))
+        if (OI.leftJoystick.getRawButton(3)) 
         {
-          toChange = true;
+          toChange = true;       
           return true;
         }
+        
         else if(toChange)
         {
             toChange = false;
-            DriveTrain.getInstance().changeController();
+            //OI.;
         }
 
         return false;

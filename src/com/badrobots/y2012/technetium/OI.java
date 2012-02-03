@@ -26,7 +26,7 @@ public class OI
            controller = new Joystick(3); //XBOX Controller
         }
 
-        catch (Exception e) {System.out.println(e.toString());}
+        catch (Exception e) {System.out.println(e);}
         
     }
 
@@ -90,15 +90,76 @@ public class OI
     {
         return ds.getDigitalIn(2);
     }
+    
+    /*
+     * @return the currently used controller left x value
+     * status: all tested 1/30/12
+     */
+    public static double getUsedLeftX()
+    {
+        if (xboxControl())
+            return deadzone(controller.getRawAxis(1));
+        
+        return deadzone(leftJoystick.getX());
+        
+    }
+    
+    /*
+     * @return the currently used controller left y value
+     */
+    public static double getUsedLeftY()
+    {
+        if (xboxControl())
+            return deadzone(controller.getRawAxis(2));
+        
+        return deadzone(leftJoystick.getY());
+    }
+    
+    /*
+     * @return the currently used controller right x value
+     */
+    public static double getUsedRightX()
+    {
+        if (xboxControl())
+            return deadzone(controller.getRawAxis(4));
+        
+        return deadzone(rightJoystick.getX());
+    }
+    
+    /*
+     * @return the currently used controller right y value
+     */
+    public static double getUsedRightY()
+    {
+        if (xboxControl())
+            return deadzone(controller.getRawAxis(5));
+        
+        return deadzone(rightJoystick.getY());
+    }
+    
 
     /*
      * Creates a deadzone for joysticks
-     * Status:Tested, accurate for joysticks 1/21/12
+     * Status:Tested, accurate for joysticks 1/21/12, inaccurate for xbox 1/29/12
+     * 
      */
     private static double deadzone(double d)
     {
-        if (Math.abs(d) < 0.10)
+        double jsSensitivity = getJoystickSensitivty();
+        double xboxSensitivity = getXboxSensitivity();
+        
+        if (jsSensitivity > .9 || jsSensitivity < .1)
+            jsSensitivity = .1;
+        
+        if (xboxSensitivity > .9 || xboxSensitivity < .1)
+            xboxSensitivity = .5;
+        
+        if (Math.abs(d) < jsSensitivity && !xboxControl())
             return 0;
+        
+        else if (Math.abs(d) < xboxSensitivity && xboxControl())
+            return 0;
+        
         return d / Math.abs(d) * ((Math.abs(d) - .10) / .90);
     }
 
@@ -111,5 +172,28 @@ public class OI
         }
     }
     
+    /*
+     * @return the deadzone for the Joysticks controller
+     */
+    public static double getJoystickSensitivty()
+    {
+        System.out.println("Digital in: " + ds.getAnalogIn(1));
+        return ds.getAnalogIn(1);
+    }
+    
+    /*
+     * @return the deadzone for the Xbox controller
+     */
+    public static double getXboxSensitivity()
+    {
+        System.out.println("Digital in 2: " + ds.getAnalogIn(2));
+        return ds.getAnalogIn(2);
+    }
+    
+    
+    public static double getAnalogIn(int channel)
+    {
+        return ds.getAnalogIn(channel);
+    }
 }
 

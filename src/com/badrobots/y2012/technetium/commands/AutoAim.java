@@ -4,18 +4,24 @@
  */
 package com.badrobots.y2012.technetium.commands;
 
+import com.badrobots.y2012.technetium.subsystems.DriveTrain;
+import com.sun.squawk.util.MathUtils;
+
 
 /**
  *
  * @author Jon Buckley
  */
-public class AutoAim extends CommandBase {
-
+public class AutoAim extends CommandBase 
+{
+    static double power = 23; //(mph)
+    
     public AutoAim()
     {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(shooter);
+        requires(sensors);
     }
 
     // Called just before this Command runs the first time
@@ -26,6 +32,16 @@ public class AutoAim extends CommandBase {
     protected void execute() 
     {
         //TODO: add autoaim code
+        double motion = DriveTrain.getInstance().getMovement();
+        
+        double work = 400 - ((power * power) + (motion * motion));
+        work /= (-2 * power * work);
+        
+        double theta = MathUtils.atan(work);
+        theta *= (180/Math.PI); // convert to degreees!
+        theta = 180 - theta;    // useful angle
+        
+        
     }
 
     // Make this return true when this Command no longer needs to run execute()

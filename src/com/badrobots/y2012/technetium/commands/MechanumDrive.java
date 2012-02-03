@@ -16,7 +16,6 @@ public class MechanumDrive extends CommandBase
     public MechanumDrive()
 
     {
-
         requires(driveTrain);
     }
 
@@ -28,7 +27,6 @@ public class MechanumDrive extends CommandBase
     // Called repeatedly when this Command is scheduled to run
     protected void execute() 
     {
-
         driveTrain.mechanumDrive();
     }
 
