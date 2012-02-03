@@ -177,7 +177,6 @@ public class OI
      */
     public static double getJoystickSensitivty()
     {
-        System.out.println("Digital in: " + ds.getAnalogIn(1));
         return ds.getAnalogIn(1);
     }
     
@@ -186,7 +185,6 @@ public class OI
      */
     public static double getXboxSensitivity()
     {
-        System.out.println("Digital in 2: " + ds.getAnalogIn(2));
         return ds.getAnalogIn(2);
     }
     

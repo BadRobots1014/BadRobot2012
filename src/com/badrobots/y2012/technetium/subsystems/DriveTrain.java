@@ -89,11 +89,11 @@ public class DriveTrain extends Subsystem
      */
     public void tankDrive()
     {
-        lFront.set(OI.getUsedLeftY()); //deadzone(OI.leftJoystick.getY()));
-        lBack.set(OI.getUsedLeftY()); //-deadzone(OI.leftJoystick.getY()));
+        lFront.set(-OI.getUsedLeftY()); //deadzone(OI.leftJoystick.getY()));
+        lBack.set(-OI.getUsedLeftY()); //-deadzone(OI.leftJoystick.getY()));
 
-        rFront.set(-OI.getUsedRightY()); //deadzone(OI.rightJoystick.getY()));
-        rBack.set(-OI.getUsedRightY()); //deadzone(OI.rightJoystick.getY()));
+        rFront.set(OI.getUsedRightY()); //deadzone(OI.rightJoystick.getY()));
+        rBack.set(OI.getUsedRightY()); //deadzone(OI.rightJoystick.getY()));
         
     }
     
@@ -104,6 +104,7 @@ public class DriveTrain extends Subsystem
     
     public void resetGyro()
     {
+        System.out.println("Resetting Gyro");
         gyro.reset();
     }
 

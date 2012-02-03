@@ -36,7 +36,7 @@ public class Technetium extends IterativeRobot {
 
     Command firstCommand;
     Button mecanumDriveTrigger, tankDriveTrigger, resetGyro;
-    double time;
+    double time, currentTime;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -69,7 +69,7 @@ public class Technetium extends IterativeRobot {
     public void teleopInit()
     {
         //Scheduler.getInstance().add(firstCommand);
-        time = Timer.getUsClock();
+        time = Timer.getFPGATimestamp();
     }
 
     /**
@@ -80,8 +80,8 @@ public class Technetium extends IterativeRobot {
         Watchdog.getInstance().feed();
         Scheduler.getInstance().run();
         
-        double currentTime = Timer.getUsClock();
-        if (time-currentTime > OI.getAnalogIn(3)*1000000)
+        currentTime = Timer.getFPGATimestamp();
+        if ((currentTime-time) > OI.getAnalogIn(3))
         {
             DriveTrain.getInstance().resetGyro();
             time = currentTime;
@@ -94,9 +94,6 @@ public class Technetium extends IterativeRobot {
 
         else if (tankDriveTrigger.get())
             Scheduler.getInstance().add(new TankDrive());
-        
-        else if (OI.rightJoystick.getRawButton(2))
-            Scheduler.getInstance().add(new PolarMechanumDrive());
 
         resetGyro.get();
         
