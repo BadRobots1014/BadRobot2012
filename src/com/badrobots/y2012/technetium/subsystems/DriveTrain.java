@@ -79,9 +79,9 @@ public class DriveTrain extends Subsystem
                     gyro.reset();
                 //System.out.println("Gyro reset" + Timer.getFPGATimestamp());
                 if (OI.rightStrafe())
-                    drive.mecanumDrive_Cartesian(OI.getUsedRightX(), OI.getUsedRightY(), OI.getUsedLeftX(), 0);
+                    drive.mecanumDrive_Cartesian(OI.getUsedRightX(), OI.getUsedRightY(), OI.getUsedLeftX(), gyro.getAngle());
                 else
-                    drive.mecanumDrive_Cartesian(OI.getUsedLeftX(), OI.getUsedLeftY(), OI.getUsedRightX(), 0);
+                    drive.mecanumDrive_Cartesian(OI.getUsedLeftX(), OI.getUsedLeftY(), OI.getUsedRightX(), gyro.getAngle());
 
             }
             else
@@ -90,12 +90,23 @@ public class DriveTrain extends Subsystem
                     gyro.reset();
                 //System.out.println("Gyro reset" + Timer.getFPGATimestamp());
                 if (OI.rightStrafe())
-                    drive.mecanumDrive_Cartesian(OI.getUsedRightX(), OI.getUsedRightY(), OI.getUsedLeftX(), 0);
+                    drive.mecanumDrive_Cartesian(OI.getUsedRightX(), OI.getUsedRightY(), OI.getUsedLeftX(), gyro.getAngle());
                 else
-                    drive.mecanumDrive_Cartesian(OI.getUsedLeftX(), OI.getUsedLeftY(), OI.getUsedRightX(), 0);
+                    drive.mecanumDrive_Cartesian(OI.getUsedLeftX(), OI.getUsedLeftY(), OI.getUsedRightX(), gyro.getAngle());
             }
         }
         
+    }
+
+    /*
+     * Used for cartesian control of a mechanum drive
+     * Status: Untested
+     */
+    public void autoMechanumDrive(double x, double y, double rotation)
+    {
+        drive.mecanumDrive_Cartesian(x, y, rotation, gyro.getAngle());
+        if(rotation > 0)
+            gyro.reset();
     }
     
 
