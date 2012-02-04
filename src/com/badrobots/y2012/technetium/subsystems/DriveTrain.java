@@ -59,42 +59,21 @@ public class DriveTrain extends Subsystem
      * Takes in four values from the joysticks, and converts it into tank drive
      * Status:Untested
      */
-    boolean waitToChangeGyro = false;
-    int i = 0;
     public void mechanumDrive() 
     {
-
-        if (OI.absoluteGyro())//Uses orientation of field.
+        if (!OI.absoluteGyro())
         {
-            if (OI.rightStrafe())
-                drive.mecanumDrive_Cartesian(OI.getUsedRightX(), OI.getUsedRightY(), OI.getUsedLeftX(), gyro.getAngle());
-            else
-                drive.mecanumDrive_Cartesian(OI.getUsedLeftX(), OI.getUsedLeftY(), OI.getUsedRightX(), gyro.getAngle());
+            if (OI.rightStrafe() && OI.getUsedLeftX() != 0)
+                gyro.reset();
+            
+            else if (!OI.rightStrafe() && OI.getUsedRightX() != 0)   
+                gyro.reset();
         }
-        else 
-        {
-            if (OI.rightStrafe())
-            {
-                if (OI.getUsedLeftX() != 0)
-                    gyro.reset();
-                //System.out.println("Gyro reset" + Timer.getFPGATimestamp());
-                if (OI.rightStrafe())
-                    drive.mecanumDrive_Cartesian(OI.getUsedRightX(), OI.getUsedRightY(), OI.getUsedLeftX(), 0);
-                else
-                    drive.mecanumDrive_Cartesian(OI.getUsedLeftX(), OI.getUsedLeftY(), OI.getUsedRightX(), 0);
-
-            }
-            else
-            {
-               if (OI.getUsedLeftX() != 0)
-                    gyro.reset();
-                //System.out.println("Gyro reset" + Timer.getFPGATimestamp());
-                if (OI.rightStrafe())
-                    drive.mecanumDrive_Cartesian(OI.getUsedRightX(), OI.getUsedRightY(), OI.getUsedLeftX(), 0);
-                else
-                    drive.mecanumDrive_Cartesian(OI.getUsedLeftX(), OI.getUsedLeftY(), OI.getUsedRightX(), 0);
-            }
-        }
+        
+        if (OI.rightStrafe())
+            drive.mecanumDrive_Cartesian(OI.getUsedRightX(), OI.getUsedRightY(), OI.getUsedLeftX(), gyro.getAngle());
+        else
+            drive.mecanumDrive_Cartesian(OI.getUsedLeftX(), OI.getUsedLeftY(), OI.getUsedRightX(), gyro.getAngle());
         
     }
     
@@ -137,18 +116,6 @@ public class DriveTrain extends Subsystem
     public void resetGyro()
     {
         gyro.reset();
-    }
-    
-    public void checkGyro()
-    {
-        if (OI.getUsedLeftX() != 0) 
-            waitToChangeGyro = true;
-        
-        if (OI.getUsedLeftX() < 0.03 && waitToChangeGyro)
-        {
-            waitToChangeGyro = false;
-            gyro.reset();
-        }
     }
 
     public void initDefaultCommand()

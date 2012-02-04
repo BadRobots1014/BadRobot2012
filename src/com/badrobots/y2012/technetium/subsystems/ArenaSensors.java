@@ -66,7 +66,7 @@ public class ArenaSensors extends Subsystem
         double difference = lFront.getRangeInches() - lBack.getRangeInches();
 
         double theta = MathUtils.atan(difference/spacing);
-        theta *= (180/3.14159);
+        theta *= (180/Math.PI);
 
         return theta;
     }
