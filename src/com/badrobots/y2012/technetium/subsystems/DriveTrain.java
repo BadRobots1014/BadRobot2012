@@ -74,11 +74,11 @@ public class DriveTrain extends Subsystem
         {
             if (OI.getUsedLeftX() != 0)
                 waitToChangeGyro = true;
+            
             else if(waitToChangeGyro)
             {
                 gyro.reset();
                 waitToChangeGyro = false;
-                System.out.println("Gyro reset");
             }
         }
         
