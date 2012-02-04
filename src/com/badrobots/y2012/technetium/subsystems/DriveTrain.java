@@ -66,15 +66,27 @@ public class DriveTrain extends Subsystem
             if (OI.rightStrafe() && OI.getUsedLeftX() != 0)
                 gyro.reset();
             
-            else if (!OI.rightStrafe() && OI.getUsedRightX() != 0)   
+            else if (!OI.rightStrafe() && OI.getUsedRightX() != 0)
                 gyro.reset();
         }
-        
-        if (OI.rightStrafe())
+
+         if (OI.rightStrafe())
             drive.mecanumDrive_Cartesian(OI.getUsedRightX(), OI.getUsedRightY(), OI.getUsedLeftX(), gyro.getAngle());
-        else
+         else
             drive.mecanumDrive_Cartesian(OI.getUsedLeftX(), OI.getUsedLeftY(), OI.getUsedRightX(), gyro.getAngle());
+
         
+    }
+
+    /*
+     * Used for cartesian control of a mechanum drive
+     * Status: Untested
+     */
+    public void autoMechanumDrive(double x, double y, double rotation)
+    {
+        drive.mecanumDrive_Cartesian(x, y, rotation, gyro.getAngle());
+        if(rotation > 0)
+            gyro.reset();
     }
     
 
