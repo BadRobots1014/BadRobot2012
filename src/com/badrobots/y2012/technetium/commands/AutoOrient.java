@@ -7,7 +7,7 @@ package com.badrobots.y2012.technetium.commands;
 
 /**
  *
- * @author Jon Buckley
+ * @author Jon Buckley, Lucas Beaufore
  */
 public class AutoOrient extends CommandBase
 {
@@ -31,9 +31,9 @@ public class AutoOrient extends CommandBase
         distance = sensors.getDifferenceInSensorsFromWall(true);
 
         if (distance > 3)
-            driveTrain.polarMechanum(0.3, 0, Math.sin(distance)); // sin has range of -1 to 1
+            driveTrain.polarMechanum(0.3, 0, 0.4); // sin has range of -1 to 1
         else if(distance < -3)
-            driveTrain.polarMechanum(0.3, 0, -(Math.sin(distance)));
+            driveTrain.polarMechanum(0.3, 0, -0.4);
         else
             driveTrain.autoMechanumDrive(0.5, 0.0, 0.0);
     }
