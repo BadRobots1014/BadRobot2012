@@ -52,7 +52,7 @@ public class DriveTrain extends Subsystem
         drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
         drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);        
         gyro = new Gyro(RobotMap.gyro);
-        drive.setSafetyEnabled(false);
+        drive.setSafetyEnabled(false);//because why not
     }
 
     /*
@@ -60,10 +60,11 @@ public class DriveTrain extends Subsystem
      * Status:Untested
      */
     boolean waitToChangeGyro = false;
+    int i = 0;
     public void mechanumDrive() 
     {
 
-        if (OI.absoluteGyro())
+        if (OI.absoluteGyro())//Uses orientation of field.
         {
             if (OI.rightStrafe())
                 drive.mecanumDrive_Cartesian(OI.getUsedRightX(), OI.getUsedRightY(), OI.getUsedLeftX(), gyro.getAngle());
@@ -72,13 +73,26 @@ public class DriveTrain extends Subsystem
         }
         else 
         {
-            if (OI.getUsedLeftX() != 0)
-                waitToChangeGyro = true;
-            
-            else if(waitToChangeGyro)
+            if (OI.rightStrafe())
             {
-                gyro.reset();
-                waitToChangeGyro = false;
+                if (OI.getUsedLeftX() != 0)
+                    gyro.reset();
+                //System.out.println("Gyro reset" + Timer.getFPGATimestamp());
+                if (OI.rightStrafe())
+                    drive.mecanumDrive_Cartesian(OI.getUsedRightX(), OI.getUsedRightY(), OI.getUsedLeftX(), 0);
+                else
+                    drive.mecanumDrive_Cartesian(OI.getUsedLeftX(), OI.getUsedLeftY(), OI.getUsedRightX(), 0);
+
+            }
+            else
+            {
+               if (OI.getUsedLeftX() != 0)
+                    gyro.reset();
+                //System.out.println("Gyro reset" + Timer.getFPGATimestamp());
+                if (OI.rightStrafe())
+                    drive.mecanumDrive_Cartesian(OI.getUsedRightX(), OI.getUsedRightY(), OI.getUsedLeftX(), 0);
+                else
+                    drive.mecanumDrive_Cartesian(OI.getUsedLeftX(), OI.getUsedLeftY(), OI.getUsedRightX(), 0);
             }
         }
         
