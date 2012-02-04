@@ -61,21 +61,10 @@ public class DriveTrain extends Subsystem
      */
     public void mechanumDrive() 
     {
-        if (!OI.absoluteGyro())
-        {
-            if (OI.rightStrafe() && OI.getUsedLeftX() != 0)
-                gyro.reset();
-            
-            else if (!OI.rightStrafe() && OI.getUsedRightX() != 0)
-                gyro.reset();
-        }
-
-         if (OI.rightStrafe())
+        if (OI.rightStrafe())
             drive.mecanumDrive_Cartesian(OI.getUsedRightX(), OI.getUsedRightY(), OI.getUsedLeftX(), gyro.getAngle());
-         else
-            drive.mecanumDrive_Cartesian(OI.getUsedLeftX(), OI.getUsedLeftY(), OI.getUsedRightX(), gyro.getAngle());
-
-        
+        else
+            drive.mecanumDrive_Cartesian(OI.getUsedLeftX(), OI.getUsedLeftY(), OI.getUsedRightX(), gyro.getAngle());       
     }
 
     /*

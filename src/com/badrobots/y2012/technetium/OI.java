@@ -205,5 +205,10 @@ public class OI
     {
         return ds.getAnalogIn(channel);
     }
+    
+    public static double getVoltage()
+    {
+        return ds.getBatteryVoltage();
+    }
 }
 

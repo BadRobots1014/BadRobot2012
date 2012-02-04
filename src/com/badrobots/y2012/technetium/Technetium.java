@@ -38,6 +38,7 @@ public class Technetium extends IterativeRobot {
 
     Command firstCommand;
     Button mecanumDriveTrigger, tankDriveTrigger, resetGyro;
+    double lowest = 20, i = 0, mean = 0, sum = 0, threshold = 0;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -107,6 +108,16 @@ public class Technetium extends IterativeRobot {
 
         resetGyro.get();
         
+        System.out.println("Voltage: " + OI.getVoltage() + " Lowest: " + lowest + "  Mean:  " + mean + "  threshold: " + threshold);
+        if (OI.getVoltage() < lowest)
+            lowest = OI.getVoltage();
+        
+        sum += OI.getVoltage();
+        i++;
+        mean = sum/i;
+        
+        if (OI.getVoltage() < 7)
+            threshold++;
         
         
         //Puts the current command being run by DriveTrain into the SmartDashboard
