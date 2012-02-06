@@ -41,7 +41,7 @@ public class AutoAim extends CommandBase
         theta *= (180/Math.PI); // convert to degreees!
         theta = 180 - theta;    // useful angle
         
-        
+        System.out.println("This should not run");
     }
 
     // Make this return true when this Command no longer needs to run execute()

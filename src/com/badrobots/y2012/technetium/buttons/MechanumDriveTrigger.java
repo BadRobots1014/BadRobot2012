@@ -23,7 +23,7 @@ public class MechanumDriveTrigger extends Button
 
     public boolean get()
     {
-        if (OI.rightJoystick.getTrigger() || OI.controller.getRawButton(2))
+        if (OI.rightJoystick.getRawButton(11) || OI.controller.getRawButton(2))
             return true;
 
         return false;

@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.image.NIVisionException;
 import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
 import com.badrobots.y2012.technetium.RobotMap;
 import com.badrobots.y2012.technetium.commands.AutoAim;
+import edu.wpi.first.wpilibj.AnalogChannel;
 
 /**
  *
@@ -27,7 +28,6 @@ public class ArenaSensors extends Subsystem
     private static AxisCamera camera;
     private static Ultrasonic lFront, lBack, rFront, rBack;
     private static final double spacing = 25;
-
     public static ArenaSensors getInstance()
     {
         if (sensors == null)
@@ -41,7 +41,7 @@ public class ArenaSensors extends Subsystem
     private ArenaSensors()
     {
         camera = AxisCamera.getInstance();
-        
+               
         lFront = new Ultrasonic(1, 1);
         lBack = new Ultrasonic(2, 2);
         rFront = new Ultrasonic(3, 3);

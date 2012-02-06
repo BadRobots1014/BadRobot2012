@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.badrobots.y2012.technetium.OI;
 import com.badrobots.y2012.technetium.subsystems.ArenaSensors;
+import com.badrobots.y2012.technetium.subsystems.BallGatherer;
 import com.badrobots.y2012.technetium.subsystems.Shooter;
 import com.badrobots.y2012.technetium.subsystems.DriveTrain;
 
@@ -19,6 +20,7 @@ public abstract class CommandBase extends Command
     public static DriveTrain driveTrain;
     public static Shooter shooter;
     public static ArenaSensors sensors;
+    public static BallGatherer ballGatherer;
 
     public static void init()
     {

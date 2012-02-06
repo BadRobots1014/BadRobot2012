@@ -49,9 +49,10 @@ public class Technetium extends IterativeRobot {
         CommandBase.init();
         // instantiate the command used for the autonomous period
         //Initializes triggers
-        mecanumDriveTrigger = new MechanumDriveTrigger();
-        tankDriveTrigger = new TankDriveTrigger();
-        resetGyro = new ResetGyro();
+        
+        //mecanumDriveTrigger = new MechanumDriveTrigger();
+        //tankDriveTrigger = new TankDriveTrigger();
+        //resetGyro = new ResetGyro();
     }
 
     public void autonomousInit()
@@ -69,7 +70,8 @@ public class Technetium extends IterativeRobot {
 
     public void teleopInit()
     {
-
+        tankDriveTrigger = new TankDriveTrigger();
+        new MechanumDriveTrigger();
     }
 
     /**
@@ -77,9 +79,9 @@ public class Technetium extends IterativeRobot {
      */
     public void teleopPeriodic() 
     {
-        OI.printToDS("Watchdog was fed:" + Watchdog.getInstance().getTimer());
-        if(Watchdog.getInstance().getTimer() < Watchdog.getInstance().getExpiration())
-            OI.printToDS("Missed an update:" + Watchdog.getInstance().getTimer());
+        System.out.println("Watchdog was fed:" + Watchdog.getInstance().getTimer());
+        if(Watchdog.getInstance().getTimer() > Watchdog.getInstance().getExpiration())
+            System.out.println("Missed an update:" + Watchdog.getInstance().getTimer());
         Watchdog.getInstance().feed();
 
         //Runs the correct commands with their subsytems
@@ -99,20 +101,20 @@ public class Technetium extends IterativeRobot {
 
         //Polls the buttons to see if they are active, if they are, it adds the
         //command to the Scheduler.
-        if (mecanumDriveTrigger.get())        
-            Scheduler.getInstance().add(new MechanumDrive());
+        //if (mecanumDriveTrigger.get())        
+            //Scheduler.getInstance().add(new MechanumDrive());
 
-        else if (tankDriveTrigger.get())
-            Scheduler.getInstance().add(new TankDrive());
+        //else if (tankDriveTrigger.get())
+            //Scheduler.getInstance().add(new TankDrive());
 
-        resetGyro.get();
+        //resetGyro.get();
         
         
         
         //Puts the current command being run by DriveTrain into the SmartDashboard
-        SmartDashboard.putData(DriveTrain.getInstance().getCurrentCommand());
+        //SmartDashboard.putData(DriveTrain.getInstance().getCurrentCommand());
         
-        SmartDashboard.putString(ERRORS_TO_DRIVERSTATION_PROP, "Test String");
+        //SmartDashboard.putString(ERRORS_TO_DRIVERSTATION_PROP, "Test String");
 
 
     }

@@ -25,9 +25,17 @@ public class RobotMap
     public static final int ultrasonicIn = 0; // TODO
     public static final int shooterMotor = 8;
 
+    public static final int garage = 2;
 
     public static final int camera = 4;
     
     public static final int gyro = 1;
+    
+    public static final int conveyor = 5; //TODO (find all these ports)
+    public static final int bottomRoller = 6; 
+    public static final int topRoller = 7;
+    
+    public static final int leftShooter = 8; 
+    public static final int rightShooter = 3; // hmm we are gonna need a second sideca
 
 }

@@ -16,17 +16,22 @@ import com.badrobots.y2012.technetium.commands.TankDrive;
  */
 public class TankDriveTrigger extends Button
 {
+    Button.ButtonScheduler becauseWhyNot;
     public TankDriveTrigger()
     {
        super.whenPressed(new TankDrive());
+       //becauseWhyNot = new Button.ButtonScheduler() {public void execute() {}};   
     }
 
     public boolean get()
     {
-       if (OI.leftJoystick.getTrigger() || OI.controller.getRawButton(1))
+       if (OI.leftJoystick.getRawButton(10) || OI.controller.getRawButton(1))
            return true;
 
        return false;
+    }
+
+    public void execute() {
     }
 
 }

@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
 public class Shooter extends Subsystem
 {
     private static Shooter instance;
-    private static Jaguar shooterMotor;
+    private static Jaguar right, left;
     private static Ultrasonic ranger;
     private static AxisCamera camera;
 
@@ -40,7 +40,8 @@ public class Shooter extends Subsystem
     private Shooter()
     {
         super();
-        shooterMotor = new Jaguar (RobotMap.shooterMotor); // initialize the motor
+        right = new Jaguar (RobotMap.rightShooter); // initialize the motor
+        left = new Jaguar (RobotMap.leftShooter);
         
         ranger = new Ultrasonic (RobotMap.ultrasonicOut, RobotMap.ultrasonicIn); //init
         ranger.setEnabled(true);
@@ -62,21 +63,24 @@ public class Shooter extends Subsystem
     {
         //determine shooter speed through regression equation determined through testing
         int speed = 0;
-        shooterMotor.set(speed);
+        right.set(speed);
+        left.set(-speed);
     }
 
     public void shootHigh() // read distance from kinect/ultrasonic
     {
         //determine shooter speed through regression equation determined through testing
         int speed = 0;
-        shooterMotor.set(speed);
+        right.set(speed);
+        left.set(-speed);
     }
 
     public void shootLow() // read distance from kinect/ultrasonic
     {
         //determine shooter speed through regression equation determined through testing
         int speed = 0;
-        shooterMotor.set(speed);
+        right.set(speed);
+        left.set(-speed);
     }
 
 
