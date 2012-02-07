@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
- *  CODE IS UNTESTED -- MUST HAVE SPECIFIC RobotMap CHANNELS FILLED IN AND CLASS DEBUGGED
+ * CODE IS UNTESTED -- MUST HAVE SPECIFIC RobotMap CHANNELS FILLED IN, AND CLASS DEBUGGED
  * @author Jon Buckley
  */
 public class BallGatherer extends Subsystem 
@@ -20,6 +20,8 @@ public class BallGatherer extends Subsystem
     AnalogChannel garageSensor;
     Victor conveyor, bottomRoller, topRoller;
     double threshold = 200; // voltage readout from the analog channel
+    private int balls = 0;
+
     
     /**
      * Singleton static getter method for the class -- only one instance of BallGatherer
@@ -80,7 +82,28 @@ public class BallGatherer extends Subsystem
         if (garageSensor.getAverageVoltage() > threshold)
             return false;
         
+        balls++;
         return true;
+    }
+    
+    /*
+     * Tells the BallGatherer that a ball has been shot off
+     */
+    public void notifyBallShot()
+    {
+        balls--;
+        
+        if (balls < 0)
+            System.out.println("Hmmm... we have a problem: negatives balls");
+    }
+    
+    /**
+     * 
+     * @return the number of balls currently held in the gatherer
+     */
+    public int getNumberBalls()
+    {
+        return balls;
     }
     
     public void initDefaultCommand()

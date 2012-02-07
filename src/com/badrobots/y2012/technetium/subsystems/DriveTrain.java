@@ -14,14 +14,17 @@ import edu.wpi.first.wpilibj.*;
  */
 public class DriveTrain extends Subsystem
 {
-
     private static DriveTrain instance;
     private static RobotDrive drive;
     public Victor lFront, lBack, rFront, rBack;
     private Gyro gyro;
     private Accelerometer accel;
 
-
+    /**
+     * Singleton Design getter method -- ensures that only one instance of DriveTrain
+     * is every used. If one has not been made, this method also invokes the constructor
+     * @return the single instance of DriveTrain per program
+     */
     public static DriveTrain getInstance()
     {
         if (instance == null)
@@ -39,27 +42,29 @@ public class DriveTrain extends Subsystem
     {
         super();
 
-        lFront = new Victor(RobotMap.lFront);
+        lFront = new Victor(RobotMap.lFront);   //initializes all victors
         lBack = new Victor(RobotMap.lBack);
         rFront = new Victor(RobotMap.rFront);
         rBack = new Victor(RobotMap.rBack);
 
-        drive = new RobotDrive(lFront, lBack, rFront, rBack);
+        drive = new RobotDrive(lFront, lBack, rFront, rBack);   // feeds victors to RobotDrive
         drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
         drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);        
-        gyro = new Gyro(RobotMap.gyro);
-        drive.setSafetyEnabled(false);//because why not
+        gyro = new Gyro(RobotMap.gyro); //gyro
+        drive.setSafetyEnabled(false);  //because why not. Jon: because it will kill us all. 
+                                        // Haven't you seen iRobot? They left their robots on
+                                        // safety enable = false
     }
 
     /*
-     * Takes in 3 values from the joysticks, and sends voltages to speedcontrollers, accordingly
+     * Takes in 3 values from the joysticks, and sends voltages to speedcontrollers accordingly
      * Status:Tested
      */
     public void mechanumDrive() 
     {
-         if (OI.rightStrafe())
+         if (OI.rightStrafe())      //if right hand stick is being used for strafing left, right, up and down
             drive.mecanumDrive_Cartesian(OI.getUsedRightX(), OI.getUsedRightY(), OI.getUsedLeftX(), 0);
-         else
+         else                       // if left hand stick is being used for strafing
             drive.mecanumDrive_Cartesian(OI.getUsedLeftX(), OI.getUsedLeftY(), OI.getUsedRightX(), 0);
     }
 
@@ -69,7 +74,7 @@ public class DriveTrain extends Subsystem
      */
     public void autoMechanumDrive(double x, double y, double rotation)
     {
-        drive.mecanumDrive_Cartesian(x, y, rotation, gyro.getAngle());
+        drive.mecanumDrive_Cartesian(x, y, rotation, 0);
         if(rotation > 0)
             gyro.reset();
     }

@@ -18,9 +18,13 @@ public class MechanumDriveTrigger extends Button
     public MechanumDriveTrigger()
     {
         super.whenPressed(new MechanumDrive());
-
     }
 
+    /**
+     * Checks to see if the button is pressed.
+     * @return if either the rightJoystick's 11th button or the B button is pressed,
+     * returns true. otherwise, returns false
+     */
     public boolean get()
     {
         if (OI.rightJoystick.getRawButton(11) || OI.controller.getRawButton(2))

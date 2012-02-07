@@ -3,7 +3,8 @@
  * and open the template in the editor.
  */
 package com.badrobots.y2012.technetium.commands;
-import com.badrobots.y2012.technetium.OI;
+import com.badrobots.y2012.technetium.buttons.ShootBallTrigger;
+import edu.wpi.first.wpilibj.buttons.Button;
 
 
 /**
@@ -12,17 +13,19 @@ import com.badrobots.y2012.technetium.OI;
  */
 public class ManualAim extends CommandBase
 {
+    private static Button shootBallTrigger;
 
     public ManualAim()
     {
        requires(shooter);
+       shootBallTrigger = new ShootBallTrigger();
     }
 
     // Called just before this Command runs the first time
     protected void initialize()
     {
+        
     }
-
 
     /*
      * Repeatedly obtains the Shooter Joystick's values and adjusts the shooter;
@@ -30,7 +33,14 @@ public class ManualAim extends CommandBase
      */
     protected void execute() 
     {
-
+        if (shootBallTrigger.get())
+        {
+            if (ballGatherer.getNumberBalls() > 0)
+            {
+                shooter.shootHigh();    
+                ballGatherer.notifyBallShot();
+            }
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -46,6 +56,6 @@ public class ManualAim extends CommandBase
     // subsystems is scheduled to run
     protected void interrupted() 
     {
-        return;
+        
     }
 }

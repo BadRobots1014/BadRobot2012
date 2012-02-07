@@ -7,8 +7,10 @@ package com.badrobots.y2012.technetium.subsystems;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import com.badrobots.y2012.technetium.RobotMap;
+import com.badrobots.y2012.technetium.buttons.ShootBallTrigger;
 import com.badrobots.y2012.technetium.commands.AutoAim;
 import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
 import edu.wpi.first.wpilibj.camera.AxisCameraException;
 import edu.wpi.first.wpilibj.image.BinaryImage;
@@ -42,7 +44,7 @@ public class Shooter extends Subsystem
         super();
         right = new Jaguar (RobotMap.rightShooter); // initialize the motor
         left = new Jaguar (RobotMap.leftShooter);
-        
+                
         ranger = new Ultrasonic (RobotMap.ultrasonicOut, RobotMap.ultrasonicIn); //init
         ranger.setEnabled(true);
         ranger.setAutomaticMode(true);

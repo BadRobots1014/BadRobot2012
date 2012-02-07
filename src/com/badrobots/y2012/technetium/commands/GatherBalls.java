@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.badrobots.y2012.technetium.commands;
 
 /**
@@ -12,6 +8,9 @@ public class GatherBalls extends CommandBase
 {    
     private boolean wasBlocked = false; //Was the Channel blocked a second ago?
     private int iterations = 0;         //counter variable
+    private static int maxIterations = 7;     //number of loops to go through before
+                                               //returning to "ball pickup"  mode
+    
     public GatherBalls() 
     {
         requires(ballGatherer);
@@ -29,18 +28,21 @@ public class GatherBalls extends CommandBase
      */
     protected void execute() 
     {
-        ballGatherer.runBottomRoller(.2);
+        ballGatherer.runBottomRoller(.2);   //"Ball pickup" mode
         
-        if (ballGatherer.channelBlocked())      
+        if (ballGatherer.channelBlocked())  //"Ball convey" mode
         {
             ballGatherer.runConveyor(.5);
             wasBlocked = true;
         }
         
-        //Enters the folllowing if statement 7 times after the channel becomes unblocked
-        //After the 7th time, we assume the ball has successfully been pulled to the top
-        //and the conveyor system stops, and wasBlocked is returned to false
-        else if (!ballGatherer.channelBlocked() && wasBlocked == true && iterations < 7)
+        /*
+         *Enters the folllowing if statement 7 times after the channel becomes unblocked
+         *After the 7th time, we assume the ball has successfully been pulled to the top
+         *and the conveyor system stops, and wasBlocked is returned to false
+         *"Ball complete gather" mode
+         */
+        else if (!ballGatherer.channelBlocked() && wasBlocked == true && iterations < maxIterations)   
         {
             iterations++;
             ballGatherer.runTopRoller(.5);

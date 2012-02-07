@@ -16,13 +16,16 @@ import com.badrobots.y2012.technetium.commands.TankDrive;
  */
 public class TankDriveTrigger extends Button
 {
-    Button.ButtonScheduler becauseWhyNot;
     public TankDriveTrigger()
     {
        super.whenPressed(new TankDrive());
-       //becauseWhyNot = new Button.ButtonScheduler() {public void execute() {}};   
     }
 
+    /**
+     * Checks to see if the button is pressed.
+     * @return if either the leftJoystick's 10th button or the A button is pressed,
+     * returns true. otherwise, returns false
+     */
     public boolean get()
     {
        if (OI.leftJoystick.getRawButton(10) || OI.controller.getRawButton(1))
@@ -31,7 +34,5 @@ public class TankDriveTrigger extends Button
        return false;
     }
 
-    public void execute() {
-    }
 
 }
