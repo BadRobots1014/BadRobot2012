@@ -34,7 +34,8 @@ import edu.wpi.first.wpilibj.DriverStationLCD;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class Technetium extends IterativeRobot {
+public class Technetium extends IterativeRobot 
+{
 
     Command firstCommand;
     Button mecanumDriveTrigger, tankDriveTrigger, resetGyro;
@@ -47,12 +48,6 @@ public class Technetium extends IterativeRobot {
     {
         // Initialize all subsystems
         CommandBase.init();
-        // instantiate the command used for the autonomous period
-        //Initializes triggers
-        
-        //mecanumDriveTrigger = new MechanumDriveTrigger();
-        //tankDriveTrigger = new TankDriveTrigger();
-        //resetGyro = new ResetGyro();
     }
 
     public void autonomousInit()
@@ -68,9 +63,12 @@ public class Technetium extends IterativeRobot {
         
     }
 
+    /*
+     * Intializes all buttons that should be active during teleop period
+     */
     public void teleopInit()
     {
-        tankDriveTrigger = new TankDriveTrigger();
+        new TankDriveTrigger();
         new MechanumDriveTrigger();
     }
 
@@ -79,43 +77,14 @@ public class Technetium extends IterativeRobot {
      */
     public void teleopPeriodic() 
     {
-        System.out.println("Watchdog was fed:" + Watchdog.getInstance().getTimer());
+       /* System.out.println("Watchdog was fed:" + Watchdog.getInstance().getTimer());
         if(Watchdog.getInstance().getTimer() > Watchdog.getInstance().getExpiration())
-            System.out.println("Missed an update:" + Watchdog.getInstance().getTimer());
+            System.out.println("Missed an update:" + Watchdog.getInstance().getTimer());*/
+        //Lucas -- is this code ^ just for debugging? If so, we can delete it now, right?
         Watchdog.getInstance().feed();
 
         //Runs the correct commands with their subsytems
         Scheduler.getInstance().run();
         
-        //This is to be used if the code in the Drive class doesn't work. Delete later
-        //if it does.
-        /*
-        currentTime = Timer.getFPGATimestamp();
-        if ((currentTime-time) > OI.getAnalogIn(3))
-        {
-            DriveTrain.getInstance().resetGyro();
-            time = currentTime;
-        }
-         */
-
-
-        //Polls the buttons to see if they are active, if they are, it adds the
-        //command to the Scheduler.
-        //if (mecanumDriveTrigger.get())        
-            //Scheduler.getInstance().add(new MechanumDrive());
-
-        //else if (tankDriveTrigger.get())
-            //Scheduler.getInstance().add(new TankDrive());
-
-        //resetGyro.get();
-        
-        
-        
-        //Puts the current command being run by DriveTrain into the SmartDashboard
-        //SmartDashboard.putData(DriveTrain.getInstance().getCurrentCommand());
-        
-        //SmartDashboard.putString(ERRORS_TO_DRIVERSTATION_PROP, "Test String");
-
-
     }
 }

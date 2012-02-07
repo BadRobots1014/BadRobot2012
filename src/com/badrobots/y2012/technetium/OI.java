@@ -31,7 +31,12 @@ public class OI
         catch (Exception e) {System.out.println(e);}
         
     }
-
+    
+    /*
+     * Printles a string to the driverstation LCD
+     * Status: Untested 
+     * //TODO: Test!
+     */
     public static void printToDS(String out)
     {
         screen.println(DriverStationLCD.Line.kMain6,1, out);
@@ -152,7 +157,7 @@ public class OI
 
     /*
      * Creates a deadzone for joysticks
-     * Status:Tested, accurate for joysticks 1/21/12, inaccurate for xbox 1/29/12
+     * Status:Untested, must test scaling 
      * 
      */
     private static double deadzone(double d)
@@ -165,6 +170,8 @@ public class OI
         
         if (xboxSensitivity > .9 || xboxSensitivity < .1)
             xboxSensitivity = .5;
+        
+        d *= getScalingFactor();    // scaling code -- just multiple value by double
         
         if (Math.abs(d) < jsSensitivity && !xboxControl())
             return 0;
@@ -200,10 +207,21 @@ public class OI
         return ds.getAnalogIn(2);
     }
     
-    
     public static double getAnalogIn(int channel)
     {
         return ds.getAnalogIn(channel);
+    }
+    
+    /*
+     * @return the value from the driverstation analog input 3. If it less than 0
+     * or greater than 1.5, it returns 1
+     */
+    public static double getScalingFactor()
+    {
+        if (ds.getAnalogIn(3) > 0 || ds.getAnalogIn(3) < 1.5)
+            return ds.getAnalogIn(3);
+        
+        return 1;
     }
 }
 

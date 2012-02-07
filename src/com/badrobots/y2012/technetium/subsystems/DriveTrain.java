@@ -17,9 +17,7 @@ public class DriveTrain extends Subsystem
 
     private static DriveTrain instance;
     private static RobotDrive drive;
-    public Joystick lJoystick, rJoystick;
     public Victor lFront, lBack, rFront, rBack;
-    private boolean xbox, rightStickStrafe;
     private Gyro gyro;
     private Accelerometer accel;
 
@@ -34,14 +32,12 @@ public class DriveTrain extends Subsystem
     }
 
     /*
-     * Initailizes four Victors, and makes a local instance of joysticks for
-     * convenience of access
+     * Initailizes four Victors, feeds them into a RobotDrive instance,
+     * and sets the motors in RobotDrive to the correct running direction.
      */
     private DriveTrain()
     {
         super();
-        lJoystick = OI.leftJoystick;
-        rJoystick = OI.rightJoystick;
 
         lFront = new Victor(RobotMap.lFront);
         lBack = new Victor(RobotMap.lBack);
@@ -56,8 +52,8 @@ public class DriveTrain extends Subsystem
     }
 
     /*
-     * Takes in four values from the joysticks, and converts it into tank drive
-     * Status:Untested
+     * Takes in 3 values from the joysticks, and sends voltages to speedcontrollers, accordingly
+     * Status:Tested
      */
     public void mechanumDrive() 
     {
@@ -78,8 +74,6 @@ public class DriveTrain extends Subsystem
             gyro.reset();
     }
     
-
-
     /*
      * @param mag the speed desired to be moved,
      *        theta the angle that the robot will move towards,
@@ -97,7 +91,7 @@ public class DriveTrain extends Subsystem
     /*
      * Tank drives using joystick controls, sets left side to Y value of left joystick
      * and right side as Y value of right joystick
-     * Status:Xbox tank drive untested
+     * Status:Tested for both xbox + joysticks
      */
     public void tankDrive()
     {
@@ -109,11 +103,20 @@ public class DriveTrain extends Subsystem
         
     }
     
+    /*
+     * This method may or may not be used depending on whether we use an accelerometer
+     * @return the accelerometer's value
+     */
     public double getMovement()
     {
         return accel.getAcceleration();
     }
     
+    /*
+     * Right now, this will not be called because we don't have a gyro hooked up. However,
+     * it will be used in autonomous, so we might as well keep it
+     * 2/6/12
+     */
     public void resetGyro()
     {
         gyro.reset();

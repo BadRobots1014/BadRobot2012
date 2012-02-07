@@ -10,14 +10,13 @@ package com.badrobots.y2012.technetium.commands;
  */
 public class GatherBalls extends CommandBase 
 {    
-    private boolean wasBlocked = false;
-    private int iterations = 0;
+    private boolean wasBlocked = false; //Was the Channel blocked a second ago?
+    private int iterations = 0;         //counter variable
     public GatherBalls() 
     {
         requires(ballGatherer);
     }
 
-    // Called just before this Command runs the first time
     protected void initialize() {
     }
 
@@ -38,6 +37,9 @@ public class GatherBalls extends CommandBase
             wasBlocked = true;
         }
         
+        //Enters the folllowing if statement 7 times after the channel becomes unblocked
+        //After the 7th time, we assume the ball has successfully been pulled to the top
+        //and the conveyor system stops, and wasBlocked is returned to false
         else if (!ballGatherer.channelBlocked() && wasBlocked == true && iterations < 7)
         {
             iterations++;
