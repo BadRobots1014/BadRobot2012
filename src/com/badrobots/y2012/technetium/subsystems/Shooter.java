@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import com.badrobots.y2012.technetium.RobotMap;
 import com.badrobots.y2012.technetium.buttons.ShootBallTrigger;
 import com.badrobots.y2012.technetium.commands.AutoAim;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
@@ -42,12 +43,12 @@ public class Shooter extends Subsystem
     private Shooter()
     {
         super();
-        right = new Jaguar (RobotMap.rightShooter); // initialize the motor
+        /*right = new Jaguar (RobotMap.rightShooter); // initialize the motor
         left = new Jaguar (RobotMap.leftShooter);
                 
         ranger = new Ultrasonic (RobotMap.ultrasonicOut, RobotMap.ultrasonicIn); //init
         ranger.setEnabled(true);
-        ranger.setAutomaticMode(true);
+        ranger.setAutomaticMode(true);*/
 
         camera.getInstance(); //init
 
@@ -98,6 +99,8 @@ public class Shooter extends Subsystem
             img = camera.getImage();
 
             BinaryImage binary =  img.thresholdHSI(0, 180, 20, 50, 50, 100);
+            
+            
             //int hueLow, int hueHigh, int saturationLow, int saturationHigh, int intansityLow, int intensityHigh
 
             ParticleAnalysisReport[] particles = binary.getOrderedParticleAnalysisReports();
@@ -115,6 +118,8 @@ public class Shooter extends Subsystem
                     }
                 }
             }
+            
+            binary.free();
         }
 
         catch (NIVisionException ex)

@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.badrobots.y2012.technetium.buttons.MechanumDriveTrigger;
 import com.badrobots.y2012.technetium.buttons.ResetGyro;
+import com.badrobots.y2012.technetium.buttons.SwitchScalingSpeeds;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStationLCD;
 
@@ -38,7 +39,7 @@ public class Technetium extends IterativeRobot
 {
 
     Command firstCommand;
-    Button mecanumDriveTrigger, tankDriveTrigger, resetGyro;
+    Button mecanumDriveTrigger, tankDriveTrigger, switchScaling;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -69,6 +70,7 @@ public class Technetium extends IterativeRobot
     public void teleopInit()
     {
         new TankDriveTrigger();
+        switchScaling = new SwitchScalingSpeeds();
         new MechanumDriveTrigger();
     }
 
@@ -82,6 +84,8 @@ public class Technetium extends IterativeRobot
             System.out.println("Missed an update:" + Watchdog.getInstance().getTimer());*/
         //Lucas -- is this code ^ just for debugging? If so, we can delete it now, right?
         Watchdog.getInstance().feed();
+        System.out.println(OI.controller.getRawAxis(5));
+        switchScaling.get();
 
         //Runs the correct commands with their subsytems
         Scheduler.getInstance().run();

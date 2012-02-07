@@ -47,7 +47,7 @@ public class GatherBalls extends CommandBase
             iterations++;
             ballGatherer.runTopRoller(.5);
             
-            if (iterations == 7)
+            if (iterations == maxIterations)
             {
                 wasBlocked = false;
                 iterations = 0;

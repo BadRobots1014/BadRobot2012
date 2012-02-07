@@ -11,6 +11,7 @@ public class OI
     public static Joystick leftJoystick, rightJoystick, shooterJoystick;
     public static DriverStation ds;
     public static DriverStationLCD screen;
+    private static double scalingFactor = 0;
 
     public static Joystick controller;
     /*
@@ -40,6 +41,7 @@ public class OI
     public static void printToDS(String out)
     {
         screen.println(DriverStationLCD.Line.kMain6,1, out);
+        screen.updateLCD();
     }
 
     public static double getLeftX()
@@ -218,10 +220,18 @@ public class OI
      */
     public static double getScalingFactor()
     {
+        if (scalingFactor != 0)
+            return scalingFactor;
+        
         if (ds.getAnalogIn(3) > 0 || ds.getAnalogIn(3) < 1.5)
             return ds.getAnalogIn(3);
         
         return 1;
+    }
+    
+    public static void setScalingFactor(double d)
+    {
+        scalingFactor = d;
     }
 }
 

@@ -31,8 +31,7 @@ public abstract class CommandBase extends Command
         // news. Don't move it.
         OI.init();
         driveTrain = DriveTrain.getInstance();
-
-        System.out.println("Command base initting");
+       // shooter = Shooter.getInstance();
         
         
         //shooter = Shooter.getInstance();

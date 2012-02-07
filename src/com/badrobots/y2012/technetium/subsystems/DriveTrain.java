@@ -62,10 +62,19 @@ public class DriveTrain extends Subsystem
      */
     public void mechanumDrive() 
     {
-         if (OI.rightStrafe())      //if right hand stick is being used for strafing left, right, up and down
-            drive.mecanumDrive_Cartesian(OI.getUsedRightX(), OI.getUsedRightY(), OI.getUsedLeftX(), 0);
+        double scaledRightStrafe = OI.getUsedRightX() * 1.25;
+        double scaledLeftStrafe = OI.getUsedLeftX() * 1.25;
+        
+        if (scaledRightStrafe > 1)
+            scaledRightStrafe = 1;
+        
+        if (scaledLeftStrafe > 1)
+            scaledLeftStrafe = 1;
+        
+         if (OI.rightStrafe())          
+             drive.mecanumDrive_Cartesian(scaledRightStrafe, OI.getUsedRightY(), OI.getUsedLeftX(), 0); //if right hand stick is being used for strafing left, right, up and down
          else                       // if left hand stick is being used for strafing
-            drive.mecanumDrive_Cartesian(OI.getUsedLeftX(), OI.getUsedLeftY(), OI.getUsedRightX(), 0);
+            drive.mecanumDrive_Cartesian(scaledLeftStrafe, OI.getUsedLeftY(), OI.getUsedRightX(), 0);
     }
 
     /*
