@@ -223,7 +223,7 @@ public class OI
         if (scalingFactor != 0)
             return scalingFactor;
         
-        if (ds.getAnalogIn(3) > 0 || ds.getAnalogIn(3) < 1.5)
+        if (ds.getAnalogIn(3) > 0 && ds.getAnalogIn(3) < 1.5)
             return ds.getAnalogIn(3);
         
         return 1;

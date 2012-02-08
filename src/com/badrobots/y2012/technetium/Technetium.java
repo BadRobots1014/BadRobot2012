@@ -70,7 +70,7 @@ public class Technetium extends IterativeRobot
     public void teleopInit()
     {
         new TankDriveTrigger();
-        switchScaling = new SwitchScalingSpeeds();
+        new SwitchScalingSpeeds();
         new MechanumDriveTrigger();
     }
 
@@ -79,13 +79,8 @@ public class Technetium extends IterativeRobot
      */
     public void teleopPeriodic() 
     {
-       /* System.out.println("Watchdog was fed:" + Watchdog.getInstance().getTimer());
-        if(Watchdog.getInstance().getTimer() > Watchdog.getInstance().getExpiration())
-            System.out.println("Missed an update:" + Watchdog.getInstance().getTimer());*/
-        //Lucas -- is this code ^ just for debugging? If so, we can delete it now, right?
         Watchdog.getInstance().feed();
         System.out.println(OI.controller.getRawAxis(5));
-        switchScaling.get();
 
         //Runs the correct commands with their subsytems
         Scheduler.getInstance().run();
