@@ -15,6 +15,10 @@ import edu.wpi.first.wpilibj.command.Command;
 public class ShootBallTrigger extends Button
 {
 
+    /*
+     * THIS FUNCTIIONALITY SHOULD NOT BE IN A BUTTON
+     */
+
     public boolean get() 
     {
         if (OI.controller.getRawButton(3))

@@ -80,8 +80,6 @@ public class Technetium extends IterativeRobot
     public void teleopPeriodic() 
     {
         Watchdog.getInstance().feed();
-        System.out.println(OI.controller.getRawAxis(5));
-
         //Runs the correct commands with their subsytems
         Scheduler.getInstance().run();
         

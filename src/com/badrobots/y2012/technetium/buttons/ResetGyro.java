@@ -15,6 +15,12 @@ import edu.wpi.first.wpilibj.buttons.Button;
 public class ResetGyro extends Button
 {
 
+    /*
+     * THIS FUNCTIONALITY NEEDS TO BE MOVED TO OI
+     * DELTE WHEN FINISHED
+     */
+
+
     public boolean get() 
     {
         if (OI.leftJoystick.getRawButton(4) && OI.rightJoystick.getRawButton(4))
