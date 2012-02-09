@@ -7,9 +7,8 @@ package com.badrobots.y2012.technetium.commands;
 import com.sun.squawk.util.MathUtils;
 import com.badrobots.y2012.technetium.OI;
 
-/**
- *
- * @author Jon Buckley
+/*
+ * @author 1014 Programming Team
  */
 public class PolarMechanumDrive extends CommandBase {
     

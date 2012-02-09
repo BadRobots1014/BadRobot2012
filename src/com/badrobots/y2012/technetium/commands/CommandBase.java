@@ -3,16 +3,17 @@ package com.badrobots.y2012.technetium.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.badrobots.y2012.technetium.OI;
-import com.badrobots.y2012.technetium.subsystems.Helios;
-import com.badrobots.y2012.technetium.subsystems.Demeter;
-import com.badrobots.y2012.technetium.subsystems.Artemis;
-import com.badrobots.y2012.technetium.subsystems.Hermes;
+import com.badrobots.y2012.technetium.subsystems.*;
 
 /**
  * The base for all commands. All atomic commands should subclass CommandBase.
  * CommandBase stores creates and stores each control system. To access a
  * subsystem elsewhere in your code in your code use CommandBase.exampleSubsystem
- * @author Author
+ * 
+ */
+
+/*
+ * @author 1014 Programming Team
  */
 public abstract class CommandBase extends Command
 {
@@ -21,6 +22,7 @@ public abstract class CommandBase extends Command
     public static Artemis shooter;
     public static Helios sensors;
     public static Demeter ballGatherer;
+    public static Xerxes bridgeTool;
 
     public static void init()
     {

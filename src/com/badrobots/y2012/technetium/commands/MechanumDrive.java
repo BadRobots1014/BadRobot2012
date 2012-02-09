@@ -6,9 +6,8 @@ package com.badrobots.y2012.technetium.commands;
 
 import com.badrobots.y2012.technetium.OI;
 
-/**
- *
- * @author Jon Buckley, TheGaur, Lucas Beaufore
+/*
+ * @author 1014 Programming Team
  */
 public class MechanumDrive extends CommandBase
 {

@@ -18,9 +18,8 @@ import com.badrobots.y2012.technetium.RobotMap;
 import com.badrobots.y2012.technetium.commands.AutoAim;
 import edu.wpi.first.wpilibj.AnalogChannel;
 
-/**
- *
- * @author Jon Buckley, Lucas Beaufore
+/*
+ * @author 1014 Programming Team
  */
 public class Helios extends Subsystem
 {

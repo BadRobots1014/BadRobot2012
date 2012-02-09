@@ -3,9 +3,8 @@ package com.badrobots.y2012.technetium.commands;
 import com.badrobots.y2012.technetium.OI;
 import com.badrobots.y2012.technetium.subsystems.Helios;
 
-/**
- *
- * @author Jon Buckley
+/*
+ * @author 1014 Programming Team
  */
 public class GatherBallsAndManualShoot extends CommandBase //We need to rename this. Just maybe
 {    

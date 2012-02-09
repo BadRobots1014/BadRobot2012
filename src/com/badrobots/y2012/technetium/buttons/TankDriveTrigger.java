@@ -10,9 +10,8 @@ import com.badrobots.y2012.technetium.OI;
 import com.badrobots.y2012.technetium.commands.ManualAim;
 import com.badrobots.y2012.technetium.commands.TankDrive;
 
-/**
- *
- * @author Jon Buckley
+/*
+ * @author 1014 Programming Team
  */
 public class TankDriveTrigger extends Button
 {

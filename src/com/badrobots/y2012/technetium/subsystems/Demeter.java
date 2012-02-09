@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  * CODE IS UNTESTED -- MUST HAVE SPECIFIC RobotMap CHANNELS FILLED IN, AND CLASS DEBUGGED
- * @author Jon Buckley
+ * @author 1014 Programming Team
  */
 public class Demeter extends Subsystem 
 {

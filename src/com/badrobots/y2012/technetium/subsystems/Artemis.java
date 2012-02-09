@@ -19,9 +19,8 @@ import edu.wpi.first.wpilibj.image.ColorImage;
 import edu.wpi.first.wpilibj.image.NIVisionException;
 import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
 
-/**
- *
- * @author Jon Buckley, GauR
+/*
+ * @author 1014 Programming Team
  */
 public class Artemis extends Subsystem
 {

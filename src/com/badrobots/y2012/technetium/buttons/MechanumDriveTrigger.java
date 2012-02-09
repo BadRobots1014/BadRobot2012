@@ -9,9 +9,8 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import com.badrobots.y2012.technetium.OI;
 import com.badrobots.y2012.technetium.commands.MechanumDrive;
 
-/**
- *
- * @author Jon Buckley
+/*
+ * @author 1014 Programming Team
  */
 public class MechanumDriveTrigger extends Button
 {

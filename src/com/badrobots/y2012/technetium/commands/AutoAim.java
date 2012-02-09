@@ -8,9 +8,8 @@ import com.badrobots.y2012.technetium.subsystems.Hermes;
 import com.sun.squawk.util.MathUtils;
 
 
-/**
- *
- * @author Jon Buckley
+/*
+ * @author 1014 Programming Team
  */
 public class AutoAim extends CommandBase 
 {

@@ -5,9 +5,8 @@
 package com.badrobots.y2012.technetium.commands;
 
 
-/**
- *
- * @author Jon Buckley
+/*
+ * @author 1014 Programming Team
  */
 public class TankDrive extends CommandBase {
 

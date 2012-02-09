@@ -7,9 +7,8 @@ import com.badrobots.y2012.technetium.buttons.ShootBallTrigger;
 import edu.wpi.first.wpilibj.buttons.Button;
 
 
-/**
- *
- * @author Jon Buckley
+/*
+ * @author 1014 Programming Team
  */
 public class ManualAim extends CommandBase
 {

@@ -8,9 +8,8 @@ import com.badrobots.y2012.technetium.OI;
 import com.badrobots.y2012.technetium.RobotMap;
 import edu.wpi.first.wpilibj.*;
 
-/**
- *
- * @author Jon Buckley, Lucas Beaufore, Gautam Rangavajla (there you go)
+/*
+ * @author 1014 Programming Team
  */
 public class Hermes extends Subsystem
 {

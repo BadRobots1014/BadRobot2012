@@ -6,6 +6,10 @@ package com.badrobots.y2012.technetium;
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
  */
+
+/*
+ * @author 1014 Programming Team
+ */
 public class RobotMap
 {
     public static final int cRIOsidecar = 1; // port from the cRIO to the digital
@@ -37,6 +41,8 @@ public class RobotMap
     public static final int topRoller = 7;
     
     public static final int leftShooter = 8; 
-    public static final int rightShooter = 3; // hmm we are gonna need a second sideca
+    public static final int rightShooter = 3;
+
+    public static final int bridgingTool = 9;//TODO Find port
 
 }

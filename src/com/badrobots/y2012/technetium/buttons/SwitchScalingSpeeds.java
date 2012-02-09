@@ -8,9 +8,8 @@ import com.badrobots.y2012.technetium.OI;
 import edu.wpi.first.wpilibj.buttons.Button;
 import com.badrobots.y2012.technetium.commands.SwitchSpeeds;
 
-/**
- *
- * @author Jon Buckley
+/*
+ * @author 1014 Programming Team
  */
 public class SwitchScalingSpeeds extends Button
 {

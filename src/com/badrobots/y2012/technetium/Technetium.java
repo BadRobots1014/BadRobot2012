@@ -35,6 +35,10 @@ import edu.wpi.first.wpilibj.DriverStationLCD;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
+
+/*
+ * @author 1014 Programming Team
+ */
 public class Technetium extends IterativeRobot 
 {
 

@@ -6,6 +6,9 @@ import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStationLCD;
 
+/*
+ * @author 1014 Programming Team
+ */
 public class OI
 {
     public static Joystick leftJoystick, rightJoystick, shooterJoystick;
@@ -108,6 +111,16 @@ public class OI
     public static boolean absoluteGyro()
     {
         return ds.getDigitalIn(3);
+    }
+
+    public static boolean getUpButton()
+    {
+        return controller.getRawButton(4);//Y
+    }
+
+    public static boolean getDownButton()
+    {
+        return controller.getRawButton(1);//X
     }
     
     /*
