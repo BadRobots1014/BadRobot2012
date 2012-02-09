@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.AnalogChannel;
 
 /**
  *
- * @author Jon Buckley
+ * @author Jon Buckley, Lucas Beaufore
  */
 public class Helios extends Subsystem
 {
@@ -28,7 +28,7 @@ public class Helios extends Subsystem
     private static AxisCamera camera;
     private static Ultrasonic lFront, lBack;
     private static AnalogChannel bottomSensor, topSensor;
-    private static final double threshold = 200;
+    private static final double threshold = 200;//200 VOLTS?!?!? This needs to be changed
     private static final double spacing = 25;
     public static Helios getInstance()
     {
@@ -46,9 +46,15 @@ public class Helios extends Subsystem
         
         bottomSensor = new AnalogChannel(RobotMap.bottomSensor);
         topSensor = new AnalogChannel(RobotMap.topSensor);
-               
-        lFront = new Ultrasonic(1, 1);
-        lBack = new Ultrasonic(2, 2);
+
+        //Note: If this doesn't work, use digital In and Outs as arguements
+        lFront = new Ultrasonic(1, 2);
+        lBack = new Ultrasonic(3, 4);
+        lFront.setEnabled(true);
+        lBack.setEnabled(true);
+        //Stops interference between sensors
+        lFront.setAutomaticMode(true);
+        lBack.setAutomaticMode(true);
     }
 
     /**
@@ -58,7 +64,7 @@ public class Helios extends Subsystem
      */
     public double getDifferenceInSensors()
     {
-        return (lFront.getRangeInches() - lBack.getRangeInches());
+        return (lFront.getRangeMM() - lBack.getRangeMM());
     }
     
     /**
@@ -66,10 +72,10 @@ public class Helios extends Subsystem
      */
     public double getDistanceFromWall()
     {
-        double front = lFront.getRangeInches();
-        double back = lBack.getRangeInches();
+        double front = lFront.getRangeMM();
+        double back = lBack.getRangeMM();
         
-        if (Math.abs(back-front) > 15)
+        if (Math.abs(back-front) > 15)//needs to be calibrated
             return -1; // not accurate enough to use, return a nonpossible value
             
         return (front+back)/2;
@@ -91,7 +97,7 @@ public class Helios extends Subsystem
     
     public double getAngleToTarget()
     {
-        return 3.14;
+        return 3.14;//Really? Remeber to fix this
     }
 
     public ParticleAnalysisReport[] getRectangleParticles() throws AxisCameraException

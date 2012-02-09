@@ -7,7 +7,7 @@ import com.badrobots.y2012.technetium.subsystems.Helios;
  *
  * @author Jon Buckley
  */
-public class GatherBallsAndManualShoot extends CommandBase 
+public class GatherBallsAndManualShoot extends CommandBase //We need to rename this. Just maybe
 {    
     private static boolean topBlocked = false;  //was the top garage sensor blocked?
     
@@ -29,23 +29,26 @@ public class GatherBallsAndManualShoot extends CommandBase
      * 
      * If the user wants to shoot, he/she first hits the secondary trigger,
      * revving the shooter. Then, while the shooter is revved, if the primary trigger is
-     * pressed, the conveyors roll, decreasing the tracked ball count  
+     * pressed, the conveyors roll, decreasing the tracked ball count
+     *
+     * LUCAS WARNING: Uncommon circumstances could throw off counts!!
+     * There needs to be greater self correcting added after the collector is built.
      */
     protected void execute() 
     {
-        if (ballGatherer.getBalls() < 3) 
+        if (ballGatherer.numBalls() < 3)
             ballGatherer.runBottomRoller(.2);   //"Ball pickup" mode
         
         //If the bottom garage sensor is blocked, and the top isn't blocked, pull the ball until
         //it is no longer blocking the bottom sensor
         if (Helios.getInstance().bottomChannelBlocked() && !topBlocked)
         {
-            ballGatherer.runConveyor(.5);
+            ballGatherer.runConveyor(.5);//WARNING: This may cause more than 1 ball to be picked up
             ballGatherer.addBall();
         }
         
         if (OI.getSecondaryTrigger())   //warm up the shooter -- think gatling gun
-        {
+        {                           //Why wouldn't this run all the time? Power?
             shooter.run(1);
             
             if (OI.getShooterTrigger()) // push balls into shooter

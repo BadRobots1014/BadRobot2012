@@ -78,7 +78,7 @@ public class Demeter extends Subsystem
      * 
      * @return the number of balls currently held in the gatherer
      */
-    public int getBalls()
+    public int numBalls()
     {
         return balls;
     }
