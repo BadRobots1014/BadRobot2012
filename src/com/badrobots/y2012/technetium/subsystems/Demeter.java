@@ -14,9 +14,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * CODE IS UNTESTED -- MUST HAVE SPECIFIC RobotMap CHANNELS FILLED IN, AND CLASS DEBUGGED
  * @author Jon Buckley
  */
-public class BallGatherer extends Subsystem 
+public class Demeter extends Subsystem 
 {
-    BallGatherer instance;
+    Demeter instance;
     AnalogChannel garageSensor;
     Victor conveyor, bottomRoller, topRoller;
     double threshold = 200; // voltage readout from the analog channel
@@ -29,20 +29,19 @@ public class BallGatherer extends Subsystem
      * @return the instance of itself--if not already initialized, this method also
      * calls its constructor
      */
-    public BallGatherer getInstance()
+    public Demeter getInstance()
     {
         if (instance == null)
         {
-           instance = new BallGatherer(); 
+           instance = new Demeter(); 
         }
         
         return instance;
     }
         
-    public BallGatherer()
+    public Demeter()
     {
         super();
-        garageSensor = new AnalogChannel(RobotMap.garage);
         conveyor = new Victor(RobotMap.conveyor);
         bottomRoller = new Victor(RobotMap.bottomRoller);
         topRoller = new Victor(RobotMap.topRoller);
@@ -74,19 +73,6 @@ public class BallGatherer extends Subsystem
     }
     
     /*
-     * @return whether the garage door sensor is obscured. 
-     * This method uses analog threshold to detect this
-     */
-    public boolean channelBlocked()
-    {
-        if (garageSensor.getAverageVoltage() > threshold)
-            return false;
-        
-        balls++;
-        return true;
-    }
-    
-    /*
      * Tells the BallGatherer that a ball has been shot off
      */
     public void notifyBallShot()
@@ -104,6 +90,14 @@ public class BallGatherer extends Subsystem
     public int getNumberBalls()
     {
         return balls;
+    }
+    
+    /**
+     * Increments the ball count
+     */
+    public void addBall()
+    {
+        balls++;
     }
     
     public void initDefaultCommand()

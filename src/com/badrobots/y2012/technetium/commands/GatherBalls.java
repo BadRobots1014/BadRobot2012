@@ -1,5 +1,7 @@
 package com.badrobots.y2012.technetium.commands;
 
+import com.badrobots.y2012.technetium.subsystems.Helios;
+
 /**
  *
  * @author Jon Buckley
@@ -30,7 +32,7 @@ public class GatherBalls extends CommandBase
     {
         ballGatherer.runBottomRoller(.2);   //"Ball pickup" mode
         
-        if (ballGatherer.channelBlocked())  //"Ball convey" mode
+        if (Helios.getInstance().channelBlocked())  //"Ball convey" mode
         {
             ballGatherer.runConveyor(.5);
             wasBlocked = true;
@@ -42,7 +44,7 @@ public class GatherBalls extends CommandBase
          *and the conveyor system stops, and wasBlocked is returned to false
          *"Ball complete gather" mode
          */
-        else if (!ballGatherer.channelBlocked() && wasBlocked == true && iterations < maxIterations)   
+        else if (!Helios.getInstance().channelBlocked() && wasBlocked == true && iterations < maxIterations)   
         {
             iterations++;
             ballGatherer.runTopRoller(.5);

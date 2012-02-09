@@ -28,14 +28,13 @@ public class AutoOrient extends CommandBase
     // Called repeatedly when this Command is scheduled to run
     protected void execute()
     {
-        distance = sensors.getDifferenceInSensorsFromWall(true);
+        distance = sensors.getDifferenceInSensors();
 
-        if (distance > 3)
-            driveTrain.polarMechanum(0.3, 0, 0.4); // sin has range of -1 to 1
-        else if(distance < -3)
-            driveTrain.polarMechanum(0.3, 0, -0.4);
-        else
-            driveTrain.autoMechanumDrive(0.5, 0.0, 0.0);
+        if (distance > 0)
+            driveTrain.autoMechanumDrive(0, 0, .5); //Don't make fun of me-Jon
+        
+        else if (distance < 0)
+            driveTrain.autoMechanumDrive(0, 0, -.5); //Testtt testt testtttt
     }
 
     // Make this return true when this Command no longer needs to run execute()

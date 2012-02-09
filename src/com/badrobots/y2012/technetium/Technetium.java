@@ -12,7 +12,7 @@ import com.badrobots.y2012.technetium.commands.PolarMechanumDrive;
 import com.badrobots.y2012.technetium.commands.TankDrive;
 import com.badrobots.y2012.technetium.commands.MechanumDrive;
 import com.badrobots.y2012.technetium.commands.CommandBase;
-import com.badrobots.y2012.technetium.subsystems.DriveTrain;
+import com.badrobots.y2012.technetium.subsystems.Hermes;
 import com.badrobots.y2012.technetium.buttons.TankDriveTrigger;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Watchdog;
