@@ -27,7 +27,7 @@ public class Helios extends Subsystem
     private static Helios sensors;
     private static AxisCamera camera;
     private static Ultrasonic lFront, lBack;
-    private static AnalogChannel garageSensor;
+    private static AnalogChannel bottomSensor, topSensor;
     private static final double threshold = 200;
     private static final double spacing = 25;
     public static Helios getInstance()
@@ -44,7 +44,8 @@ public class Helios extends Subsystem
     {
         camera = AxisCamera.getInstance();
         
-        garageSensor = new AnalogChannel(RobotMap.garage);
+        bottomSensor = new AnalogChannel(RobotMap.bottomSensor);
+        topSensor = new AnalogChannel(RobotMap.topSensor);
                
         lFront = new Ultrasonic(1, 1);
         lBack = new Ultrasonic(2, 2);
@@ -134,12 +135,24 @@ public class Helios extends Subsystem
     }
     
     /*
-     * @return whether the garage door sensor is obscured. 
+     * @return whether the top garage door sensor is obscured. 
      * This method uses analog threshold to detect this
      */
-    public boolean channelBlocked()
+    public boolean topChannelBlocked()
     {
-        if (garageSensor.getAverageVoltage() > threshold)
+        if (topSensor.getAverageVoltage() > threshold)
+            return false;
+        
+        return true;
+    }
+    
+    /*
+     * @return whether the bottom garage door sensor is obscured. 
+     * This method uses analog threshold to detect this
+     */
+    public boolean bottomChannelBlocked()
+    {
+        if (bottomSensor.getAverageVoltage() > threshold)
             return false;
         
         return true;

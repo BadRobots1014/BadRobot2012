@@ -31,7 +31,7 @@ public class AutoOrient extends CommandBase
         distance = sensors.getDifferenceInSensors();
 
         if (distance > 0)
-            driveTrain.autoMechanumDrive(0, 0, .5); //Don't make fun of me-Jon
+            driveTrain.autoMechanumDrive(0, 0, .5); //We must test
         
         else if (distance < 0)
             driveTrain.autoMechanumDrive(0, 0, -.5); //Testtt testt testtttt
@@ -41,9 +41,7 @@ public class AutoOrient extends CommandBase
     protected boolean isFinished()
     {
        // if (sensors.getDifferenceInSensorsFromWall(true) < 3) // difference is negligble
-            return true;
-
-       // return false;
+        return false;
     }
 
     // Called once after isFinished returns true

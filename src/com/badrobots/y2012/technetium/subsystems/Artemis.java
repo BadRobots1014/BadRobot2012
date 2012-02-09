@@ -85,6 +85,15 @@ public class Artemis extends Subsystem
         right.set(speed);
         left.set(-speed);
     }
+    
+    /*
+     * Runs both motors at 'speed' speed
+     */
+    public void run(double speed)
+    {
+        right.set(speed);
+        left.set(-speed);
+    }
 
 
     public ParticleAnalysisReport[] getRectangleParticles() throws AxisCameraException

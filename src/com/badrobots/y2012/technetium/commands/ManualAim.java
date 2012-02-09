@@ -35,7 +35,7 @@ public class ManualAim extends CommandBase
     {
         if (shootBallTrigger.get())
         {
-            if (ballGatherer.getNumberBalls() > 0)
+            if (ballGatherer.getBalls() > 0)
             {
                 shooter.shootHigh();    
                 ballGatherer.notifyBallShot();

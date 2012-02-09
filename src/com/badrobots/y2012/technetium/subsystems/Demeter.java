@@ -5,7 +5,7 @@
 package com.badrobots.y2012.technetium.subsystems;
 
 import com.badrobots.y2012.technetium.RobotMap;
-import com.badrobots.y2012.technetium.commands.GatherBalls;
+import com.badrobots.y2012.technetium.commands.GatherBallsAndManualShoot;
 import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -18,7 +18,7 @@ public class Demeter extends Subsystem
 {
     Demeter instance;
     AnalogChannel garageSensor;
-    Victor conveyor, bottomRoller, topRoller;
+    Victor conveyor, bottomRoller;
     double threshold = 200; // voltage readout from the analog channel
     private int balls = 0;
 
@@ -44,7 +44,6 @@ public class Demeter extends Subsystem
         super();
         conveyor = new Victor(RobotMap.conveyor);
         bottomRoller = new Victor(RobotMap.bottomRoller);
-        topRoller = new Victor(RobotMap.topRoller);
     }
     
     /*
@@ -54,14 +53,6 @@ public class Demeter extends Subsystem
     {
         conveyor.set(-speed);
         bottomRoller.set(speed);
-    }
-    
-    /*
-     * Runs just the topRoller (the motor that pulls the ball out of the conveyor)
-     */
-    public void runTopRoller(double speed)
-    {
-        topRoller.set(speed);
     }
     
     /*
@@ -87,7 +78,7 @@ public class Demeter extends Subsystem
      * 
      * @return the number of balls currently held in the gatherer
      */
-    public int getNumberBalls()
+    public int getBalls()
     {
         return balls;
     }
@@ -102,6 +93,6 @@ public class Demeter extends Subsystem
     
     public void initDefaultCommand()
     {
-        setDefaultCommand(new GatherBalls());
+        setDefaultCommand(new GatherBallsAndManualShoot());
     }
 }
