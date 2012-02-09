@@ -16,7 +16,7 @@ public class Hermes extends Subsystem
     private static Hermes instance;
     private static RobotDrive drive;
     public Victor lFront, lBack, rFront, rBack;
-    private Gyro gyro;
+    private Gyro horizontalGyro;
     private Accelerometer accel;
 
     /**
@@ -49,7 +49,7 @@ public class Hermes extends Subsystem
         drive = new RobotDrive(lFront, lBack, rFront, rBack);   // feeds victors to RobotDrive
         drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
         drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);        
-        gyro = new Gyro(RobotMap.gyro); //gyro
+        horizontalGyro = new Gyro(RobotMap.horizontalGyro); //gyro
         drive.setSafetyEnabled(false);  //because why not. Jon: because it will kill us all. 
                                         // Haven't you seen iRobot? They left their robots on
                                         // safety enable = false
@@ -84,7 +84,7 @@ public class Hermes extends Subsystem
     {
         drive.mecanumDrive_Cartesian(x, y, rotation, 0);
         if(rotation > 0)
-            gyro.reset();
+            horizontalGyro.reset();
     }
     
     /*
@@ -132,7 +132,7 @@ public class Hermes extends Subsystem
      */
     public void resetGyro()
     {
-        gyro.reset();
+        horizontalGyro.reset();
     }
 
     public void initDefaultCommand()

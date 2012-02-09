@@ -34,7 +34,8 @@ public class RobotMap
 
     public static final int camera = 4;
     
-    public static final int gyro = 1;
+    public static final int horizontalGyro = 1;
+    public static final int verticalGyro = 2;
     
     public static final int conveyor = 5; //TODO (find all these ports)
     public static final int bottomRoller = 6; 
