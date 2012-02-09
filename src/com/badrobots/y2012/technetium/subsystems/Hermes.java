@@ -12,9 +12,9 @@ import edu.wpi.first.wpilibj.*;
  *
  * @author Jon Buckley, Lucas Beaufore, Gautam Rangavajla (there you go)
  */
-public class DriveTrain extends Subsystem
+public class Hermes extends Subsystem
 {
-    private static DriveTrain instance;
+    private static Hermes instance;
     private static RobotDrive drive;
     public Victor lFront, lBack, rFront, rBack;
     private Gyro gyro;
@@ -25,11 +25,11 @@ public class DriveTrain extends Subsystem
      * is every used. If one has not been made, this method also invokes the constructor
      * @return the single instance of DriveTrain per program
      */
-    public static DriveTrain getInstance()
+    public static Hermes getInstance()
     {
         if (instance == null)
         {
-            instance = new DriveTrain();
+            instance = new Hermes();
         }
         return instance;
     }
@@ -38,7 +38,7 @@ public class DriveTrain extends Subsystem
      * Initailizes four Victors, feeds them into a RobotDrive instance,
      * and sets the motors in RobotDrive to the correct running direction.
      */
-    private DriveTrain()
+    private Hermes()
     {
         super();
 

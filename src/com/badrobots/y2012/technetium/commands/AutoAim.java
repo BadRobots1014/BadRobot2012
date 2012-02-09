@@ -4,7 +4,7 @@
  */
 package com.badrobots.y2012.technetium.commands;
 
-import com.badrobots.y2012.technetium.subsystems.DriveTrain;
+import com.badrobots.y2012.technetium.subsystems.Hermes;
 import com.sun.squawk.util.MathUtils;
 
 
@@ -32,7 +32,7 @@ public class AutoAim extends CommandBase
     protected void execute() 
     {
         //TODO: add autoaim code
-        double motion = DriveTrain.getInstance().getMovement();
+        double motion = Hermes.getInstance().getMovement();
         
         double work = 400 - ((power * power) + (motion * motion));
         work /= (-2 * power * work);

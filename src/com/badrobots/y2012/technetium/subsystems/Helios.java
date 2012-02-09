@@ -22,39 +22,57 @@ import edu.wpi.first.wpilibj.AnalogChannel;
  *
  * @author Jon Buckley
  */
-public class ArenaSensors extends Subsystem
+public class Helios extends Subsystem
 {
-    private static ArenaSensors sensors;
+    private static Helios sensors;
     private static AxisCamera camera;
-    private static Ultrasonic lFront, lBack, rFront, rBack;
+    private static Ultrasonic lFront, lBack;
+    private static AnalogChannel bottomSensor, topSensor;
+    private static final double threshold = 200;
     private static final double spacing = 25;
-    public static ArenaSensors getInstance()
+    public static Helios getInstance()
     {
         if (sensors == null)
         {
-            sensors = new ArenaSensors();
+            sensors = new Helios();
         }
 
         return sensors;
     }
 
-    private ArenaSensors()
+    private Helios()
     {
         camera = AxisCamera.getInstance();
+        
+        bottomSensor = new AnalogChannel(RobotMap.bottomSensor);
+        topSensor = new AnalogChannel(RobotMap.topSensor);
                
         lFront = new Ultrasonic(1, 1);
         lBack = new Ultrasonic(2, 2);
-        rFront = new Ultrasonic(3, 3);
-        rBack = new Ultrasonic(4, 4);
     }
 
-    public double getDifferenceInSensorsFromWall(boolean left)
+    /**
+     * 
+     * @return the difference in distances (inches) that the two side sensors are reading,
+     * front minus left
+     */
+    public double getDifferenceInSensors()
     {
-        if (left)            
-            return (lFront.getRangeInches() - lBack.getRangeInches());
-
-        else
-             return (rFront.getRangeInches() - rBack.getRangeInches());
+        return (lFront.getRangeInches() - lBack.getRangeInches());
+    }
+    
+    /**
+     * @return the average distanced sensed from the left side of the robot
+     */
+    public double getDistanceFromWall()
+    {
+        double front = lFront.getRangeInches();
+        double back = lBack.getRangeInches();
+        
+        if (Math.abs(back-front) > 15)
+            return -1; // not accurate enough to use, return a nonpossible value
+            
+        return (front+back)/2;
     }
 
     /*
@@ -63,17 +81,12 @@ public class ArenaSensors extends Subsystem
      */
     public double getAngleOfOrientation()
     {
-        double difference = lFront.getRangeInches() - lBack.getRangeInches();
+        double difference = getDifferenceInSensors();
 
         double theta = MathUtils.atan(difference/spacing);
         theta *= (180/Math.PI);
 
         return theta;
-    }
-    
-    public double getDistancceToWall()
-    {
-        return 0;
     }
     
     public double getAngleToTarget()
@@ -108,6 +121,9 @@ public class ArenaSensors extends Subsystem
                     }
                 }
             }
+            
+            img.free();
+            binary.free();
         }
         
         catch (NIVisionException ex)
@@ -116,6 +132,30 @@ public class ArenaSensors extends Subsystem
         }
 
         return toReturn;
+    }
+    
+    /*
+     * @return whether the top garage door sensor is obscured. 
+     * This method uses analog threshold to detect this
+     */
+    public boolean topChannelBlocked()
+    {
+        if (topSensor.getAverageVoltage() > threshold)
+            return false;
+        
+        return true;
+    }
+    
+    /*
+     * @return whether the bottom garage door sensor is obscured. 
+     * This method uses analog threshold to detect this
+     */
+    public boolean bottomChannelBlocked()
+    {
+        if (bottomSensor.getAverageVoltage() > threshold)
+            return false;
+        
+        return true;
     }
 
     public void initDefaultCommand()

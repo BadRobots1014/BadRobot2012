@@ -156,6 +156,27 @@ public class OI
         return deadzone(rightJoystick.getY());
     }
     
+    /**
+     * @return whether the secondary trigger is depressed
+     */
+    public static boolean getSecondaryTrigger()
+    {
+        if (xboxControl())
+            return controller.getBumper();
+        
+        return leftJoystick.getTrigger();
+    }
+    
+    /**
+     * @return whether the shoot trigger is depressed
+     */
+    public static boolean getShooterTrigger()
+    {
+        if (xboxControl())
+            return controller.getTrigger();
+        
+        return rightJoystick.getTrigger();
+    }
 
     /*
      * Creates a deadzone for joysticks
@@ -229,6 +250,10 @@ public class OI
         return 1;
     }
     
+    /**
+     * 
+     * @param d the double that will be the new scaling factor (0-1)
+     */
     public static void setScalingFactor(double d)
     {
         scalingFactor = d;

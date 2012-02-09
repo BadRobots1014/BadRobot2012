@@ -23,24 +23,24 @@ import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
  *
  * @author Jon Buckley, GauR
  */
-public class Shooter extends Subsystem
+public class Artemis extends Subsystem
 {
-    private static Shooter instance;
+    private static Artemis instance;
     private static Jaguar right, left;
     private static Ultrasonic ranger;
     private static AxisCamera camera;
 
-    public static Shooter getInstance()
+    public static Artemis getInstance()
     {
         if (instance == null)
         {
-            instance = new Shooter();
+            instance = new Artemis();
         }
 
         return instance;
     }
 
-    private Shooter()
+    private Artemis()
     {
         super();
         /*right = new Jaguar (RobotMap.rightShooter); // initialize the motor
@@ -82,6 +82,15 @@ public class Shooter extends Subsystem
     {
         //determine shooter speed through regression equation determined through testing
         int speed = 0;
+        right.set(speed);
+        left.set(-speed);
+    }
+    
+    /*
+     * Runs both motors at 'speed' speed
+     */
+    public void run(double speed)
+    {
         right.set(speed);
         left.set(-speed);
     }

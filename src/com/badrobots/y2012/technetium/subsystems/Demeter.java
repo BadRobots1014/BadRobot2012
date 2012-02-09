@@ -5,7 +5,7 @@
 package com.badrobots.y2012.technetium.subsystems;
 
 import com.badrobots.y2012.technetium.RobotMap;
-import com.badrobots.y2012.technetium.commands.GatherBalls;
+import com.badrobots.y2012.technetium.commands.GatherBallsAndManualShoot;
 import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -14,11 +14,11 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * CODE IS UNTESTED -- MUST HAVE SPECIFIC RobotMap CHANNELS FILLED IN, AND CLASS DEBUGGED
  * @author Jon Buckley
  */
-public class BallGatherer extends Subsystem 
+public class Demeter extends Subsystem 
 {
-    BallGatherer instance;
+    Demeter instance;
     AnalogChannel garageSensor;
-    Victor conveyor, bottomRoller, topRoller;
+    Victor conveyor, bottomRoller;
     double threshold = 200; // voltage readout from the analog channel
     private int balls = 0;
 
@@ -29,23 +29,21 @@ public class BallGatherer extends Subsystem
      * @return the instance of itself--if not already initialized, this method also
      * calls its constructor
      */
-    public BallGatherer getInstance()
+    public Demeter getInstance()
     {
         if (instance == null)
         {
-           instance = new BallGatherer(); 
+           instance = new Demeter(); 
         }
         
         return instance;
     }
         
-    public BallGatherer()
+    public Demeter()
     {
         super();
-        garageSensor = new AnalogChannel(RobotMap.garage);
         conveyor = new Victor(RobotMap.conveyor);
         bottomRoller = new Victor(RobotMap.bottomRoller);
-        topRoller = new Victor(RobotMap.topRoller);
     }
     
     /*
@@ -58,32 +56,11 @@ public class BallGatherer extends Subsystem
     }
     
     /*
-     * Runs just the topRoller (the motor that pulls the ball out of the conveyor)
-     */
-    public void runTopRoller(double speed)
-    {
-        topRoller.set(speed);
-    }
-    
-    /*
      * Runs just the bottomRoller (the motor that pulls the ball into the conveyor)
      */
     public void runBottomRoller(double speed)
     {
         bottomRoller.set(speed);
-    }
-    
-    /*
-     * @return whether the garage door sensor is obscured. 
-     * This method uses analog threshold to detect this
-     */
-    public boolean channelBlocked()
-    {
-        if (garageSensor.getAverageVoltage() > threshold)
-            return false;
-        
-        balls++;
-        return true;
     }
     
     /*
@@ -101,13 +78,21 @@ public class BallGatherer extends Subsystem
      * 
      * @return the number of balls currently held in the gatherer
      */
-    public int getNumberBalls()
+    public int getBalls()
     {
         return balls;
     }
     
+    /**
+     * Increments the ball count
+     */
+    public void addBall()
+    {
+        balls++;
+    }
+    
     public void initDefaultCommand()
     {
-        setDefaultCommand(new GatherBalls());
+        setDefaultCommand(new GatherBallsAndManualShoot());
     }
 }
