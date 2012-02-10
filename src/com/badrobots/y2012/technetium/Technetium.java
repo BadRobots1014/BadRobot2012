@@ -8,11 +8,8 @@
 package com.badrobots.y2012.technetium;
 
 
-import com.badrobots.y2012.technetium.commands.PolarMechanumDrive;
-import com.badrobots.y2012.technetium.commands.TankDrive;
-import com.badrobots.y2012.technetium.commands.MechanumDrive;
-import com.badrobots.y2012.technetium.commands.CommandBase;
-import com.badrobots.y2012.technetium.subsystems.Hermes;
+import com.badrobots.y2012.technetium.commands.*;
+import com.badrobots.y2012.technetium.subsystems.*;
 import com.badrobots.y2012.technetium.buttons.TankDriveTrigger;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Watchdog;
@@ -44,6 +41,7 @@ public class Technetium extends IterativeRobot
 
     Command firstCommand;
     Button mecanumDriveTrigger, tankDriveTrigger, switchScaling;
+    Helios camTest;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -76,16 +74,25 @@ public class Technetium extends IterativeRobot
         new TankDriveTrigger();
         new SwitchScalingSpeeds();
         new MechanumDriveTrigger();
+        camTest = Helios.getInstance();
     }
 
     /**
      * This function is called periodically during operator control
      */
+    boolean once = true;
     public void teleopPeriodic() 
     {
         Watchdog.getInstance().feed();
         //Runs the correct commands with their subsytems
         Scheduler.getInstance().run();
-        
+        if(once)
+        {
+            camTest.getImg();
+            once = false;
+        }
+        try{
+                camTest.getRectangleParticles();
+        }catch(Exception e){System.out.println("No image, unfortunately");}
     }
 }
