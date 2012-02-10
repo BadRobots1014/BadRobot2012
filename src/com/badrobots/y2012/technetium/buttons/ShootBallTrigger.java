@@ -20,7 +20,7 @@ public class ShootBallTrigger extends Button
 
     public boolean get() 
     {
-        if (OI.controller.getRawButton(3))
+        if (OI.xboxController.getRawButton(3))
             return true;
         
         return false;

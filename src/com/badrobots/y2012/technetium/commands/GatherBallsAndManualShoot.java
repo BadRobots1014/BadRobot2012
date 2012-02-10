@@ -50,7 +50,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         {                           //Why wouldn't this run all the time? Power?
             shooter.run(1);
             
-            if (OI.getShooterTrigger()) // push balls into shooter
+            if (OI.getPrimaryTrigger()) // push balls into shooter
             {
                 ballGatherer.runConveyor(.2);
                 

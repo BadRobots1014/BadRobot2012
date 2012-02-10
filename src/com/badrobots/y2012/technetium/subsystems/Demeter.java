@@ -19,7 +19,7 @@ public class Demeter extends Subsystem
     Demeter instance;
     AnalogChannel garageSensor;
     Victor conveyor, bottomRoller;
-    double threshold = 200; // voltage readout from the analog channel
+    double threshold = 2; // voltage readout from the analog channel
     private int balls = 0;
 
     
@@ -39,7 +39,11 @@ public class Demeter extends Subsystem
         return instance;
     }
         
-    public Demeter()
+    /*
+     * Private constructor that is called only if instance has not been instantiated
+     * Also, it initializes its two motors
+     */
+    private Demeter()
     {
         super();
         conveyor = new Victor(RobotMap.conveyor);
@@ -51,8 +55,7 @@ public class Demeter extends Subsystem
      */
     public void runConveyor(double speed)
     {
-        conveyor.set(-speed);
-        bottomRoller.set(speed);
+        conveyor.set(speed);
     }
     
     /*
@@ -62,6 +65,7 @@ public class Demeter extends Subsystem
     {
         bottomRoller.set(speed);
     }
+    
     
     /*
      * Tells the BallGatherer that a ball has been shot off
@@ -74,8 +78,7 @@ public class Demeter extends Subsystem
             System.out.println("Hmmm... we have a problem: negatives balls");
     }
     
-    /**
-     * 
+    /** 
      * @return the number of balls currently held in the gatherer
      */
     public int numBalls()

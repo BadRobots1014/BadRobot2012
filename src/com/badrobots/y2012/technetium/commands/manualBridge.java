@@ -10,9 +10,9 @@ import com.badrobots.y2012.technetium.OI;
  *
  * @author 1014 Programming Team
  */
-public class manualBridge extends CommandBase {
-
-    public manualBridge()
+public class ManualBridge extends CommandBase 
+{
+    public ManualBridge()
     {
         requires(bridgeTool);
     }

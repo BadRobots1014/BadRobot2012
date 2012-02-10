@@ -16,7 +16,8 @@ public class OI
     public static DriverStationLCD screen;
     private static double scalingFactor = 0;
 
-    public static Joystick controller;
+    public static Joystick xboxController;
+    
     /*
      * initializes all input methods (eg. joysticks)
      */
@@ -26,10 +27,9 @@ public class OI
         {
            leftJoystick = new Joystick(RobotMap.leftJoystick);
            rightJoystick = new Joystick(RobotMap.rightJoystick);
-           controller = new Joystick(RobotMap.controller);
+           xboxController = new Joystick(RobotMap.controller);
            ds = DriverStation.getInstance();//Drivers Station
            screen = DriverStationLCD.getInstance();//Output on DS
-           controller = new Joystick(3); //XBOX Controller
         }
 
         catch (Exception e) {System.out.println(e);}
@@ -80,29 +80,35 @@ public class OI
     public static double getXboxLeftX()
     {
         detectAxis();
-        return deadzone(-controller.getRawAxis(1));
+        return deadzone(-xboxController.getRawAxis(1));
     }
 
     public static double getXboxLeftY()
     {
-        return deadzone(controller.getRawAxis(2));
+        return deadzone(xboxController.getRawAxis(2));
     }
 
     public static double getXboxRightX()
     {
-        return deadzone(-controller.getRawAxis(4));
+        return deadzone(-xboxController.getRawAxis(4));
     }
 
     public static double getXboxRightY()
     {
-        return deadzone(controller.getRawAxis(5));
+        return deadzone(xboxController.getRawAxis(5));
     }
 
+    /**
+     * @return whether the xbox should be used to control the driveTrain
+     */
     public static boolean xboxControl()
     {
         return ds.getDigitalIn(1);
     }
 
+    /**
+     * @return whether the right joystick should be used for strafing commands
+     */
     public static boolean rightStrafe()
     {
         return ds.getDigitalIn(2);
@@ -113,14 +119,22 @@ public class OI
         return ds.getDigitalIn(3);
     }
 
+    /**
+     * @return whether the "up" bridge button is depressed. This button is used
+     * to instruct the Xerexes (bridger) class to pull up the bridge.
+     */
     public static boolean getUpButton()
     {
-        return controller.getRawButton(4);//Y
+        return xboxController.getRawButton(4);//Y
     }
 
+    /**
+     * @return whether the "down" bridge button is depressed. This button is used
+     * to instruct the Xerxes (bridger) class to lay down the bridge.
+     */
     public static boolean getDownButton()
     {
-        return controller.getRawButton(1);//X
+        return xboxController.getRawButton(1);//X
     }
     
     /*
@@ -130,7 +144,7 @@ public class OI
     public static double getUsedLeftX()
     {
         if (xboxControl())
-            return deadzone(controller.getRawAxis(1));
+            return deadzone(xboxController.getRawAxis(1));
         
         return deadzone(leftJoystick.getX());
         
@@ -142,7 +156,7 @@ public class OI
     public static double getUsedLeftY()
     {
         if (xboxControl())
-            return deadzone(controller.getRawAxis(2));
+            return deadzone(xboxController.getRawAxis(2));
         
         return deadzone(leftJoystick.getY());
     }
@@ -153,7 +167,7 @@ public class OI
     public static double getUsedRightX()
     {
         if (xboxControl())
-            return deadzone(controller.getRawAxis(4));
+            return deadzone(xboxController.getRawAxis(4));
         
         return deadzone(rightJoystick.getX());
     }
@@ -164,7 +178,7 @@ public class OI
     public static double getUsedRightY()
     {
         if (xboxControl())
-            return deadzone(controller.getRawAxis(5));
+            return deadzone(xboxController.getRawAxis(5));
         
         return deadzone(rightJoystick.getY());
     }
@@ -175,7 +189,7 @@ public class OI
     public static boolean getSecondaryTrigger()
     {
         if (xboxControl())
-            return controller.getBumper();
+            return xboxController.getBumper();
         
         return leftJoystick.getTrigger();
     }
@@ -183,10 +197,10 @@ public class OI
     /**
      * @return whether the shoot trigger is depressed
      */
-    public static boolean getShooterTrigger()
+    public static boolean getPrimaryTrigger()
     {
         if (xboxControl())
-            return controller.getTrigger();
+            return xboxController.getTrigger();
         
         return rightJoystick.getTrigger();
     }
@@ -218,12 +232,15 @@ public class OI
         return d / Math.abs(d) * ((Math.abs(d) - .10) / .90);
     }
 
+    /*
+     * helper method to determine which axis is which on the xbox controller
+     */
     public static void detectAxis()
     {
         for(int i=0; i<=12; i++)
         {
-            if(Math.abs(controller.getRawAxis(i)) > .1)
-                System.out.println(i + " : " + controller.getRawAxis(i));
+            if(Math.abs(xboxController.getRawAxis(i)) > .1)
+                System.out.println(i + " : " + xboxController.getRawAxis(i));
         }
     }
     
@@ -243,6 +260,11 @@ public class OI
         return ds.getAnalogIn(2);
     }
     
+    /**
+     * @param channel the channel the method should query for a value
+     * @return the value of the analog input from the driverstaion of a specific
+     * input channel.
+     */
     public static double getAnalogIn(int channel)
     {
         return ds.getAnalogIn(channel);
