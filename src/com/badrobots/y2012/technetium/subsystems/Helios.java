@@ -42,7 +42,9 @@ public class Helios extends Subsystem
     private Helios()
     {
         camera = AxisCamera.getInstance();
-        
+
+        if(camera == null)
+            System.out.println("Unable to find camera");
         bottomSensor = new AnalogChannel(RobotMap.bottomSensor);
         topSensor = new AnalogChannel(RobotMap.topSensor);
 
@@ -108,11 +110,17 @@ public class Helios extends Subsystem
         
         try 
         {
+            //gets and stores the current camera image
             img = camera.getImage();
             img = AxisCamera.getInstance().getImage();
+
+            //Created a binary image where pixels meeting threshold
             BinaryImage binary =  img.thresholdHSL(0, 180, 0, 100, 0, 5);
+
+            //Array of all detected rectangles, right?
             ParticleAnalysisReport[] particles = binary.getOrderedParticleAnalysisReports();
 
+            //Makes checks to see if the rectangle meets size and ratio requirements
             for (int i = 0; i < particles.length; i++)
             {
                 ParticleAnalysisReport test = particles[i];
@@ -126,7 +134,8 @@ public class Helios extends Subsystem
                     }
                 }
             }
-            
+
+            //release memory allocated to the images
             img.free();
             binary.free();
         }
@@ -136,6 +145,7 @@ public class Helios extends Subsystem
             ex.printStackTrace();
         }
 
+        //return the rectangles that meet the requirements
         return toReturn;
     }
     
