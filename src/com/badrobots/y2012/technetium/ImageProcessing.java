@@ -28,6 +28,7 @@ public class ImageProcessing extends Thread
     public ImageProcessing(AxisCamera c)
     {
         camera = c;
+        camera.writeResolution(AxisCamera.ResolutionT.k160x120);
         this.setPriority(MIN_PRIORITY);
         running = false;
     }
