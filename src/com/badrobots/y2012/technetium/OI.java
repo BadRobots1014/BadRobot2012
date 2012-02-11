@@ -17,6 +17,7 @@ public class OI
     private static double scalingFactor = 0;
 
     public static Joystick xboxController;
+    public static Joystick xboxController2;
     
     /*
      * initializes all input methods (eg. joysticks)
@@ -28,6 +29,7 @@ public class OI
            leftJoystick = new Joystick(RobotMap.leftJoystick);
            rightJoystick = new Joystick(RobotMap.rightJoystick);
            xboxController = new Joystick(RobotMap.controller);
+           xboxController2 = new Joystick(RobotMap.controller2);
            ds = DriverStation.getInstance();//Drivers Station
            screen = DriverStationLCD.getInstance();//Output on DS
         }
@@ -134,7 +136,27 @@ public class OI
      */
     public static boolean getDownButton()
     {
-        return xboxController.getRawButton(1);//X
+        return xboxController.getRawButton(1);
+    }
+
+    public static boolean secondXboxX()
+    {
+        return xboxController2.getRawButton(3);//X
+    }
+
+    public static boolean secondXboxY()
+    {
+        return xboxController2.getRawButton(4);//Y
+    }
+
+    public static boolean secondXboxA()
+    {
+        return xboxController2.getRawButton(1);//A
+    }
+
+    public static boolean secondXboxB()
+    {
+        return xboxController2.getRawButton(2);//B
     }
     
     /*

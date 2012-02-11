@@ -48,8 +48,10 @@ public class Hermes extends Subsystem
 
         drive = new RobotDrive(lFront, lBack, rFront, rBack);   // feeds victors to RobotDrive
         drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
-        drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);        
-        horizontalGyro = new Gyro(RobotMap.horizontalGyro); //gyro
+        drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
+        drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
+        drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true);
+        //horizontalGyro = new Gyro(RobotMap.horizontalGyro); //gyro
         drive.setSafetyEnabled(false);  //because why not. Jon: because it will kill us all. 
                                         // Haven't you seen iRobot? They left their robots on
                                         // safety enable = false
@@ -108,8 +110,8 @@ public class Hermes extends Subsystem
      */
     public void tankDrive()
     {
-        lFront.set(-OI.getUsedLeftY()); //deadzone(OI.leftJoystick.getY()));
-        lBack.set(-OI.getUsedLeftY()); //-deadzone(OI.leftJoystick.getY()));
+        lFront.set(OI.getUsedLeftY()); //deadzone(OI.leftJoystick.getY()));
+        lBack.set(OI.getUsedLeftY()); //-deadzone(OI.leftJoystick.getY()));
 
         rFront.set(OI.getUsedRightY()); //deadzone(OI.rightJoystick.getY()));
         rBack.set(OI.getUsedRightY()); //deadzone(OI.rightJoystick.getY()));
