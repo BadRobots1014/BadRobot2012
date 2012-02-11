@@ -37,7 +37,7 @@ public class GatherBallsAndAutoShoot extends CommandBase
      */
     protected void execute()
     {
-        if (ballGatherer.numBalls() >= 3)
+        /*if (ballGatherer.numBalls() >= 3)
         {
             ballGatherer.runBottomRoller(0);
             
@@ -59,7 +59,7 @@ public class GatherBallsAndAutoShoot extends CommandBase
             ballGatherer.runConveyor(.5);//WARNING: This may cause more than 1 ball to be picked up
             ballGatherer.addBall();
         }
-        
+        */
         
     }
 

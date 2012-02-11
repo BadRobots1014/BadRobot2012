@@ -33,8 +33,9 @@ public abstract class CommandBase extends Command
         // news. Don't move it.
         OI.init();
         driveTrain = Hermes.getInstance();
-        sensors = Helios.getInstance();
-       // shooter = Shooter.getInstance();
+        //sensors = Helios.getInstance();
+        //shooter = Shooter.getInstance();
+        ballGatherer = Demeter.getInstance();
         
         
         //shooter = Shooter.getInstance();

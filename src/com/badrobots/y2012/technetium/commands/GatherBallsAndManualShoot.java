@@ -13,13 +13,13 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
     public GatherBallsAndManualShoot() 
     {
         requires(ballGatherer);
-        requires(shooter);
+        //requires(shooter);
     }
 
     protected void initialize() 
     {
-        if (Helios.getInstance().topChannelBlocked())
-            topBlocked = true;
+        //if (Helios.getInstance().topChannelBlocked())
+            //topBlocked = true;
     }
 
     /*
@@ -35,7 +35,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
      */
     protected void execute() 
     {
-        if (ballGatherer.numBalls() < 3)
+        /*if (ballGatherer.numBalls() < 3)
             ballGatherer.runBottomRoller(.2);   //"Ball pickup" mode
         
         //If the bottom garage sensor is blocked, and the top isn't blocked, pull the ball until
@@ -64,7 +64,9 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
                     topBlocked = false;
                 }
             }
-        }
+        }*/
+        ballGatherer.runConveyor(OI.secondXboxB(), OI.secondXboxY());
+        ballGatherer.runBottomRoller(OI.secondXboxA(), OI.secondXboxX());
     }
 
     // Make this return true when this Command no longer needs to run execute()
