@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
-Ant-Version: Apache Ant 1.8.1
-Created-By: 1.6.0_21-b07 (Sun Microsystems Inc.)
+Ant-Version: Apache Ant 1.8.2
+Created-By: 1.7.0_02-b13 (Oracle Corporation)
 MIDlet-Name: Technetium
 MIDlet-Version: 1.0.0
 MIDlet-Vendor: FIRST

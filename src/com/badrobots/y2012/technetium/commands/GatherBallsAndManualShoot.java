@@ -47,7 +47,8 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         }
         
         if (OI.getSecondaryTrigger())   //warm up the shooter -- think gatling gun
-        {                           //Why wouldn't this run all the time? Power?
+        {                           //Why wouldn't this run all the time? Power? 
+                                    // @reply: yup. and noise. just impractical
             shooter.run(1);
             
             if (OI.getPrimaryTrigger()) // push balls into shooter

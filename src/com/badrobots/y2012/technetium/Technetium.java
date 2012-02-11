@@ -23,8 +23,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.badrobots.y2012.technetium.buttons.MechanumDriveTrigger;
 import com.badrobots.y2012.technetium.buttons.ResetGyro;
 import com.badrobots.y2012.technetium.buttons.SwitchScalingSpeeds;
+import com.badrobots.y2012.technetium.subsystems.Helios;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStationLCD;
+import edu.wpi.first.wpilibj.camera.AxisCamera;
+import edu.wpi.first.wpilibj.camera.AxisCameraException;
 
 //import com.badrobots.y2012.technetium.buttons.ResetGyro;
 
@@ -42,8 +45,10 @@ import edu.wpi.first.wpilibj.DriverStationLCD;
 public class Technetium extends IterativeRobot 
 {
 
+    
     Command firstCommand;
     Button mecanumDriveTrigger, tankDriveTrigger, switchScaling;
+    protected ImageProcessing thread = new ImageProcessing(AxisCamera.getInstance());
 
     /**
      * This function is run when the robot is first started up and should be
@@ -53,6 +58,8 @@ public class Technetium extends IterativeRobot
     {
         // Initialize all subsystems
         CommandBase.init();
+        Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+        thread.start();
     }
 
     public void autonomousInit()
@@ -76,6 +83,8 @@ public class Technetium extends IterativeRobot
         new TankDriveTrigger();
         new SwitchScalingSpeeds();
         new MechanumDriveTrigger();
+        thread.setRunning(true);
+        
     }
 
     /**
@@ -85,7 +94,13 @@ public class Technetium extends IterativeRobot
     {
         Watchdog.getInstance().feed();
         //Runs the correct commands with their subsytems
-        Scheduler.getInstance().run();
+        Scheduler.getInstance().run();        
+    }
+    
+    public void disabledInit() 
+    {
+        System.out.println("Default IterativeRobot.disabledInit() method... Overload you!");
         
+        thread.setRunning(false);
     }
 }

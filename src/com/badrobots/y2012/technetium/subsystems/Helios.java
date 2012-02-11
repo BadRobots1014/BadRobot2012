@@ -45,7 +45,7 @@ public class Helios extends Subsystem
 
         if(camera == null)
             System.out.println("Unable to find camera");
-        bottomSensor = new AnalogChannel(RobotMap.bottomSensor);
+        /*bottomSensor = new AnalogChannel(RobotMap.bottomSensor);
         topSensor = new AnalogChannel(RobotMap.topSensor);
 
         //Note: If this doesn't work, use digital In and Outs as arguements
@@ -55,7 +55,9 @@ public class Helios extends Subsystem
         lBack.setEnabled(true);
         //Stops interference between sensors
         lFront.setAutomaticMode(true);
-        lBack.setAutomaticMode(true);
+        lBack.setAutomaticMode(true);*/
+        
+        //TODO
     }
 
     /**
@@ -98,55 +100,7 @@ public class Helios extends Subsystem
     
     public double getAngleToTarget()
     {
-        return 3.14;//Really? Remeber to fix this
-    }
-
-    public ParticleAnalysisReport[] getRectangleParticles() throws AxisCameraException
-    {
-        ParticleAnalysisReport[] toReturn = new ParticleAnalysisReport[4];
-        
-        ColorImage img;
-        int current = 0;
-        
-        try 
-        {
-            //gets and stores the current camera image
-            img = camera.getImage();
-            img = AxisCamera.getInstance().getImage();
-
-            //Created a binary image where pixels meeting threshold
-            BinaryImage binary =  img.thresholdHSL(0, 180, 0, 100, 0, 5);
-
-            //Array of all detected rectangles, right?
-            ParticleAnalysisReport[] particles = binary.getOrderedParticleAnalysisReports();
-
-            //Makes checks to see if the rectangle meets size and ratio requirements
-            for (int i = 0; i < particles.length; i++)
-            {
-                ParticleAnalysisReport test = particles[i];
-                if (test.particleToImagePercent > .1 && test.particleToImagePercent < .4)
-                {
-                    double ratio = test.boundingRectWidth/test.boundingRectHeight;
-                    if (ratio > ((4/3) - .2) && ratio < ((4/3) + .2))
-                    {
-                        toReturn[current] = test;
-                        current++;
-                    }
-                }
-            }
-
-            //release memory allocated to the images
-            img.free();
-            binary.free();
-        }
-        
-        catch (NIVisionException ex)
-        {
-            ex.printStackTrace();
-        }
-
-        //return the rectangles that meet the requirements
-        return toReturn;
+        return 3.14;//XXX:Really? Remeber to fix this
     }
     
     /*
@@ -175,6 +129,5 @@ public class Helios extends Subsystem
 
     public void initDefaultCommand()
     {
-        setDefaultCommand(new AutoAim());
     }
 }
