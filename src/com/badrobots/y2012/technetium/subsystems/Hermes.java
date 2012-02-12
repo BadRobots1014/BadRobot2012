@@ -111,7 +111,7 @@ public class Hermes extends Subsystem
     public void tankDrive()
     {
         lFront.set(OI.getUsedLeftY()); //deadzone(OI.leftJoystick.getY()));
-        lBack.set(OI.getUsedLeftY()); //-deadzone(OI.leftJoystick.getY()));
+        lBack.set(-OI.getUsedLeftY()); //-deadzone(OI.leftJoystick.getY()));
 
         rFront.set(OI.getUsedRightY()); //deadzone(OI.rightJoystick.getY()));
         rBack.set(OI.getUsedRightY()); //deadzone(OI.rightJoystick.getY()));

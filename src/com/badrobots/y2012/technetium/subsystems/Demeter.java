@@ -69,22 +69,19 @@ public class Demeter extends Subsystem
     /*
      * Runs just the bottomRoller (the motor that pulls the ball into the conveyor)
      */
-    public void runBottomRoller(boolean off, boolean forward)
+    public void runBottomRoller(boolean off, boolean reverse)
     {
          if(off)
          {
              bottomRoller.set(Relay.Value.kOff);
-             System.out.println("Case1");
          }
-         else if(forward)
+         else if(reverse)
          {
-             bottomRoller.set(Relay.Value.kForward);
-             System.out.println("Case2");
+             bottomRoller.set(Relay.Value.kReverse);
          }
          else
          {
-             bottomRoller.set(Relay.Value.kReverse);
-             System.out.println("Case3");
+             bottomRoller.set(Relay.Value.kForward);
          }
     }
     

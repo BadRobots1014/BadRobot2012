@@ -16,7 +16,7 @@ public class RobotMap
                                              // sidecar
 
     public static final int lFront = 1;
-    public static final int rFront = 6;
+    public static final int rFront = 5;
     public static final int lBack = 2;
     public static final int rBack = 3;
 

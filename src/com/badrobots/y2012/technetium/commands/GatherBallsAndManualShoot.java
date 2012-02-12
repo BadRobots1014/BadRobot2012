@@ -66,7 +66,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             }
         }*/
         ballGatherer.runConveyor(OI.secondXboxB(), OI.secondXboxY());
-        ballGatherer.runBottomRoller(OI.secondXboxA(), OI.secondXboxX());
+        ballGatherer.runBottomRoller(OI.secondXboxX(), OI.secondXboxRB());
     }
 
     // Make this return true when this Command no longer needs to run execute()
