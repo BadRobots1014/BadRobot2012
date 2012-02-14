@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
 import com.badrobots.y2012.technetium.RobotMap;
 import com.badrobots.y2012.technetium.commands.AutoAim;
 import edu.wpi.first.wpilibj.AnalogChannel;
+import edu.wpi.first.wpilibj.Gyro;
 
 /*
  * @author 1014 Programming Team
@@ -29,6 +30,7 @@ public class Helios extends Subsystem
     private static AnalogChannel bottomSensor, topSensor;
     private static final double threshold = 200;//200 VOLTS?!?!? This needs to be changed
     private static final double spacing = 25;
+    protected static Gyro gyro;
     public static Helios getInstance()
     {
         if (sensors == null)
@@ -45,6 +47,8 @@ public class Helios extends Subsystem
 
         if(camera == null)
             System.out.println("Unable to find camera");
+        
+        gyro = new Gyro(RobotMap.verticalGyro);
         /*bottomSensor = new AnalogChannel(RobotMap.bottomSensor);
         topSensor = new AnalogChannel(RobotMap.topSensor);
 
@@ -126,7 +130,22 @@ public class Helios extends Subsystem
         
         return true;
     }
-
+    
+    /*
+     * @return the angle of the incline/decline the robot is at 
+     */
+    public double getVerticalGyro()
+    {
+        return gyro.getAngle();
+    }
+    
+    /*
+     * Resets the vertical gyro so that its current heading is 0
+     */
+    public void resetVerticalGyro()
+    {
+        gyro.reset();
+    }
     public void initDefaultCommand()
     {
     }

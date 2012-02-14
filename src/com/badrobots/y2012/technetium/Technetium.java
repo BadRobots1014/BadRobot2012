@@ -8,21 +8,18 @@
 package com.badrobots.y2012.technetium;
 
 
+import com.badrobots.y2012.technetium.buttons.*;
 import com.badrobots.y2012.technetium.commands.PolarMechanumDrive;
 import com.badrobots.y2012.technetium.commands.TankDrive;
 import com.badrobots.y2012.technetium.commands.MechanumDrive;
 import com.badrobots.y2012.technetium.commands.CommandBase;
 import com.badrobots.y2012.technetium.subsystems.Hermes;
-import com.badrobots.y2012.technetium.buttons.TankDriveTrigger;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Watchdog;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import com.badrobots.y2012.technetium.buttons.MechanumDriveTrigger;
-import com.badrobots.y2012.technetium.buttons.ResetGyro;
-import com.badrobots.y2012.technetium.buttons.SwitchScalingSpeeds;
 import com.badrobots.y2012.technetium.subsystems.Helios;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStationLCD;
@@ -48,7 +45,7 @@ public class Technetium extends IterativeRobot
     
     Command firstCommand;
     Button mecanumDriveTrigger, tankDriveTrigger, switchScaling;
-    //protected ImageProcessing thread = new ImageProcessing(AxisCamera.getInstance());
+    protected ImageProcessing thread;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -59,7 +56,6 @@ public class Technetium extends IterativeRobot
         // Initialize all subsystems
         CommandBase.init();
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-        //thread.start();
     }
 
     public void autonomousInit()
@@ -83,8 +79,12 @@ public class Technetium extends IterativeRobot
         new TankDriveTrigger();
         new SwitchScalingSpeeds();
         new MechanumDriveTrigger();
-        //thread.setRunning(true);
-        
+        new BalanceButton();
+ 
+        thread = new ImageProcessing(AxisCamera.getInstance());
+        thread.start();
+        thread.setRunning(true);
+
     }
 
     /**
@@ -101,6 +101,7 @@ public class Technetium extends IterativeRobot
     {
         System.out.println("Default IterativeRobot.disabledInit() method... Overload you!");
         
-        //thread.setRunning(false);
+        if (thread != null)
+            thread.setRunning(false);
     }
 }

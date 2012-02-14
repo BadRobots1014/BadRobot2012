@@ -35,7 +35,7 @@ public abstract class CommandBase extends Command
         driveTrain = Hermes.getInstance();
         //sensors = Helios.getInstance();
         //shooter = Shooter.getInstance();
-        ballGatherer = Demeter.getInstance();
+       // ballGatherer = Demeter.getInstance();
         
         
         //shooter = Shooter.getInstance();

@@ -146,7 +146,7 @@ public class OI
 
     public static boolean secondXboxY()
     {
-        return xboxController2.getRawButton(4);//Y
+        return xboxController2.getRawButton(2);//Y
     }
 
     public static boolean secondXboxA()
@@ -156,7 +156,12 @@ public class OI
 
     public static boolean secondXboxB()
     {
-        return xboxController2.getRawButton(2);//B
+        return xboxController2.getRawButton(4);//B
+    }
+
+    public static boolean secondXboxRB()
+    {
+        return xboxController2.getRawButton(6);
     }
     
     /*

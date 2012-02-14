@@ -4,6 +4,7 @@
  */
 package com.badrobots.y2012.technetium;
 
+import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
 import edu.wpi.first.wpilibj.camera.AxisCameraException;
@@ -28,9 +29,20 @@ public class ImageProcessing extends Thread
     public ImageProcessing(AxisCamera c)
     {
         camera = c;
-        camera.writeResolution(AxisCamera.ResolutionT.k160x120);
-        this.setPriority(MIN_PRIORITY);
+        //this.setPriority(MIN_PRIORITY);
         running = false;
+        
+        while (!camera.freshImage())
+        {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+                System.out.println("Image is unavailable");
+        }  
+        camera.writeResolution(AxisCamera.ResolutionT.k160x120);
+
     }
 
     public void run()
@@ -40,13 +52,14 @@ public class ImageProcessing extends Thread
             if (running)
             {
                 ParticleAnalysisReport[] particleAnalysisReports = getRectangleParticles();
-            setParticleAnalysisReport(particleAnalysisReports);
+                setParticleAnalysisReport(particleAnalysisReports);
             
-            try {
-                Thread.sleep(sleepTimer);
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
-            }
+                try {
+                    Thread.sleep(sleepTimer);
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+
             }
             
         }
@@ -60,9 +73,10 @@ public class ImageProcessing extends Thread
         }
     }
     
+    int i = 0;
      public ParticleAnalysisReport[] getRectangleParticles() 
      {        
-        toReturn = new ParticleAnalysisReport[4];
+        toReturn = new ParticleAnalysisReport[1];
         
         ColorImage img;
         int current = 0;
@@ -70,30 +84,44 @@ public class ImageProcessing extends Thread
         try 
         {
             //gets and stores the current camera image
-            img = camera.getImage();
+            
+            img  = camera.getImage();
 
             //Created a binary image where pixels meeting threshold
-            BinaryImage binary =  img.thresholdHSL(170, 180, 90, 100, 0, 5);
+            BinaryImage binary =  img.thresholdHSL(136, 182, 45, 255, 116, 255);//img.thresholdHSL(0, 180, 40, 60, 60, 100);
             
+            binary = binary.convexHull(true);
             //Array of all detected rectangles, right?
             ParticleAnalysisReport[] particles = binary.getOrderedParticleAnalysisReports();
 
+            ParticleAnalysisReport test;
             //Makes checks to see if the rectangle meets size and ratio requirements
             for (int i = 0; i < particles.length; i++)
             {
-                ParticleAnalysisReport test = particles[i];
-                if (test.particleToImagePercent > .1 && test.particleToImagePercent < .4)
+                test = particles[i];
+                if (Math.abs( test.boundingRectWidth/test.boundingRectHeight - 1.33) < .2) //(test.particleToImagePercent > .1 && test.particleToImagePercent < .4)
                 {
+                    
                     double ratio = test.boundingRectWidth/test.boundingRectHeight;
-                    if (ratio > ((4/3) - .2) && ratio < ((4/3) + .2))
+                    if (test.particleArea/(test.boundingRectHeight*test.boundingRectWidth) > .8) //(ratio > ((4/3) - .2) && ratio < ((4/3) + .2))
                     {
+                        if (toReturn.length - 1 < current)
+                        {
+                            ParticleAnalysisReport[] temp = new ParticleAnalysisReport[current + 5];
+                            for (int x = 0; x < toReturn.length; x++)
+                                temp[x] = toReturn[x];
+                            
+                            toReturn = temp;
+                        }
                         toReturn[current] = test;
                         current++;
                     }
                 }
             }
             
-
+            DriverStationLCD.getInstance().println(DriverStationLCD.Line.kMain6, 1, i + "  Rect: " + current + "area ");
+            DriverStationLCD.getInstance().updateLCD();
+            
             //release memory allocated to the images
             img.free();
             binary.free();     
