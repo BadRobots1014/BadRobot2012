@@ -41,28 +41,25 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         {                           
 
             shooter.run(1);
-            System.out.println("run shooter");
             
             if (OI.getPrimaryTrigger()) // push balls into shooter
             {
-                System.out.println("running conveyor");
-                //ballGatherer.runConveyor(true);
+                //System.out.println("running conveyor");
+                ballGatherer.runConveyor(true, false);
                 
                 //#2 at bottom
             }
             else
             {
-                shooter.run(0);
-                ballGatherer.runConveyor(OI.secondXboxB(), OI.secondXboxY());
-                ballGatherer.runBottomRoller(OI.secondXboxX(), OI.secondXboxA());
-                System.out.println("Shoot2");
+                ballGatherer.runConveyor(OI.secondXboxX(), OI.secondXboxB());
+                ballGatherer.runBottomRoller(OI.secondXboxA(), OI.secondXboxY());
             }
         }
         else
         {
-            ballGatherer.runConveyor(OI.secondXboxB(), OI.secondXboxY());
-            ballGatherer.runBottomRoller(OI.secondXboxX(), OI.secondXboxA());
-            System.out.println("Shoot3");
+            shooter.run(0);
+            ballGatherer.runConveyor(OI.secondXboxX(), OI.secondXboxB());
+            ballGatherer.runBottomRoller(OI.secondXboxA(), OI.secondXboxY());
         }
 
     }
@@ -84,7 +81,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
 
 //1
 
-/*if (ballGatherer.numBalls() < 3)
+/*if (OI.)
             ballGatherer.runBottomRoller(.2);   //"Ball pickup" mode
 
         //If the bottom garage sensor is blocked, and the top isn't blocked, pull the ball until

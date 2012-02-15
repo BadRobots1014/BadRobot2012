@@ -30,7 +30,7 @@ public class RobotMap
     public static final int ultrasonicIn = 0; // TODO
 
     public static final int topSensor = 2;
-    public static final int bottomSensor = 3;
+    public static final int bottomSensor = 7;
 
     public static final int camera = 4;
     

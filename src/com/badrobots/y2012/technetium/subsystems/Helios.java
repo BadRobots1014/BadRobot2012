@@ -27,8 +27,8 @@ public class Helios extends Subsystem
     private static Helios sensors;
     private static AxisCamera camera;
     private static Ultrasonic lFront, lBack;
-    private static AnalogChannel bottomSensor, topSensor;
-    private static final double threshold = 200;//200 VOLTS?!?!? This needs to be changed
+    public static AnalogChannel bottomSensor, topSensor;
+    private static final double threshold = .5;//200 VOLTS?!?!? This needs to be changed
     private static final double spacing = 25;
     protected static Gyro gyro;
     public static Helios getInstance()
@@ -48,9 +48,9 @@ public class Helios extends Subsystem
         if(camera == null)
             System.out.println("Unable to find camera");
         
-        gyro = new Gyro(RobotMap.verticalGyro);
-        /*bottomSensor = new AnalogChannel(RobotMap.bottomSensor);
-        topSensor = new AnalogChannel(RobotMap.topSensor);
+        //gyro = new Gyro(RobotMap.verticalGyro);
+        bottomSensor = new AnalogChannel(RobotMap.bottomSensor);
+        /*topSensor = new AnalogChannel(RobotMap.topSensor);
 
         //Note: If this doesn't work, use digital In and Outs as arguements
         lFront = new Ultrasonic(1, 2);
@@ -60,6 +60,7 @@ public class Helios extends Subsystem
         //Stops interference between sensors
         lFront.setAutomaticMode(true);
         lBack.setAutomaticMode(true);*/
+
         
         //TODO
     }
@@ -125,10 +126,10 @@ public class Helios extends Subsystem
      */
     public boolean bottomChannelBlocked()
     {
-        if (bottomSensor.getAverageVoltage() > threshold)
-            return false;
-        
-        return true;
+        if (bottomSensor.getAverageVoltage() > .5)
+            return true;
+
+        return false;
     }
     
     /*

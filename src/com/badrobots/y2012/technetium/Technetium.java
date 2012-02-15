@@ -97,7 +97,8 @@ public class Technetium extends IterativeRobot
     {
         Watchdog.getInstance().feed();
         //Runs the correct commands with their subsytems
-        Scheduler.getInstance().run();        
+        Scheduler.getInstance().run();
+        OI.detectAxis();
     }
     
     public void disabledInit() 

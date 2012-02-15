@@ -150,7 +150,7 @@ public class OI
 
     public static boolean secondXboxY()
     {
-        return xboxController2.getRawButton(2);//Y
+        return xboxController2.getRawButton(4);//Y
     }
 
     public static boolean secondXboxA()
@@ -160,7 +160,7 @@ public class OI
 
     public static boolean secondXboxB()
     {
-        return xboxController2.getRawButton(4);//B
+        return xboxController2.getRawButton(2);//B
     }
 
     public static boolean secondXboxRB()//Right Bumper
@@ -168,9 +168,9 @@ public class OI
         return xboxController2.getRawButton(6);
     }
 
-    public static boolean secondXboxLB()//THIS NEEDS TO BE CHECKED!!!
+    public static boolean secondXboxLB()
     {
-        return xboxController2.getRawButton(7);
+        return xboxController2.getRawButton(5);
     }
     
     /*
@@ -224,10 +224,7 @@ public class OI
      */
     public static boolean getSecondaryTrigger()
     {
-        if (xboxControl())
-            return secondXboxLB();
-
-        return leftJoystick.getTrigger();
+        return secondXboxLB();
     }
     
     /**
@@ -235,10 +232,7 @@ public class OI
      */
     public static boolean getPrimaryTrigger()
     {
-        if (xboxControl())
-            return secondXboxRB();
-        
-        return rightJoystick.getTrigger();
+        return secondXboxRB();
     }
 
     /*
@@ -275,8 +269,8 @@ public class OI
     {
         for(int i=0; i<=12; i++)
         {
-            if(Math.abs(xboxController.getRawAxis(i)) > .1)
-                System.out.println(i + " : " + xboxController.getRawAxis(i));
+            if(xboxController2.getRawButton(i))
+                System.out.println("Button: " + i);
         }
     }
     

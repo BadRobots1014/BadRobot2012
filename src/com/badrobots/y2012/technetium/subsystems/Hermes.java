@@ -47,8 +47,8 @@ public class Hermes extends Subsystem
         rBack = new Victor(RobotMap.rBack);
 
         drive = new RobotDrive(lFront, lBack, rFront, rBack);   // feeds victors to RobotDrive
-        drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
-       // drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true); //
+       // drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
+        drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true); //
         drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
        // drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true); //
         //horizontalGyro = new Gyro(RobotMap.horizontalGyro); //gyro
@@ -73,9 +73,9 @@ public class Hermes extends Subsystem
             scaledLeftStrafe = 1;
         
          if (OI.rightStrafe())          
-             drive.mecanumDrive_Cartesian(scaledRightStrafe, OI.getUsedRightY(), OI.getUsedLeftX(), 0); //if right hand stick is being used for strafing left, right, up and down
+             drive.mecanumDrive_Cartesian(-scaledRightStrafe, OI.getUsedRightY(), OI.getUsedLeftX(), 0); //if right hand stick is being used for strafing left, right, up and down
          else                       // if left hand stick is being used for strafing
-            drive.mecanumDrive_Cartesian(scaledLeftStrafe, OI.getUsedLeftY(), OI.getUsedRightX(), 0);
+            drive.mecanumDrive_Cartesian(-scaledLeftStrafe, OI.getUsedLeftY(), OI.getUsedRightX(), 0);
     }
 
     /*
@@ -111,9 +111,9 @@ public class Hermes extends Subsystem
     public void tankDrive()
     {
         lFront.set(OI.getUsedLeftY()); //deadzone(OI.leftJoystick.getY()));
-        lBack.set(OI.getUsedLeftY()); //-deadzone(OI.leftJoystick.getY()));
+        lBack.set(-OI.getUsedLeftY()); //-deadzone(OI.leftJoystick.getY()));
 
-        rFront.set(OI.getUsedRightY()); //deadzone(OI.rightJoystick.getY()));
+        rFront.set(-OI.getUsedRightY()); //deadzone(OI.rightJoystick.getY()));
         rBack.set(OI.getUsedRightY()); //deadzone(OI.rightJoystick.getY()));
         
     }
