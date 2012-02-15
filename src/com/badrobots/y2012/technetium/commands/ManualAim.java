@@ -37,7 +37,7 @@ public class ManualAim extends CommandBase
             if (ballGatherer.numBalls() > 0)
             {
                 shooter.shootHigh();    
-                ballGatherer.notifyBallShot();
+                ballGatherer.removeBall();
             }
         }
     }

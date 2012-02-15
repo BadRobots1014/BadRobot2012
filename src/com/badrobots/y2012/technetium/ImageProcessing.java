@@ -94,7 +94,7 @@ public class ImageProcessing extends Thread
             println(" " + (int) (OI.getAnalogIn(1)*100)); 
             //BinaryImage binary = img.thresholdHSL(0, 180, 40, 60, 60, 100);
             
-            binary = binary.convexHull(true);
+            //binary = binary.convexHull(true);
             //Array of all detected rectangles, right?
             ParticleAnalysisReport[] particles = binary.getOrderedParticleAnalysisReports();
 

@@ -25,8 +25,6 @@ public class Demeter extends Subsystem
 
     
     /**
-     * Singleton static getter method for the class -- only one instance of BallGatherer
-     * in program
      * @return the instance of itself--if not already initialized, this method also
      * calls its constructor
      */
@@ -59,7 +57,7 @@ public class Demeter extends Subsystem
     public void runConveyor(boolean backward, boolean forward)
     {
         if(backward)
-            conveyor.set(Relay.Value.kForward);
+            conveyor.set(Relay.Value.kForward);//The actual direction is in fact backwards
         else if(forward)
             conveyor.set(Relay.Value.kReverse);
         else
@@ -69,27 +67,27 @@ public class Demeter extends Subsystem
     /*
      * Runs just the bottomRoller (the motor that pulls the ball into the conveyor)
      */
-    public void runBottomRoller(boolean off, boolean reverse)
+    public void runBottomRoller(boolean off, boolean forward)
     {
          if(off)
          {
              bottomRoller.set(Relay.Value.kOff);
          }
-         else if(reverse)
+         else if(forward)
          {
-             bottomRoller.set(Relay.Value.kReverse);
+             bottomRoller.set(Relay.Value.kForward);
          }
          else
          {
-             bottomRoller.set(Relay.Value.kForward);
+             bottomRoller.set(Relay.Value.kReverse);
          }
     }
     
     
     /*
-     * Tells the BallGatherer that a ball has been shot off
+     * Used to be ball shot. Now acounts for balls rolled out bottom.
      */
-    public void notifyBallShot()
+    public void removeBall()
     {
         balls--;
         if (balls < 0)

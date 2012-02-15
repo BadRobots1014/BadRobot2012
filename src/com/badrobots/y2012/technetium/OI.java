@@ -45,8 +45,8 @@ public class OI
      */
     public static void printToDS(String out)
     {
-        screen.println(DriverStationLCD.Line.kMain6,1, out);
-        screen.updateLCD();
+        DriverStationLCD.getInstance().println(DriverStationLCD.Line.kMain6, 1, out);
+        DriverStationLCD.getInstance().updateLCD();
     }
 
     public static double getLeftX()
@@ -159,9 +159,14 @@ public class OI
         return xboxController2.getRawButton(4);//B
     }
 
-    public static boolean secondXboxRB()
+    public static boolean secondXboxRB()//Right Bumper
     {
         return xboxController2.getRawButton(6);
+    }
+
+    public static boolean secondXboxLB()//THIS NEEDS TO BE CHECKED!!!
+    {
+        return xboxController2.getRawButton(7);
     }
     
     /*
@@ -216,7 +221,7 @@ public class OI
     public static boolean getSecondaryTrigger()
     {
         if (xboxControl())
-            return xboxController.getBumper();
+            return secondXboxLB();
         
         return leftJoystick.getTrigger();
     }
@@ -227,7 +232,7 @@ public class OI
     public static boolean getPrimaryTrigger()
     {
         if (xboxControl())
-            return xboxController.getTrigger();
+            return secondXboxRB();
         
         return rightJoystick.getTrigger();
     }

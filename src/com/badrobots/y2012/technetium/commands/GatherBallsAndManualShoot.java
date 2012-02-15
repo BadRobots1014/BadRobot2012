@@ -35,20 +35,11 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
      */
     protected void execute() 
     {
-        /*if (ballGatherer.numBalls() < 3)
-            ballGatherer.runBottomRoller(.2);   //"Ball pickup" mode
-        
-        //If the bottom garage sensor is blocked, and the top isn't blocked, pull the ball until
-        //it is no longer blocking the bottom sensor
-        if (Helios.getInstance().bottomChannelBlocked() && !topBlocked)
-        {
-            ballGatherer.runConveyor(.5);//WARNING: This may cause more than 1 ball to be picked up
-            ballGatherer.addBall();
-        }*/
-        
-        if (OI.getSecondaryTrigger() || OI.leftJoystick.getRawButton(9))   //warm up the shooter -- think gatling gun
-        {                           //Why wouldn't this run all the time? Power? 
-                                    // @reply: yup. and noise. just impractical
+
+        //#1 at bottom
+
+        if (OI.getSecondaryTrigger())   //warm up the shooter -- think gatling gun
+        {                           
             shooter.run(1);
             System.out.println("run shooter");
             
@@ -57,18 +48,23 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
                 System.out.println("running conveyor");
                 ballGatherer.runConveyor(true, false);
                 
-                /*if (Helios.getInstance().topChannelBlocked())   // ball enters loading zone
-                    topBlocked = true;
-                
-                if (topBlocked && !Helios.getInstance().topChannelBlocked()) //ball leaves loading zone
-                {
-                    ballGatherer.notifyBallShot();
-                    topBlocked = false;
-                }*/
+                //#2 at bottom
+            }
+            else
+            {
+                shooter.run(0);
+                ballGatherer.runConveyor(OI.secondXboxB(), OI.secondXboxY());
+                ballGatherer.runBottomRoller(OI.secondXboxX(), OI.secondXboxA());
+                System.out.println("Shoot2");
             }
         }
-        ballGatherer.runConveyor(OI.secondXboxB(), OI.secondXboxY());
-        ballGatherer.runBottomRoller(OI.secondXboxX(), OI.secondXboxRB());
+        else
+        {
+            ballGatherer.runConveyor(OI.secondXboxB(), OI.secondXboxY());
+            ballGatherer.runBottomRoller(OI.secondXboxX(), OI.secondXboxA());
+            System.out.println("Shoot3");
+        }
+
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -85,3 +81,27 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
     protected void interrupted() {
     }
 }
+
+//1
+
+/*if (ballGatherer.numBalls() < 3)
+            ballGatherer.runBottomRoller(.2);   //"Ball pickup" mode
+
+        //If the bottom garage sensor is blocked, and the top isn't blocked, pull the ball until
+        //it is no longer blocking the bottom sensor
+        if (Helios.getInstance().bottomChannelBlocked() && !topBlocked)
+        {
+            ballGatherer.runConveyor(.5);//WARNING: This may cause more than 1 ball to be picked up
+            ballGatherer.addBall();
+        }*/
+
+//2
+
+/*if (Helios.getInstance().topChannelBlocked())   // ball enters loading zone
+                    topBlocked = true;
+
+                if (topBlocked && !Helios.getInstance().topChannelBlocked()) //ball leaves loading zone
+                {
+                    ballGatherer.notifyBallShot();
+                    topBlocked = false;
+                }*/
