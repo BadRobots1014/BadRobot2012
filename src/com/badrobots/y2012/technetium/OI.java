@@ -15,6 +15,8 @@ public class OI
     public static DriverStation ds;
     public static DriverStationLCD screen;
     private static double scalingFactor = 0;
+    
+    protected static int usedRobot = 1;
 
     public static Joystick xboxController;
     public static Joystick xboxController2;
@@ -32,6 +34,8 @@ public class OI
            xboxController2 = new Joystick(RobotMap.controller2);
            ds = DriverStation.getInstance();//Drivers Station
            screen = DriverStationLCD.getInstance();//Output on DS
+           
+           
         }
 
         catch (Exception e) {System.out.println(e);}
@@ -222,7 +226,7 @@ public class OI
     {
         if (xboxControl())
             return secondXboxLB();
-        
+
         return leftJoystick.getTrigger();
     }
     
@@ -325,6 +329,14 @@ public class OI
     public static void setScalingFactor(double d)
     {
         scalingFactor = d;
+    }
+    
+    /*
+     * @return the index of the currently deployed robot (1 for kitbot, 2 for prototype, 3 for Technetium)
+     */
+    public int getUsedRobot()
+    {
+        return usedRobot;
     }
 }
 

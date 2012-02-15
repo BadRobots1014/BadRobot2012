@@ -35,18 +35,18 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
      */
     protected void execute() 
     {
-
         //#1 at bottom
 
         if (OI.getSecondaryTrigger())   //warm up the shooter -- think gatling gun
         {                           
+
             shooter.run(1);
             System.out.println("run shooter");
             
             if (OI.getPrimaryTrigger()) // push balls into shooter
             {
                 System.out.println("running conveyor");
-                ballGatherer.runConveyor(true, false);
+                //ballGatherer.runConveyor(true);
                 
                 //#2 at bottom
             }

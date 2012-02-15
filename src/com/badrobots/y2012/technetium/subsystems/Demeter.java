@@ -52,7 +52,7 @@ public class Demeter extends Subsystem
     }
     
     /*
-     * Runs the bottomRoller and conveyor motor: the bottom half of the gatherer
+     * Runs the conveyor motor
      */
     public void runConveyor(boolean backward, boolean forward)
     {
@@ -67,11 +67,12 @@ public class Demeter extends Subsystem
     /*
      * Runs just the bottomRoller (the motor that pulls the ball into the conveyor)
      */
-    public void runBottomRoller(boolean off, boolean forward)
+
+    public void runBottomRoller(boolean forward, boolean reverse)
     {
-         if(off)
+         if(forward)
          {
-             bottomRoller.set(Relay.Value.kOff);
+             bottomRoller.set(Relay.Value.kForward);
          }
          else if(forward)
          {
@@ -79,7 +80,7 @@ public class Demeter extends Subsystem
          }
          else
          {
-             bottomRoller.set(Relay.Value.kReverse);
+             bottomRoller.set(Relay.Value.kOff);
          }
     }
     
