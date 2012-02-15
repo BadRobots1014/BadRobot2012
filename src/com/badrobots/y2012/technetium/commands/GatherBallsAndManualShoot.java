@@ -46,6 +46,13 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             ballGatherer.addBall();
         }*/
         
+        if (OI.leftJoystick.getTrigger())
+        {
+            System.out.println("Trigger shoot");
+            shooter.run(1);
+        }
+        
+        System.out.println(OI.getSecondaryTrigger());
         if (OI.getSecondaryTrigger() || OI.leftJoystick.getRawButton(9))   //warm up the shooter -- think gatling gun
         {                           //Why wouldn't this run all the time? Power? 
                                     // @reply: yup. and noise. just impractical
@@ -55,7 +62,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             if (OI.getPrimaryTrigger()) // push balls into shooter
             {
                 System.out.println("running conveyor");
-                ballGatherer.runConveyor(true, false);
+                //ballGatherer.runConveyor(true);
                 
                 /*if (Helios.getInstance().topChannelBlocked())   // ball enters loading zone
                     topBlocked = true;
