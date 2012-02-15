@@ -294,6 +294,7 @@ public class OI
      */
     public static double getAnalogIn(int channel)
     {
+        
         return ds.getAnalogIn(channel);
     }
     

@@ -46,6 +46,7 @@ public class Technetium extends IterativeRobot
     Command firstCommand;
     Button mecanumDriveTrigger, tankDriveTrigger, switchScaling;
     protected ImageProcessing thread;
+    protected AxisCamera camera;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -56,6 +57,8 @@ public class Technetium extends IterativeRobot
         // Initialize all subsystems
         CommandBase.init();
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
+        //camera = AxisCamera.getInstance();
+        
     }
 
     public void autonomousInit()
@@ -79,11 +82,11 @@ public class Technetium extends IterativeRobot
         new TankDriveTrigger();
         new SwitchScalingSpeeds();
         new MechanumDriveTrigger();
-        new BalanceButton();
- 
-        thread = new ImageProcessing(AxisCamera.getInstance());
-        thread.start();
-        thread.setRunning(true);
+        //new BalanceButton();
+
+       // thread = new ImageProcessing(camera);
+       // thread.start();
+       // thread.setRunning(true);
 
     }
 

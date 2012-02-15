@@ -13,7 +13,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
     public GatherBallsAndManualShoot() 
     {
         requires(ballGatherer);
-        //requires(shooter);
+        requires(shooter);
     }
 
     protected void initialize() 
@@ -44,27 +44,29 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         {
             ballGatherer.runConveyor(.5);//WARNING: This may cause more than 1 ball to be picked up
             ballGatherer.addBall();
-        }
+        }*/
         
-        if (OI.getSecondaryTrigger())   //warm up the shooter -- think gatling gun
+        if (OI.getSecondaryTrigger() || OI.leftJoystick.getRawButton(9))   //warm up the shooter -- think gatling gun
         {                           //Why wouldn't this run all the time? Power? 
                                     // @reply: yup. and noise. just impractical
             shooter.run(1);
+            System.out.println("run shooter");
             
             if (OI.getPrimaryTrigger()) // push balls into shooter
             {
-                ballGatherer.runConveyor(.2);
+                System.out.println("running conveyor");
+                ballGatherer.runConveyor(true, false);
                 
-                if (Helios.getInstance().topChannelBlocked())   // ball enters loading zone
+                /*if (Helios.getInstance().topChannelBlocked())   // ball enters loading zone
                     topBlocked = true;
                 
                 if (topBlocked && !Helios.getInstance().topChannelBlocked()) //ball leaves loading zone
                 {
                     ballGatherer.notifyBallShot();
                     topBlocked = false;
-                }
+                }*/
             }
-        }*/
+        }
         ballGatherer.runConveyor(OI.secondXboxB(), OI.secondXboxY());
         ballGatherer.runBottomRoller(OI.secondXboxX(), OI.secondXboxRB());
     }

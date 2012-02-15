@@ -11,6 +11,7 @@ import com.badrobots.y2012.technetium.buttons.ShootBallTrigger;
 import com.badrobots.y2012.technetium.commands.AutoAim;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Ultrasonic;
+import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
 import edu.wpi.first.wpilibj.camera.AxisCameraException;
@@ -25,7 +26,7 @@ import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
 public class Artemis extends Subsystem
 {
     private static Artemis instance;
-    private static Jaguar right, left;
+    private static Victor right, left;
     private static Ultrasonic ranger;
     private static AxisCamera camera;
 
@@ -42,14 +43,14 @@ public class Artemis extends Subsystem
     private Artemis()
     {
         super();
-        /*right = new Jaguar (RobotMap.rightShooter); // initialize the motor
-        left = new Jaguar (RobotMap.leftShooter);
+        right = new Victor (RobotMap.rightShooter); // initialize the motor
+        left = new Victor (RobotMap.leftShooter);
                 
-        ranger = new Ultrasonic (RobotMap.ultrasonicOut, RobotMap.ultrasonicIn); //init
-        ranger.setEnabled(true);
-        ranger.setAutomaticMode(true);*/
+       // ranger = new Ultrasonic (RobotMap.ultrasonicOut, RobotMap.ultrasonicIn); //init
+        //ranger.setEnabled(true);
+       // ranger.setAutomaticMode(true);
 
-        camera.getInstance(); //init
+       // camera.getInstance(); //init
 
     }
 
@@ -66,7 +67,7 @@ public class Artemis extends Subsystem
         //determine shooter speed through regression equation determined through testing
         int speed = 0;
         right.set(speed);
-        left.set(-speed);
+        left.set(speed);
     }
 
     public void shootHigh() // read distance from kinect/ultrasonic
@@ -74,7 +75,7 @@ public class Artemis extends Subsystem
         //determine shooter speed through regression equation determined through testing
         int speed = 0;
         right.set(speed);
-        left.set(-speed);
+        left.set(speed);
     }
 
     public void shootLow() // read distance from kinect/ultrasonic
@@ -82,7 +83,7 @@ public class Artemis extends Subsystem
         //determine shooter speed through regression equation determined through testing
         int speed = 0;
         right.set(speed);
-        left.set(-speed);
+        left.set(speed);
     }
     
     /*
@@ -90,54 +91,16 @@ public class Artemis extends Subsystem
      */
     public void run(double speed)
     {
+        System.out.println("shooting ball");
         right.set(speed);
-        left.set(-speed);
+        left.set(speed);
     }
 
 
-    public ParticleAnalysisReport[] getRectangleParticles() throws AxisCameraException
+    
+
+    protected void initDefaultCommand()
     {
-        ParticleAnalysisReport[] toReturn = new ParticleAnalysisReport[4];
-
-        ColorImage img;
-        int current = 0;
-
-        try
-        {
-            img = camera.getImage();
-
-            BinaryImage binary =  img.thresholdHSI(0, 180, 20, 50, 50, 100);
-            
-            
-            //int hueLow, int hueHigh, int saturationLow, int saturationHigh, int intansityLow, int intensityHigh
-
-            ParticleAnalysisReport[] particles = binary.getOrderedParticleAnalysisReports();
-
-            for (int i = 0; i < particles.length; i++)
-            {
-                ParticleAnalysisReport test = particles[i];
-                if (test.particleToImagePercent > .1 && test.particleToImagePercent < .4)
-                {
-                    double ratio = test.boundingRectWidth/test.boundingRectHeight;
-                    if (ratio > ((4/3) - .2) && ratio < ((4/3) + .2))
-                    {
-                        toReturn[current] = test;
-                        current++;
-                    }
-                }
-            }
-            
-            binary.free();
-        }
-
-        catch (NIVisionException ex)
-        {
-            ex.printStackTrace();
-        }
-
-        return toReturn;
-    }
-
-    protected void initDefaultCommand() {
+        //super.setDefaultCommand(new GatherBalls);
     }
 }

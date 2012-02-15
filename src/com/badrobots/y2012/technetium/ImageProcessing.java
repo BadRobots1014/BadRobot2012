@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.image.BinaryImage;
 import edu.wpi.first.wpilibj.image.ColorImage;
 import edu.wpi.first.wpilibj.image.NIVisionException;
 import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -29,10 +30,10 @@ public class ImageProcessing extends Thread
     public ImageProcessing(AxisCamera c)
     {
         camera = c;
-        //this.setPriority(MIN_PRIORITY);
+        this.setPriority(MIN_PRIORITY);
         running = false;
         
-        while (!camera.freshImage())
+       /* while (!camera.freshImage())
         {
                 try {
                     Thread.sleep(1000);
@@ -40,7 +41,7 @@ public class ImageProcessing extends Thread
                     ex.printStackTrace();
                 }
                 System.out.println("Image is unavailable");
-        }  
+        }  */
         camera.writeResolution(AxisCamera.ResolutionT.k160x120);
 
     }
@@ -53,6 +54,7 @@ public class ImageProcessing extends Thread
             {
                 ParticleAnalysisReport[] particleAnalysisReports = getRectangleParticles();
                 setParticleAnalysisReport(particleAnalysisReports);
+                println("running...");
             
                 try {
                     Thread.sleep(sleepTimer);
@@ -88,7 +90,9 @@ public class ImageProcessing extends Thread
             img  = camera.getImage();
 
             //Created a binary image where pixels meeting threshold
-            BinaryImage binary =  img.thresholdHSL(136, 182, 45, 255, 116, 255);//img.thresholdHSL(0, 180, 40, 60, 60, 100);
+            BinaryImage binary =  img.thresholdHSL(0, (int) (OI.getAnalogIn(1)*100), 0, (int) (OI.getAnalogIn(2)*100), (int) (OI.getAnalogIn(3)*100), (int) (OI.getAnalogIn(4)*100));
+            println(" " + (int) (OI.getAnalogIn(1)*100)); 
+            //BinaryImage binary = img.thresholdHSL(0, 180, 40, 60, 60, 100);
             
             binary = binary.convexHull(true);
             //Array of all detected rectangles, right?
@@ -119,6 +123,7 @@ public class ImageProcessing extends Thread
                 }
             }
             
+            println("got through the analysis hell " + "   Rects: " + (current) + " Raw: " + particles.length);
             DriverStationLCD.getInstance().println(DriverStationLCD.Line.kMain6, 1, i + "  Rect: " + current + "area ");
             DriverStationLCD.getInstance().updateLCD();
             
