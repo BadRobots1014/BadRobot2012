@@ -2,6 +2,8 @@ package com.badrobots.y2012.technetium.commands;
 
 import com.badrobots.y2012.technetium.OI;
 import com.badrobots.y2012.technetium.subsystems.Helios;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Relay;
 
 /*
  * @author 1014 Programming Team
@@ -37,17 +39,19 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
      */
     protected void execute() 
     {
+        System.out.println("Executing...");
         //#1 at bottom
-        if (ballGatherer.numBalls() >= 3)   //if 3 or more balls, reject incoming ones
-            ballGatherer.runBottomRoller(false, true);
+       /* if (ballGatherer.numBalls() >= 3)   //if 3 or more balls, reject incoming ones
+            ballGatherer.runBottomRoller(false, true);*/
         
-        else
-            ballGatherer.runBottomRoller(true, false); //constantly runs the bottomRoller
+        
+        ballGatherer.bottomRoller.set(Relay.Value.kForward); //constantly runs the bottomRoller
             
         if (bottomWasBlocked)   //if the garage door sensor was/is blocked
         {
+            System.out.println("bottom was blocked");
             ballGatherer.runConveyor(true, false);
-            ballGatherer.runBottomRoller(false, false); //stop movement
+           // ballGatherer.runBottomRoller(false, false); //stop movement
             
             if (Helios.getInstance().topChannelBlocked())   //if the ball has made it to the
             {                                               //top sensor, set some booleans
@@ -57,14 +61,17 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             }
         }
         
-        else if (Helios.getInstance().bottomChannelBlocked())   // if the sensor is blocked, set boolean to true
+        else if (OI.secondXboxLB())   // if the sensor is blocked, set boolean to true
+        {
+            System.out.println("left bumper depressed, my good sir");
             bottomWasBlocked = true;
+        }
         
         if (topWasBlocked)  // if ball is at top of sensor
         {
             shooter.run(1); //spin up
             
-            if (OI.secondXboxRB()) // wait for input to push ball into shooter
+            if (OI.secondXboxLB()) // wait for input to push ball into shooter
             {
                 if (Helios.getInstance().topChannelBlocked())   //run conveyor
                     ballGatherer.runConveyor(true, false);
@@ -116,9 +123,9 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
     // Called once after isFinished returns true
     protected void end() 
     {
-        ballGatherer.runBottomRoller(false, false);
-        ballGatherer.runConveyor(false, false);
-        shooter.run(0);
+        //ballGatherer.runBottomRoller(false, false);
+        //ballGatherer.runConveyor(false, false);
+        //shooter.run(0);
     }
 
     // Called when another command which requires one or more of the same

@@ -19,7 +19,7 @@ public class Demeter extends Subsystem
 {
     protected static Demeter instance;
     AnalogChannel garageSensor;
-    Relay conveyor, bottomRoller;
+    public Relay conveyor, bottomRoller;
     double threshold = 2; // voltage readout from the analog channel
     private int balls = 0;
 
@@ -113,5 +113,6 @@ public class Demeter extends Subsystem
     
     public void initDefaultCommand()
     {
+        super.setDefaultCommand(new GatherBallsAndManualShoot());
     }
 }

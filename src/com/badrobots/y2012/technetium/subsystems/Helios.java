@@ -49,7 +49,7 @@ public class Helios extends Subsystem
             System.out.println("Unable to find camera");
         
         //gyro = new Gyro(RobotMap.verticalGyro);
-        bottomSensor = new AnalogChannel(RobotMap.bottomSensor);
+        topSensor = new AnalogChannel(RobotMap.topSensor);
         /*topSensor = new AnalogChannel(RobotMap.topSensor);
 
         //Note: If this doesn't work, use digital In and Outs as arguements
