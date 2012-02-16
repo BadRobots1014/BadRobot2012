@@ -120,11 +120,6 @@ public class OI
         return ds.getDigitalIn(2);
     }
 
-    public static boolean absoluteGyro()
-    {
-        return ds.getDigitalIn(3);
-    }
-
     /**
      * @return whether the "up" bridge button is depressed. This button is used
      * to instruct the Xerexes (bridger) class to pull up the bridge.

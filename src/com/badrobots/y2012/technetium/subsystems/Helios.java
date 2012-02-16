@@ -43,7 +43,7 @@ public class Helios extends Subsystem
 
     private Helios()
     {
-        camera = AxisCamera.getInstance();
+        //camera = AxisCamera.getInstance();
 
         if(camera == null)
             System.out.println("Unable to find camera");
@@ -115,9 +115,9 @@ public class Helios extends Subsystem
     public boolean topChannelBlocked()
     {
         if (topSensor.getAverageVoltage() > threshold)
-            return false;
+            return true;
         
-        return true;
+        return false;
     }
     
     /*
@@ -126,7 +126,7 @@ public class Helios extends Subsystem
      */
     public boolean bottomChannelBlocked()
     {
-        if (bottomSensor.getAverageVoltage() > .5)
+        if (bottomSensor.getAverageVoltage() > threshold)
             return true;
 
         return false;

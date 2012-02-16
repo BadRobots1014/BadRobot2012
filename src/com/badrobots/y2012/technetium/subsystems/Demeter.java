@@ -113,6 +113,5 @@ public class Demeter extends Subsystem
     
     public void initDefaultCommand()
     {
-        setDefaultCommand(new GatherBallsAndManualShoot());
     }
 }

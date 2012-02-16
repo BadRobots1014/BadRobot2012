@@ -8,7 +8,9 @@ import com.badrobots.y2012.technetium.subsystems.Helios;
  */
 public class GatherBallsAndManualShoot extends CommandBase //We need to rename this. Just maybe
 {    
-    private static boolean topBlocked = false;  //was the top garage sensor blocked?
+    private static boolean bottomWasBlocked = false;  //was the top garage sensor blocked?
+    private static boolean topWasBlocked = false;
+    private static boolean done = true;
     
     public GatherBallsAndManualShoot() 
     {
@@ -36,8 +38,49 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
     protected void execute() 
     {
         //#1 at bottom
+        if (ballGatherer.numBalls() >= 3)   //if 3 or more balls, reject incoming ones
+            ballGatherer.runBottomRoller(false, true);
+        
+        else
+            ballGatherer.runBottomRoller(true, false); //constantly runs the bottomRoller
+            
+        if (bottomWasBlocked)   //if the garage door sensor was/is blocked
+        {
+            ballGatherer.runConveyor(true, false);
+            ballGatherer.runBottomRoller(false, false); //stop movement
+            
+            if (Helios.getInstance().topChannelBlocked())   //if the ball has made it to the
+            {                                               //top sensor, set some booleans
+                ballGatherer.addBall();
+                bottomWasBlocked = false;
+                topWasBlocked = true;
+            }
+        }
+        
+        else if (Helios.getInstance().bottomChannelBlocked())   // if the sensor is blocked, set boolean to true
+            bottomWasBlocked = true;
+        
+        if (topWasBlocked)  // if ball is at top of sensor
+        {
+            shooter.run(1); //spin up
+            
+            if (OI.secondXboxRB()) // wait for input to push ball into shooter
+            {
+                if (Helios.getInstance().topChannelBlocked())   //run conveyor
+                    ballGatherer.runConveyor(true, false);
+                
+                else    // if the sensor isnt blocked anymore, we are all done, ball has been shot
+                {
+                    topWasBlocked = false;
+                    ballGatherer.removeBall();
+                    done = true;
+                }
+            }
+            
+        }
 
-        if (OI.getSecondaryTrigger())   //warm up the shooter -- think gatling gun
+        
+        /*if (OI.getSecondaryTrigger())   //warm up the shooter -- think gatling gun
         {                           
 
             shooter.run(1);
@@ -60,17 +103,22 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             shooter.run(0);
             ballGatherer.runConveyor(OI.secondXboxX(), OI.secondXboxB());
             ballGatherer.runBottomRoller(OI.secondXboxA(), OI.secondXboxY());
-        }
+        }*/
 
     }
 
     // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return false;
+    protected boolean isFinished() 
+    {
+        return done;
     }
 
     // Called once after isFinished returns true
-    protected void end() {
+    protected void end() 
+    {
+        ballGatherer.runBottomRoller(false, false);
+        ballGatherer.runConveyor(false, false);
+        shooter.run(0);
     }
 
     // Called when another command which requires one or more of the same
@@ -78,20 +126,6 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
     protected void interrupted() {
     }
 }
-
-//1
-
-/*if (OI.)
-            ballGatherer.runBottomRoller(.2);   //"Ball pickup" mode
-
-        //If the bottom garage sensor is blocked, and the top isn't blocked, pull the ball until
-        //it is no longer blocking the bottom sensor
-        if (Helios.getInstance().bottomChannelBlocked() && !topBlocked)
-        {
-            ballGatherer.runConveyor(.5);//WARNING: This may cause more than 1 ball to be picked up
-            ballGatherer.addBall();
-        }*/
-
 //2
 
 /*if (Helios.getInstance().topChannelBlocked())   // ball enters loading zone
