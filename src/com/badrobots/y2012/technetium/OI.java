@@ -1,4 +1,3 @@
-
 package com.badrobots.y2012.technetium;
 
 import edu.wpi.first.wpilibj.Joystick;
@@ -11,16 +10,15 @@ import edu.wpi.first.wpilibj.DriverStationLCD;
  */
 public class OI
 {
+
     public static Joystick leftJoystick, rightJoystick, shooterJoystick;
     public static DriverStation ds;
     public static DriverStationLCD screen;
     private static double scalingFactor = 0;
-    
     protected static int usedRobot = 1;
-
     public static Joystick xboxController;
     public static Joystick xboxController2;
-    
+
     /*
      * initializes all input methods (eg. joysticks)
      */
@@ -28,20 +26,21 @@ public class OI
     {
         try
         {
-           leftJoystick = new Joystick(RobotMap.leftJoystick);
-           rightJoystick = new Joystick(RobotMap.rightJoystick);
-           xboxController = new Joystick(RobotMap.controller);
-           xboxController2 = new Joystick(RobotMap.controller2);
-           ds = DriverStation.getInstance();//Drivers Station
-           screen = DriverStationLCD.getInstance();//Output on DS
-           
-           
+            leftJoystick = new Joystick(RobotMap.leftJoystick);
+            rightJoystick = new Joystick(RobotMap.rightJoystick);
+            xboxController = new Joystick(RobotMap.controller);
+            xboxController2 = new Joystick(RobotMap.controller2);
+            ds = DriverStation.getInstance();//Drivers Station
+            screen = DriverStationLCD.getInstance();//Output on DS
+
+
+        } catch (Exception e)
+        {
+            System.out.println(e);
         }
 
-        catch (Exception e) {System.out.println(e);}
-        
     }
-    
+
     /*
      * Printles a string to the driverstation LCD
      * Status: Untested 
@@ -167,7 +166,7 @@ public class OI
     {
         return xboxController2.getRawButton(5);
     }
-    
+
     /*
      * @return the currently used controller left x value
      * status: all tested 1/30/12
@@ -175,45 +174,53 @@ public class OI
     public static double getUsedLeftX()
     {
         if (xboxControl())
+        {
             return deadzone(xboxController.getRawAxis(1));
-        
+        }
+
         return deadzone(leftJoystick.getX());
-        
+
     }
-    
+
     /*
      * @return the currently used controller left y value
      */
     public static double getUsedLeftY()
     {
         if (xboxControl())
+        {
             return deadzone(xboxController.getRawAxis(2));
-        
+        }
+
         return deadzone(leftJoystick.getY());
     }
-    
+
     /*
      * @return the currently used controller right x value
      */
     public static double getUsedRightX()
     {
         if (xboxControl())
+        {
             return deadzone(xboxController.getRawAxis(4));
-        
+        }
+
         return deadzone(rightJoystick.getX());
     }
-    
+
     /*
      * @return the currently used controller right y value
      */
     public static double getUsedRightY()
     {
         if (xboxControl())
+        {
             return deadzone(xboxController.getRawAxis(5));
-        
+        }
+
         return deadzone(rightJoystick.getY());
     }
-    
+
     /**
      * @return whether the secondary trigger is depressed
      */
@@ -221,7 +228,7 @@ public class OI
     {
         return secondXboxLB();
     }
-    
+
     /**
      * @return whether the shoot trigger is depressed
      */
@@ -239,21 +246,27 @@ public class OI
     {
         double jsSensitivity = getJoystickSensitivty();
         double xboxSensitivity = getXboxSensitivity();
-        
+
         if (jsSensitivity > .9 || jsSensitivity < .1)
+        {
             jsSensitivity = .1;
-        
+        }
+
         if (xboxSensitivity > .9 || xboxSensitivity < .1)
+        {
             xboxSensitivity = .5;
-        
+        }
+
         d *= getScalingFactor();    // scaling code -- just multiple value by double
-        
+
         if (Math.abs(d) < jsSensitivity && !xboxControl())
+        {
             return 0;
-        
-        else if (Math.abs(d) < xboxSensitivity && xboxControl())
+        } else if (Math.abs(d) < xboxSensitivity && xboxControl())
+        {
             return 0;
-        
+        }
+
         return d / Math.abs(d) * ((Math.abs(d) - .10) / .90);
     }
 
@@ -262,13 +275,15 @@ public class OI
      */
     public static void detectAxis()
     {
-        for(int i=0; i<=12; i++)
+        for (int i = 0; i <= 12; i++)
         {
-            if(xboxController2.getRawButton(i))
+            if (xboxController2.getRawButton(i))
+            {
                 System.out.println("Button: " + i);
+            }
         }
     }
-    
+
     /*
      * @return the deadzone for the Joysticks controller
      */
@@ -276,7 +291,7 @@ public class OI
     {
         return ds.getAnalogIn(1);
     }
-    
+
     /*
      * @return the deadzone for the Xbox controller
      */
@@ -284,7 +299,7 @@ public class OI
     {
         return ds.getAnalogIn(2);
     }
-    
+
     /**
      * @param channel the channel the method should query for a value
      * @return the value of the analog input from the driverstaion of a specific
@@ -292,10 +307,10 @@ public class OI
      */
     public static double getAnalogIn(int channel)
     {
-        
+
         return ds.getAnalogIn(channel);
     }
-    
+
     /*
      * @return the value from the driverstation analog input 3. If it less than 0
      * or greater than 1.5, it returns 1
@@ -303,14 +318,18 @@ public class OI
     public static double getScalingFactor()
     {
         if (scalingFactor != 0)
+        {
             return scalingFactor;
-        
+        }
+
         if (ds.getAnalogIn(3) > 0 && ds.getAnalogIn(3) < 1.5)
+        {
             return ds.getAnalogIn(3);
-        
+        }
+
         return 1;
     }
-    
+
     /**
      * 
      * @param d the double that will be the new scaling factor (0-1)
@@ -319,7 +338,7 @@ public class OI
     {
         scalingFactor = d;
     }
-    
+
     /*
      * @return the index of the currently deployed robot (1 for kitbot, 2 for prototype, 3 for Technetium)
      */
@@ -328,4 +347,3 @@ public class OI
         return usedRobot;
     }
 }
-

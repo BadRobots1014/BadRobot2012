@@ -21,6 +21,8 @@ import edu.wpi.first.wpilibj.Gyro;
 
 /*
  * @author 1014 Programming Team
+ *
+ * The sensor: Cameras, Ultra sonic and garge door sensors
  */
 public class Helios extends Subsystem
 {

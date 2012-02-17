@@ -4,9 +4,7 @@
 /* must be accompanied by the FIRST BSD license file in the root directory of */
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
-
 package com.badrobots.y2012.technetium;
-
 
 import com.badrobots.y2012.technetium.buttons.*;
 import com.badrobots.y2012.technetium.commands.PolarMechanumDrive;
@@ -27,7 +25,6 @@ import edu.wpi.first.wpilibj.camera.AxisCamera;
 import edu.wpi.first.wpilibj.camera.AxisCameraException;
 
 //import com.badrobots.y2012.technetium.buttons.ResetGyro;
-
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -39,10 +36,9 @@ import edu.wpi.first.wpilibj.camera.AxisCameraException;
 /*
  * @author 1014 Programming Team
  */
-public class Technetium extends IterativeRobot 
+public class Technetium extends IterativeRobot
 {
 
-    
     Command firstCommand;
     Button mecanumDriveTrigger, tankDriveTrigger, switchScaling;
     protected ImageProcessing thread;
@@ -58,12 +54,11 @@ public class Technetium extends IterativeRobot
         CommandBase.init();
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         //camera = AxisCamera.getInstance();
-        
+
     }
 
     public void autonomousInit()
     {
-
     }
 
     /**
@@ -71,7 +66,6 @@ public class Technetium extends IterativeRobot
      */
     public void autonomousPeriodic()
     {
-        
     }
 
     /*
@@ -85,27 +79,29 @@ public class Technetium extends IterativeRobot
         new StartGatheringButton();
         //new BalanceButton();
 
-       // thread = new ImageProcessing(camera);
-       // thread.start();
-       // thread.setRunning(true);
+        // thread = new ImageProcessing(camera);
+        // thread.start();
+        // thread.setRunning(true);
 
     }
 
     /**
      * This function is called periodically during operator control
      */
-    public void teleopPeriodic() 
+    public void teleopPeriodic()
     {
         Watchdog.getInstance().feed();
         //Runs the correct commands with their subsytems
         Scheduler.getInstance().run();
     }
-    
-    public void disabledInit() 
+
+    public void disabledInit()
     {
         System.out.println("Default IterativeRobot.disabledInit() method... Overload you!");
-        
+
         if (thread != null)
+        {
             thread.setRunning(false);
+        }
     }
 }
