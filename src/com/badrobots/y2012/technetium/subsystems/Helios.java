@@ -57,7 +57,7 @@ public class Helios extends Subsystem
         bottomCount = 0;
         
         //gyro = new Gyro(RobotMap.verticalGyro);
-        topSensor = new AnalogChannel(RobotMap.topSensor);
+        bottomSensor = new AnalogChannel(RobotMap.bottomSensor);
         /*topSensor = new AnalogChannel(RobotMap.topSensor);
 
         //Note: If this doesn't work, use digital In and Outs as arguements
