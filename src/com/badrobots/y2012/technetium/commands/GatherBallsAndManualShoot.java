@@ -85,7 +85,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
 
             rollerIn = true;
             conveyorUp = false;
-            if(sensors.topChannelBlocked())
+            if(sensors.bottomChannelBlocked())
             {
                 spaceUp = 100;
                 conveyorUp = true;

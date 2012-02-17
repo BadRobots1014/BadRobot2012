@@ -30,10 +30,10 @@ public class Monitor extends CommandBase {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() 
     {
-        if(sensors.topChannelBlocked())
+        if(sensors.bottomChannelBlocked())
         {
             
-            bottomWasBlocked = true;//This is wrong, chage when all sensors in place
+            bottomWasBlocked = true;
             System.out.println("Blocked");
         }
         else if(bottomWasBlocked)
@@ -41,6 +41,18 @@ public class Monitor extends CommandBase {
             sensors.setNumBalls(sensors.getNumBalls() + 1);
             bottomWasBlocked = false;
             System.out.println("BallAdded : " + sensors.getNumBalls());
+        }
+
+        if(sensors.topChannelBlocked())
+        {
+            topWasBlocked = true;
+            System.out.println("TopBlocked");
+        }
+        else if(topWasBlocked)
+        {
+            sensors.setNumBalls(sensors.getNumBalls() - 1);
+            topWasBlocked = false;
+            System.out.println("BallRemoved : " + sensors.getNumBalls());
         }
 
         //Does not account for shooting
