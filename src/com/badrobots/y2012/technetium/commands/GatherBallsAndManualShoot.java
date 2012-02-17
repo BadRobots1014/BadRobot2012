@@ -58,9 +58,9 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
                 ballGatherer.addBall();
                 bottomWasBlocked = false;
                 topWasBlocked = true;
+                System.out.println("Top Channel Blocked");
             }
-        }
-        
+        } 
         else if (OI.secondXboxLB())   // if the sensor is blocked, set boolean to true
         {
             System.out.println("left bumper depressed, my good sir");
@@ -71,7 +71,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         {
             shooter.run(1); //spin up
             
-            if (OI.secondXboxLB()) // wait for input to push ball into shooter
+            if (OI.secondXboxRB()) // wait for input to push ball into shooter
             {
                 if (Helios.getInstance().topChannelBlocked())   //run conveyor
                     ballGatherer.runConveyor(true, false);

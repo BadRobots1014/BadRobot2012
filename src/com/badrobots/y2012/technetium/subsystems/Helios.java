@@ -114,6 +114,7 @@ public class Helios extends Subsystem
      */
     public boolean topChannelBlocked()
     {
+        System.out.println(topSensor.getAverageVoltage());
         if (topSensor.getAverageVoltage() > threshold)
             return true;
         
