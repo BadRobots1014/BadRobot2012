@@ -76,7 +76,7 @@ public class Technetium extends IterativeRobot
         new TankDriveTrigger();
         new SwitchScalingSpeeds();
         new MechanumDriveTrigger();
-        new StartGatheringButton();
+        //new StartGatheringButton();
         //new BalanceButton();
 
         // thread = new ImageProcessing(camera);
@@ -93,6 +93,7 @@ public class Technetium extends IterativeRobot
         Watchdog.getInstance().feed();
         //Runs the correct commands with their subsytems
         Scheduler.getInstance().run();
+        //OI.detectAxis();
     }
 
     public void disabledInit()

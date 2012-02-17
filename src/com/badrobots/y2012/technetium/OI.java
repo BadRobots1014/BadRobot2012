@@ -167,6 +167,17 @@ public class OI
         return xboxController2.getRawButton(5);
     }
 
+    public static boolean secondXboxLeftJoyClick()
+    {
+        return xboxController2.getRawButton(9);
+    }
+
+    public static boolean secondXboxRightJoyClick()
+    {
+        return xboxController2.getRawButton(10);
+    }
+
+
     /*
      * @return the currently used controller left x value
      * status: all tested 1/30/12
@@ -276,6 +287,14 @@ public class OI
     public static void detectAxis()
     {
         for (int i = 0; i <= 12; i++)
+        {
+            if (xboxController2.getRawAxis(i) > .1)
+            {
+                System.out.println("AXIS: " + i + " @ " + xboxController2.getRawAxis(i));
+            }
+        }
+
+         for (int i = 0; i <= 12; i++)
         {
             if (xboxController2.getRawButton(i))
             {

@@ -39,12 +39,11 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
      */
     protected void execute() 
     {
-        System.out.println("Executing...");
         //#1 at bottom
        /* if (ballGatherer.numBalls() >= 3)   //if 3 or more balls, reject incoming ones
             ballGatherer.runBottomRoller(false, true);*/
         
-        
+        /*
         ballGatherer.bottomRoller.set(Relay.Value.kForward); //constantly runs the bottomRoller
             
         if (bottomWasBlocked)   //if the garage door sensor was/is blocked
@@ -58,9 +57,9 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
                 ballGatherer.addBall();
                 bottomWasBlocked = false;
                 topWasBlocked = true;
+                System.out.println("Top Channel Blocked");
             }
-        }
-        
+        } 
         else if (OI.secondXboxLB())   // if the sensor is blocked, set boolean to true
         {
             System.out.println("left bumper depressed, my good sir");
@@ -71,7 +70,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         {
             shooter.run(1); //spin up
             
-            if (OI.secondXboxLB()) // wait for input to push ball into shooter
+            if (OI.secondXboxRB()) // wait for input to push ball into shooter
             {
                 if (Helios.getInstance().topChannelBlocked())   //run conveyor
                     ballGatherer.runConveyor(true, false);
@@ -85,17 +84,23 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             }
             
         }
+        */
 
+        boolean rollerOveride = false;
+        boolean conveyorOveride = false;
+        boolean shooterOveride = false;
         
-        /*if (OI.getSecondaryTrigger())   //warm up the shooter -- think gatling gun
+        if (OI.getSecondaryTrigger())   //warm up the shooter -- think gatling gun
         {                           
 
             shooter.run(1);
+            shooterOveride = true;
             
             if (OI.getPrimaryTrigger()) // push balls into shooter
             {
                 //System.out.println("running conveyor");
                 ballGatherer.runConveyor(true, false);
+                conveyorOveride = true;
                 
                 //#2 at bottom
             }
@@ -103,6 +108,8 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             {
                 ballGatherer.runConveyor(OI.secondXboxX(), OI.secondXboxB());
                 ballGatherer.runBottomRoller(OI.secondXboxA(), OI.secondXboxY());
+                conveyorOveride = true;
+                rollerOveride = true;
             }
         }
         else
@@ -110,7 +117,25 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             shooter.run(0);
             ballGatherer.runConveyor(OI.secondXboxX(), OI.secondXboxB());
             ballGatherer.runBottomRoller(OI.secondXboxA(), OI.secondXboxY());
-        }*/
+
+            if(OI.secondXboxA() || OI.secondXboxB() || OI.secondXboxX() || OI.secondXboxY())
+            {
+                conveyorOveride = true;
+                rollerOveride = true;
+            }
+        }
+
+        if(OI.secondXboxLeftJoyClick() && !conveyorOveride && !rollerOveride)
+        {
+            //Does not account for ball shooting yet
+            if(sensors.getNumBalls() < 3)
+            {
+                ballGatherer.runBottomRoller(true, false);
+                ballGatherer.runConveyor(true, false);
+            }
+             else
+                 System.out.println("Balls Full");
+        }
 
     }
 

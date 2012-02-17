@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.image.NIVisionException;
 import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
 import com.badrobots.y2012.technetium.RobotMap;
 import com.badrobots.y2012.technetium.commands.AutoAim;
+import com.badrobots.y2012.technetium.commands.Monitor;
 import edu.wpi.first.wpilibj.AnalogChannel;
 import edu.wpi.first.wpilibj.Gyro;
 
@@ -30,9 +31,11 @@ public class Helios extends Subsystem
     private static AxisCamera camera;
     private static Ultrasonic lFront, lBack;
     public static AnalogChannel bottomSensor, topSensor;
-    private static final double threshold = .5;//200 VOLTS?!?!? This needs to be changed
+    private static final double threshold = .7;
     private static final double spacing = 25;
+    protected static int numBalls;
     protected static Gyro gyro;
+    protected static int topCount, bottomCount;
     public static Helios getInstance()
     {
         if (sensors == null)
@@ -49,6 +52,9 @@ public class Helios extends Subsystem
 
         if(camera == null)
             System.out.println("Unable to find camera");
+        numBalls = 0;
+        topCount = 0;
+        bottomCount = 0;
         
         //gyro = new Gyro(RobotMap.verticalGyro);
         topSensor = new AnalogChannel(RobotMap.topSensor);
@@ -116,8 +122,15 @@ public class Helios extends Subsystem
      */
     public boolean topChannelBlocked()
     {
-        if (topSensor.getAverageVoltage() > threshold)
-            return true;
+        //System.out.println(topSensor.getAverageVoltage());
+        if (topSensor.getAverageVoltage() < threshold)
+        {
+            topCount++;
+            if(topCount > 4)
+                return true;
+        }
+        else
+            topCount = 0;
         
         return false;
     }
@@ -128,7 +141,7 @@ public class Helios extends Subsystem
      */
     public boolean bottomChannelBlocked()
     {
-        if (bottomSensor.getAverageVoltage() > threshold)
+        if (bottomSensor.getAverageVoltage() < threshold)
             return true;
 
         return false;
@@ -141,6 +154,16 @@ public class Helios extends Subsystem
     {
         return gyro.getAngle();
     }
+
+    public int getNumBalls()
+    {
+        return numBalls;
+    }
+
+    public void setNumBalls(int n)
+    {
+        numBalls = n;
+    }
     
     /*
      * Resets the vertical gyro so that its current heading is 0
@@ -151,5 +174,6 @@ public class Helios extends Subsystem
     }
     public void initDefaultCommand()
     {
+        setDefaultCommand(new Monitor());
     }
 }
