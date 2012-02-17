@@ -43,7 +43,7 @@ public class Monitor extends CommandBase {
             System.out.println("BallAdded : " + sensors.getNumBalls());
         }
 
-        if(sensors.topChannelBlocked())
+        /*if(sensors.topChannelBlocked())
         {
             topWasBlocked = true;
             System.out.println("TopBlocked");
@@ -53,7 +53,7 @@ public class Monitor extends CommandBase {
             sensors.setNumBalls(sensors.getNumBalls() - 1);
             topWasBlocked = false;
             System.out.println("BallRemoved : " + sensors.getNumBalls());
-        }
+        }*/
 
         //Does not account for shooting
     }
