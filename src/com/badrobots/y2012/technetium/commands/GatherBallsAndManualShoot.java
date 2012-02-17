@@ -37,109 +37,92 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
      * LUCAS WARNING: Uncommon circumstances could throw off counts!!
      * There needs to be greater self correcting added after the collector is built.
      */
+
+    int spaceUp = 0;
     protected void execute() 
     {
-        //#1 at bottom
-       /* if (ballGatherer.numBalls() >= 3)   //if 3 or more balls, reject incoming ones
-            ballGatherer.runBottomRoller(false, true);*/
-        
-        /*
-        ballGatherer.bottomRoller.set(Relay.Value.kForward); //constantly runs the bottomRoller
-            
-        if (bottomWasBlocked)   //if the garage door sensor was/is blocked
-        {
-            System.out.println("bottom was blocked");
-            ballGatherer.runConveyor(true, false);
-           // ballGatherer.runBottomRoller(false, false); //stop movement
-            
-            if (Helios.getInstance().topChannelBlocked())   //if the ball has made it to the
-            {                                               //top sensor, set some booleans
-                ballGatherer.addBall();
-                bottomWasBlocked = false;
-                topWasBlocked = true;
-                System.out.println("Top Channel Blocked");
-            }
-        } 
-        else if (OI.secondXboxLB())   // if the sensor is blocked, set boolean to true
-        {
-            System.out.println("left bumper depressed, my good sir");
-            bottomWasBlocked = true;
-        }
-        
-        if (topWasBlocked)  // if ball is at top of sensor
-        {
-            shooter.run(1); //spin up
-            
-            if (OI.secondXboxRB()) // wait for input to push ball into shooter
-            {
-                if (Helios.getInstance().topChannelBlocked())   //run conveyor
-                    ballGatherer.runConveyor(true, false);
-                
-                else    // if the sensor isnt blocked anymore, we are all done, ball has been shot
-                {
-                    topWasBlocked = false;
-                    ballGatherer.removeBall();
-                    done = true;
-                }
-            }
-            
-        }
-        */
+        boolean conveyorUp = false;
+        boolean conveyorDown = false;
+        boolean rollerIn = false;
+        boolean rollerOut = false;
 
-        boolean rollerOveride = false;
-        boolean conveyorOveride = false;
-        boolean shooterOveride = false;
-        boolean autoShoot = false;
-        
-        if (OI.getSecondaryTrigger())   //warm up the shooter -- think gatling gun
-        {                           
 
-            shooter.run(1);
-            shooterOveride = true;
-            
-            if (OI.getPrimaryTrigger()) // push balls into shooter
-            {
-                //System.out.println("running conveyor");
-                ballGatherer.runConveyor(true, false);
-                conveyorOveride = true;
-                
-                //#2 at bottom
-            }
-            else
-            {
-                ballGatherer.runConveyor(OI.secondXboxX(), OI.secondXboxB());
-                ballGatherer.runBottomRoller(OI.secondXboxA(), OI.secondXboxY());
-                conveyorOveride = true;
-                rollerOveride = true;
-            }
-        }
-        else
-        {
-            shooter.run(0);
-            ballGatherer.runConveyor(OI.secondXboxX(), OI.secondXboxB());
-            ballGatherer.runBottomRoller(OI.secondXboxA(), OI.secondXboxY());
-
-            if(OI.secondXboxA() || OI.secondXboxB() || OI.secondXboxX() || OI.secondXboxY())
-            {
-                conveyorOveride = true;
-                rollerOveride = true;
-            }
-        }
-
-        if(OI.secondXboxLeftJoyClick() && !conveyorOveride && !rollerOveride)
+        //Auto collect balls with counting. Does not space
+        if(OI.secondXboxLeftJoyClick())
         {
             //Does not account for ball shooting yet
             if(sensors.getNumBalls() < 3)
             {
-                System.out.println("Running Conveyor");
-                ballGatherer.runBottomRoller(true, false);
-                ballGatherer.runConveyor(true, false);
+                rollerIn = true;
+                conveyorUp = true;
             }
              else
+            {
                  System.out.println("Balls Full");
+                 rollerIn = false;
+                 conveyorUp = false;
+            }
         }
-        else if(OI.secondXboxRightJoyClick() && !shooterOveride)
-            autoShoot = ! autoShoot;
+
+        //Code for shooting
+        if (OI.getSecondaryTrigger())   //warm up the shooter -- think gatling gun
+        {                           
+            shooter.run(1);
+
+            if (OI.getPrimaryTrigger()) // push balls into shooter
+                conveyorUp = true;
+        }
+        else
+            shooter.run(0);
+
+        //Ball Spacing
+        if(OI.secondXboxA())
+        {
+            conveyorUp = false;
+            conveyorDown = false;
+            rollerIn = false;
+            rollerOut = false;
+
+            rollerIn = true;
+            conveyorUp = false;
+            if(sensors.topChannelBlocked())
+            {
+                spaceUp = 100;
+                conveyorUp = true;
+            }
+        }
+
+        if(spaceUp > 0)
+        {
+            spaceUp--;
+            conveyorUp = true;
+        }
+
+        //Manual controlls here
+        if(OI.secondXboxX())
+        {
+            conveyorUp = true;
+            spaceUp = 0;
+        }
+        if(OI.secondXboxB())
+        {
+            conveyorUp = false;
+            conveyorDown = true;
+            spaceUp = 0;
+        }
+        if(OI.secondXboxY())
+        {
+            rollerIn = false;
+            rollerOut = true;
+        }
+        if(OI.secondXboxLeftJoyClick())//this needs to be something else
+        {
+            rollerIn = true;
+            rollerOut = false;
+        }
+
+        ballGatherer.runBottomRoller(rollerIn, rollerOut);
+        ballGatherer.runConveyor(conveyorUp, conveyorDown);
 
     }
 

@@ -99,7 +99,7 @@ public class Technetium extends IterativeRobot
     public void disabledInit()
     {
         System.out.println("Default IterativeRobot.disabledInit() method... Overload you!");
-
+        Helios.getInstance().setNumBalls(0);
         if (thread != null)
         {
             thread.setRunning(false);
