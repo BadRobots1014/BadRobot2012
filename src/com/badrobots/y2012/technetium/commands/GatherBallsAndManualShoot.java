@@ -89,6 +89,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         boolean rollerOveride = false;
         boolean conveyorOveride = false;
         boolean shooterOveride = false;
+        boolean autoShoot = false;
         
         if (OI.getSecondaryTrigger())   //warm up the shooter -- think gatling gun
         {                           
@@ -130,12 +131,15 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             //Does not account for ball shooting yet
             if(sensors.getNumBalls() < 3)
             {
+                System.out.println("Running Conveyor");
                 ballGatherer.runBottomRoller(true, false);
                 ballGatherer.runConveyor(true, false);
             }
              else
                  System.out.println("Balls Full");
         }
+        else if(OI.secondXboxRightJoyClick() && !shooterOveride)
+            autoShoot = ! autoShoot;
 
     }
 
