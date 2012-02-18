@@ -42,6 +42,7 @@ public class Technetium extends IterativeRobot
     Command firstCommand;
     Button mecanumDriveTrigger, tankDriveTrigger, switchScaling;
     protected ImageProcessing thread;
+    protected PacketListener kinecter;
     protected AxisCamera camera;
 
     /**
@@ -77,7 +78,10 @@ public class Technetium extends IterativeRobot
         new MechanumDriveTrigger();
         //new StartGatheringButton();
         //new BalanceButton();
-
+        
+        kinecter = new PacketListener();
+        kinecter.start();
+        
         // thread = new ImageProcessing(camera);
         // thread.start();
         // thread.setRunning(true);
@@ -103,5 +107,7 @@ public class Technetium extends IterativeRobot
         {
             thread.setRunning(false);
         }
+        
+        kinecter.setRunning(false);
     }
 }

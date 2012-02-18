@@ -18,10 +18,11 @@ import javax.microedition.io.UDPDatagramConnection;
 public class PacketListener extends Thread
 {
 
-    String host, port;
+    String port = "1180";
     UDPDatagramConnection server;
     double depth, offAxis;
     protected String buffer;
+    protected boolean running = true;
     static int step = 0;
     static final int startOfFrame = 1;
     static final int readingDepth = 2;
@@ -37,12 +38,12 @@ public class PacketListener extends Thread
     public PacketListener(String name) throws IOException
     {
         super(name);
-        server = (UDPDatagramConnection) Connector.open("Datagram:" + host + "//" + port);
+        server = (UDPDatagramConnection) Connector.open("Datagram://" + port);
         step = startOfFrame;
 
     }
 
-    public void recieveData() throws IOException
+    public void receiveData() throws IOException
     {
         Datagram d = server.newDatagram(255);
         server.receive(d);
@@ -77,7 +78,7 @@ public class PacketListener extends Thread
                 case readingSplitChar:
                     //TODO: here
                     break;
-                    
+
                 case readingAxis:
                     if (recieved.charAt(i) == 'B')
                     {
@@ -87,7 +88,7 @@ public class PacketListener extends Thread
                         parsed += recieved.charAt(i);
                     }
                     break;
-                    
+
                 case findingEndOfFrame:
                     //TODO: this
                     break;
@@ -103,6 +104,26 @@ public class PacketListener extends Thread
 
     }
 
+    public void run()
+    {
+        while (true)
+        {
+            if (running)
+            {
+                try
+                {
+                    receiveData();
+                } 
+                
+                catch (IOException ex)
+                {
+                    ex.printStackTrace();
+                }
+            }
+
+        }
+    }
+
     public double getDepth()
     {
         return depth;
@@ -111,5 +132,10 @@ public class PacketListener extends Thread
     public double getOffAxis()
     {
         return offAxis;
+    }
+
+    public void setRunning(boolean run)
+    {
+        running = run;
     }
 }
