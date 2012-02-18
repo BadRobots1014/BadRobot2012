@@ -118,23 +118,45 @@ public class OI
     {
         return ds.getDigitalIn(2);
     }
-
-    /**
-     * @return whether the "up" bridge button is depressed. This button is used
-     * to instruct the Xerexes (bridger) class to pull up the bridge.
-     */
-    public static boolean getUpButton()
+    
+    public static boolean primaryXboxX()
     {
-        return xboxController.getRawButton(4);//Y
+        return xboxController.getRawButton(3);
     }
-
-    /**
-     * @return whether the "down" bridge button is depressed. This button is used
-     * to instruct the Xerxes (bridger) class to lay down the bridge.
-     */
-    public static boolean getDownButton()
+    
+    public static boolean primaryXboxY()
+    {
+        return xboxController.getRawButton(4);
+    }
+    
+    public static boolean primaryXboxA()
     {
         return xboxController.getRawButton(1);
+    }
+    
+    public static boolean primaryXboxB()
+    {
+        return xboxController.getRawButton(2);
+    }
+    
+    public static boolean primaryXboxRB()
+    {
+        return xboxController.getRawButton(6);
+    }
+    
+    public static boolean primaryXboxLB()
+    {
+        return xboxController.getRawButton(5);
+    }
+    
+    public static boolean primaryXboxLeftJoyClick()
+    {
+        return xboxController.getRawButton(9);
+    }
+    
+    public static boolean primaryXboxRightJoyClick()
+    {
+        return xboxController.getRawButton(10);
     }
 
     public static boolean secondXboxX()
