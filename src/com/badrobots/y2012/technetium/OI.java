@@ -40,9 +40,7 @@ public class OI
     }
 
     /*
-     * Printles a string to the driverstation LCD
-     * Status: Untested 
-     * //TODO: Test!
+     * Printles a string to the driverstation LCD Status: Untested //TODO: Test!
      */
     public static void printToDS(String out)
     {
@@ -116,42 +114,42 @@ public class OI
     {
         return ds.getDigitalIn(2);
     }
-    
+
     public static boolean primaryXboxX()
     {
         return xboxController.getRawButton(3);
     }
-    
+
     public static boolean primaryXboxY()
     {
         return xboxController.getRawButton(4);
     }
-    
+
     public static boolean primaryXboxA()
     {
         return xboxController.getRawButton(1);
     }
-    
+
     public static boolean primaryXboxB()
     {
         return xboxController.getRawButton(2);
     }
-    
+
     public static boolean primaryXboxRB()
     {
         return xboxController.getRawButton(6);
     }
-    
+
     public static boolean primaryXboxLB()
     {
         return xboxController.getRawButton(5);
     }
-    
+
     public static boolean primaryXboxLeftJoyClick()
     {
         return xboxController.getRawButton(9);
     }
-    
+
     public static boolean primaryXboxRightJoyClick()
     {
         return xboxController.getRawButton(10);
@@ -199,8 +197,8 @@ public class OI
 
 
     /*
-     * @return the currently used controller left x value
-     * status: all tested 1/30/12
+     * @return the currently used controller left x value status: all tested
+     * 1/30/12
      */
     public static double getUsedLeftX()
     {
@@ -269,20 +267,20 @@ public class OI
     }
 
     /*
-     * Creates a deadzone for joysticks
-     * Status:Untested, must test scaling 
-     * 
+     * Creates a deadzone for joysticks Status:Untested, must test scaling
+     *
      */
     private static double deadzone(double d)
     {
         if (Math.abs(d) < .2 && !xboxControl())
         {
             return 0;
-        } 
-        
-        else if (Math.abs(d) < .2 && xboxControl())
+        } else
         {
-            return 0;
+            if (Math.abs(d) < .2 && xboxControl())
+            {
+                return 0;
+            }
         }
 
         return d / Math.abs(d) * ((Math.abs(d) - .10) / .90);
@@ -301,7 +299,7 @@ public class OI
             }
         }
 
-         for (int i = 0; i <= 12; i++)
+        for (int i = 0; i <= 12; i++)
         {
             if (xboxController2.getRawButton(i))
             {
@@ -315,7 +313,7 @@ public class OI
      */
     public static double getJoystickSensitivity()
     {
-        return leftJoystick.getThrottle();
+        return (leftJoystick.getZ() + 1) / -2;
     }
 
     /*
@@ -323,31 +321,40 @@ public class OI
      */
     public static double getXboxSensitivity()
     {
-        return rightJoystick.getThrottle();
+        return (rightJoystick.getZ() + 1) / -2;
     }
 
     /*
      * @return the factor for which all values taken in by controllers should be
-     * multiplied with. it is contorlled by the throttle controls on the joysticks
+     * multiplied with. it is contorlled by the throttle controls on the
+     * joysticks
      */
     public static double getSensitivity()
     {
         double xboxSensitivity = getXboxSensitivity();
         double jsSensitivity = getJoystickSensitivity();
-        
+
         if (xboxSensitivity > 1 || xboxSensitivity <= 0)
-            xboxSensitivity  = 1;
-        
+        {
+            xboxSensitivity = 1;
+        }
+
         if (jsSensitivity > 1 || jsSensitivity <= 0)
+        {
             jsSensitivity = 1;
-        
+        }
+
         if (xboxControl())
+        {
             return getXboxSensitivity();
+        } 
         
         else
-            return getXboxSensitivity();
+        {
+            return getJoystickSensitivity();
+        }
     }
-    
+
     /**
      * @param channel the channel the method should query for a value
      * @return the value of the analog input from the driverstaion of a specific
