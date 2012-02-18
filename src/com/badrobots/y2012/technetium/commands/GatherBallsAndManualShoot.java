@@ -13,6 +13,13 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
     private static boolean bottomWasBlocked = false;  //was the top garage sensor blocked?
     private static boolean topWasBlocked = false;
     private static boolean done = true;
+    private static int spaceUp = 20;//If delay is needed, make this >1
+    boolean conveyorUp = false;
+    boolean conveyorDown = false;
+    boolean rollerIn = false;
+    boolean rollerOut = false;
+    
+
     
     public GatherBallsAndManualShoot() 
     {
@@ -38,14 +45,8 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
      * There needs to be greater self correcting added after the collector is built.
      */
 
-    int spaceUp = 0;
     protected void execute() 
     {
-        boolean conveyorUp = false;
-        boolean conveyorDown = false;
-        boolean rollerIn = false;
-        boolean rollerOut = false;
-
 
         //Auto collect balls with counting. Does not space
         if(OI.secondXboxLeftJoyClick())
@@ -72,6 +73,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             if (OI.getPrimaryTrigger()) // push balls into shooter
                 conveyorUp = true;
         }
+        
         else
             shooter.run(0);
 
@@ -85,11 +87,9 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
 
             rollerIn = true;
             conveyorUp = false;
+            
             if(sensors.bottomChannelBlocked())
-            {
-                spaceUp = 20;//If delay is needed, make this >1
                 conveyorUp = true;
-            }
         }
 
         if(spaceUp > 0)
@@ -110,11 +110,14 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             conveyorDown = true;
             spaceUp = 0;
         }
+        
         if(OI.secondXboxY())
         {
             rollerIn = false;
             rollerOut = true;
         }
+        
+        //LUCAS- isn't this redundant? the same code is at the top of this method, isn't it?
         if(OI.secondXboxLeftJoyClick())//this needs to be something else
         {
             rollerIn = true;
@@ -145,13 +148,3 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
     protected void interrupted() {
     }
 }
-//2
-
-/*if (Helios.getInstance().topChannelBlocked())   // ball enters loading zone
-                    topBlocked = true;
-
-                if (topBlocked && !Helios.getInstance().topChannelBlocked()) //ball leaves loading zone
-                {
-                    ballGatherer.notifyBallShot();
-                    topBlocked = false;
-                }*/
