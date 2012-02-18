@@ -48,7 +48,8 @@ public class Balance extends CommandBase
             step++;
             driveTrain.tankDrive(.2, .2);
             
-            angled = Helios.getInstance().getVerticalGyro();
+            if (step == 0)
+                angled = Helios.getInstance().getVerticalGyro();
         }
         
         else 
@@ -65,7 +66,7 @@ public class Balance extends CommandBase
      */
     protected boolean isFinished() 
     {
-        return (Math.abs(Helios.getInstance().getVerticalGyro()) - angled > 5);
+        return ((Math.abs(Helios.getInstance().getVerticalGyro()) - angled > 5) || step > 15);
     }
 
     // Called once after isFinished returns true

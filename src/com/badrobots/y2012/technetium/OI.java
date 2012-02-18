@@ -14,8 +14,6 @@ public class OI
     public static Joystick leftJoystick, rightJoystick, shooterJoystick;
     public static DriverStation ds;
     public static DriverStationLCD screen;
-    private static double scalingFactor = 0;
-    protected static int usedRobot = 1;
     public static Joystick xboxController;
     public static Joystick xboxController2;
 
@@ -277,25 +275,12 @@ public class OI
      */
     private static double deadzone(double d)
     {
-        double jsSensitivity = getJoystickSensitivty();
-        double xboxSensitivity = getXboxSensitivity();
-
-        if (jsSensitivity > .9 || jsSensitivity < .1)
-        {
-            jsSensitivity = .1;
-        }
-
-        if (xboxSensitivity > .9 || xboxSensitivity < .1)
-        {
-            xboxSensitivity = .5;
-        }
-
-        d *= getScalingFactor();    // scaling code -- just multiple value by double
-
-        if (Math.abs(d) < jsSensitivity && !xboxControl())
+        if (Math.abs(d) < .2 && !xboxControl())
         {
             return 0;
-        } else if (Math.abs(d) < xboxSensitivity && xboxControl())
+        } 
+        
+        else if (Math.abs(d) < .2 && xboxControl())
         {
             return 0;
         }
@@ -328,9 +313,9 @@ public class OI
     /*
      * @return the deadzone for the Joysticks controller
      */
-    public static double getJoystickSensitivty()
+    public static double getJoystickSensitivity()
     {
-        return ds.getAnalogIn(1);
+        return leftJoystick.getThrottle();
     }
 
     /*
@@ -338,9 +323,31 @@ public class OI
      */
     public static double getXboxSensitivity()
     {
-        return ds.getAnalogIn(2);
+        return rightJoystick.getThrottle();
     }
 
+    /*
+     * @return the factor for which all values taken in by controllers should be
+     * multiplied with. it is contorlled by the throttle controls on the joysticks
+     */
+    public static double getSensitivity()
+    {
+        double xboxSensitivity = getXboxSensitivity();
+        double jsSensitivity = getJoystickSensitivity();
+        
+        if (xboxSensitivity > 1 || xboxSensitivity <= 0)
+            xboxSensitivity  = 1;
+        
+        if (jsSensitivity > 1 || jsSensitivity <= 0)
+            jsSensitivity = 1;
+        
+        if (xboxControl())
+            return getXboxSensitivity();
+        
+        else
+            return getXboxSensitivity();
+    }
+    
     /**
      * @param channel the channel the method should query for a value
      * @return the value of the analog input from the driverstaion of a specific
@@ -350,41 +357,5 @@ public class OI
     {
 
         return ds.getAnalogIn(channel);
-    }
-
-    /*
-     * @return the value from the driverstation analog input 3. If it less than 0
-     * or greater than 1.5, it returns 1
-     */
-    public static double getScalingFactor()
-    {
-        if (scalingFactor != 0)
-        {
-            return scalingFactor;
-        }
-
-        if (ds.getAnalogIn(3) > 0 && ds.getAnalogIn(3) < 1.5)
-        {
-            return ds.getAnalogIn(3);
-        }
-
-        return 1;
-    }
-
-    /**
-     * 
-     * @param d the double that will be the new scaling factor (0-1)
-     */
-    public static void setScalingFactor(double d)
-    {
-        scalingFactor = d;
-    }
-
-    /*
-     * @return the index of the currently deployed robot (1 for kitbot, 2 for prototype, 3 for Technetium)
-     */
-    public int getUsedRobot()
-    {
-        return usedRobot;
     }
 }

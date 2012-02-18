@@ -63,8 +63,8 @@ public class Hermes extends Subsystem
      */
     public void mechanumDrive() 
     {
-        double scaledRightStrafe = OI.getUsedRightX() * 1.25;
-        double scaledLeftStrafe = OI.getUsedLeftX() * 1.25;
+        double scaledRightStrafe = OI.getUsedRightX() * 1.25 * OI.getSensitivity();
+        double scaledLeftStrafe = OI.getUsedLeftX() * 1.25 * OI.getSensitivity();
         
         if (scaledRightStrafe > 1)
             scaledRightStrafe = 1;
@@ -73,13 +73,13 @@ public class Hermes extends Subsystem
             scaledLeftStrafe = 1;
         
         //correct for strafing code
-        double scaledLeftTurn = OI.getUsedLeftX() + (.19 * -scaledRightStrafe);  // forces slight turn
-        double scaledRightTurn = OI.getUsedRightX() + (.19 * -scaledLeftStrafe);
+        double scaledLeftTurn = OI.getUsedLeftX() + (.19 * -scaledRightStrafe) * OI.getSensitivity();  // forces slight turn
+        double scaledRightTurn = OI.getUsedRightX() + (.19 * -scaledLeftStrafe) * OI.getSensitivity();
         
          if (OI.rightStrafe())          
-             drive.mecanumDrive_Cartesian(-scaledRightStrafe, OI.getUsedRightY(), scaledLeftTurn, 0); //if right hand stick is being used for strafing left, right, up and down
+             drive.mecanumDrive_Cartesian(-scaledRightStrafe, OI.getUsedRightY()*OI.getSensitivity(), scaledLeftTurn, 0); //if right hand stick is being used for strafing left, right, up and down
          else                       // if left hand stick is being used for strafing
-            drive.mecanumDrive_Cartesian(-scaledLeftStrafe, OI.getUsedLeftY(), scaledRightTurn, 0);
+            drive.mecanumDrive_Cartesian(-scaledLeftStrafe, OI.getUsedLeftY()*OI.getSensitivity(), scaledRightTurn, 0);
     }
 
     /*
