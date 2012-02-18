@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
 import edu.wpi.first.wpilibj.camera.AxisCameraException;
+import java.io.IOException;
 
 //import com.badrobots.y2012.technetium.buttons.ResetGyro;
 /**
@@ -42,6 +43,7 @@ public class Technetium extends IterativeRobot
     Command firstCommand;
     Button mecanumDriveTrigger, tankDriveTrigger, switchScaling;
     protected ImageProcessing thread;
+    protected PacketListener kinecter;
     protected AxisCamera camera;
 
     /**
@@ -53,7 +55,14 @@ public class Technetium extends IterativeRobot
         // Initialize all subsystems
         CommandBase.init();
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-        //camera = AxisCamera.getInstance();
+        try
+        {
+            kinecter = new PacketListener();
+            //camera = AxisCamera.getInstance();
+        } catch (IOException ex)
+        {
+            ex.printStackTrace();
+        }
 
     }
 
@@ -77,7 +86,15 @@ public class Technetium extends IterativeRobot
         new MechanumDriveTrigger();
         //new StartGatheringButton();
         //new BalanceButton();
-
+        try
+        {
+            kinecter = new PacketListener();
+        } catch (IOException ex)
+        {
+            ex.printStackTrace();
+        }
+        kinecter.start();
+        
         // thread = new ImageProcessing(camera);
         // thread.start();
         // thread.setRunning(true);
@@ -103,5 +120,7 @@ public class Technetium extends IterativeRobot
         {
             thread.setRunning(false);
         }
+        
+        kinecter.setRunning(false);
     }
 }
