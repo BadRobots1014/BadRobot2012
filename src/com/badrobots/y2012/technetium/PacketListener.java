@@ -5,11 +5,11 @@
 package com.badrobots.y2012.technetium;
 
 import com.sun.squawk.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import javax.microedition.io.Connector;
-import javax.microedition.io.Datagram;
-import javax.microedition.io.SocketConnection;
-import javax.microedition.io.UDPDatagramConnection;
+import java.io.InputStream;
+import javax.microedition.io.*;
 
 /**
  *
@@ -18,8 +18,9 @@ import javax.microedition.io.UDPDatagramConnection;
 public class PacketListener extends Thread
 {
 
-    String port = "1180";
-    UDPDatagramConnection server;
+    String port = "1140";
+    ServerSocketConnection s;
+    SocketConnection server;
     double depth, offAxis;
     protected String buffer;
     protected boolean running = true;
@@ -30,47 +31,60 @@ public class PacketListener extends Thread
     static final int readingAxis = 4;
     static final int findingEndOfFrame = 5;
 
-    public PacketListener()
+    public PacketListener() throws IOException
     {
-        super("PacketListener");
+        this("PacketListener");
     }
 
     public PacketListener(String name) throws IOException
     {
         super(name);
-        server = (UDPDatagramConnection) Connector.open("Datagram://" + port);
-        step = startOfFrame;
 
+        String hp = "socket://:" + port;
+        System.out.println("Connecting on " + hp);
+        s = (ServerSocketConnection) Connector.open(hp);
+        System.out.println("Connected!");
+
+
+        step = startOfFrame;
     }
 
     public void receiveData() throws IOException
     {
-        Datagram d = server.newDatagram(255);
-        server.receive(d);
+        if (server == null)
+        {
+            System.out.println("server is null");
+            return;
+        }
 
-        String recieved = new String(d.getData());
+        server = (SocketConnection) s.acceptAndOpen();
+
+        DataInputStream is = server.openDataInputStream();
+
+
+
         String parsed = "";
 
-        System.out.println("Recieved: " + recieved);
+        System.out.println("Recieved: " + is.available());
 
-        for (int i = 0; i < recieved.length(); i++)
+        for (int i = 0; i < is.available(); i++)
         {
             switch (step)
             {
                 case startOfFrame:
-                    if (recieved.charAt(i) == 'A')
+                    if ((char) is.read() == 'A')
                     {
                         step = readingDepth;
                     }
                     break;
 
                 case readingDepth:
-                    if (recieved.charAt(i) == '|')
+                    if ((char) is.read() == '|')
                     {
                         step = readingAxis;
                     } else
                     {
-                        parsed += recieved.charAt(i);
+                        parsed += (char) is.read();
                     }
 
                     break;
@@ -80,12 +94,12 @@ public class PacketListener extends Thread
                     break;
 
                 case readingAxis:
-                    if (recieved.charAt(i) == 'B')
+                    if ((char) is.read() == 'B')
                     {
-                        i = recieved.length();
+                        i = is.available();
                     } else
                     {
-                        parsed += recieved.charAt(i);
+                        parsed += (char) is.read();
                     }
                     break;
 
@@ -113,9 +127,7 @@ public class PacketListener extends Thread
                 try
                 {
                     receiveData();
-                } 
-                
-                catch (IOException ex)
+                } catch (IOException ex)
                 {
                     ex.printStackTrace();
                 }
