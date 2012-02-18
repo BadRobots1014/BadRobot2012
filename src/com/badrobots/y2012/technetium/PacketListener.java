@@ -18,7 +18,7 @@ import javax.microedition.io.*;
 public class PacketListener extends Thread
 {
 
-    String port = "1140";
+    String port = "1180";
     ServerSocketConnection s;
     SocketConnection server;
     double depth, offAxis;
@@ -40,10 +40,7 @@ public class PacketListener extends Thread
     {
         super(name);
 
-        String hp = "socket://:" + port;
-        System.out.println("Connecting on " + hp);
-        s = (ServerSocketConnection) Connector.open(hp);
-        System.out.println("Connected!");
+
 
 
         step = startOfFrame;
@@ -51,71 +48,97 @@ public class PacketListener extends Thread
 
     public void receiveData() throws IOException
     {
-        if (server == null)
-        {
-            System.out.println("server is null");
-            return;
-        }
-
-        server = (SocketConnection) s.acceptAndOpen();
-
-        DataInputStream is = server.openDataInputStream();
+        String hp = "socket://:" + port;
+        System.out.println("Connecting on " + hp);
+        s = (ServerSocketConnection) Connector.open(hp);
+        System.out.println("Connected!");
 
 
+        //server = (SocketConnection) s.acceptAndOpen();
+
+        //StreamConnection sc = s.acceptAndOpen();
+        server = (SocketConnection)s.acceptAndOpen();
+        //if (server == null)
+        //{
+        //    System.out.println("server is null");
+        //    return;
+        //}
+        //server.setSocketOption(SocketConnection.DELAY, 0);
+        //server.setSocketOption(SocketConnection.LINGER, 0);
+        //server.setSocketOption(SocketConnection.KEEPALIVE, 0);
+        //server.setSocketOption(SocketConnection.RCVBUF, 256);
+
+        //System.out.println("Gotcha:" + server.getSocketOption(SocketConnection.RCVBUF));
+        DataInputStream is = server.openDataInputStream(); //server.openDataInputStream();
+        
+        byte[] bytes = new byte[256];
+        is.read(bytes);
+        String dat = new String(bytes);
+        //System.out.println("We made it so far and got:" + dat);
 
         String parsed = "";
+        
 
-        System.out.println("Recieved: " + is.available());
-
-        for (int i = 0; i < is.available(); i++)
+        System.out.println("Recieved: " + dat);
+        if (dat.length() > 10)
         {
-            switch (step)
+            for (int i = 0; i < dat.length(); i++)
             {
-                case startOfFrame:
-                    if ((char) is.read() == 'A')
-                    {
-                        step = readingDepth;
-                    }
-                    break;
+                switch (step)
+                {
+                    case startOfFrame:
+                        if (dat.charAt(i) == 'A')
+                        {
+                            step = readingDepth;
+                        }
+                        break;
 
-                case readingDepth:
-                    if ((char) is.read() == '|')
-                    {
-                        step = readingAxis;
-                    } else
-                    {
-                        parsed += (char) is.read();
-                    }
+                    case readingDepth:
+                        if (dat.charAt(i) == '|')
+                        {
+                            step = readingAxis;
+                        } else
+                        {
+                            parsed += dat.charAt(i);
+                        }
 
-                    break;
+                        break;
 
-                case readingSplitChar:
-                    //TODO: here
-                    break;
+                    case readingSplitChar:
+                        //TODO: here
+                        break;
 
-                case readingAxis:
-                    if ((char) is.read() == 'B')
-                    {
-                        i = is.available();
-                    } else
-                    {
-                        parsed += (char) is.read();
-                    }
-                    break;
+                    case readingAxis:
+                        if (dat.charAt(i) == 'B')
+                        {
+                            i = dat.length();
+                        } else
+                        {
+                            parsed += dat.charAt(i);
+                        }
+                        break;
 
-                case findingEndOfFrame:
-                    //TODO: this
-                    break;
+                    case findingEndOfFrame:
+                        //TODO: this
+                        break;
+                }
             }
+
+            //if (parsed.length() != 16)
+            //return;
+
+            depth = Double.parseDouble(parsed.substring(0, 8));
+            offAxis = Double.parseDouble(parsed.substring(8, 16));
+            System.out.println("depth " + depth + " offAxis: " + offAxis);
         }
-
-        //if (parsed.length() != 16)
-        //return;
-
-        depth = Double.parseDouble(parsed.substring(0, 7));
-        offAxis = Double.parseDouble(parsed.substring(8, 15));
-        System.out.println("depth " + depth + " offAxis: " + offAxis);
-
+        else
+        {
+            System.out.println("Too short");
+        }
+        is.close();
+        //server.close();
+        server.close();
+        s.close();
     }
 
     public void run()
