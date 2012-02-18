@@ -6,6 +6,7 @@ package com.badrobots.y2012.technetium.commands;
 
 import com.badrobots.y2012.technetium.subsystems.Helios;
 import com.badrobots.y2012.technetium.subsystems.Demeter;
+import edu.wpi.first.wpilibj.DriverStation;
 
 /**
  *
@@ -59,7 +60,28 @@ public class Monitor extends CommandBase {
             
         }
 
-        //Does not account for shooting
+        
+        //update ballcount
+        int balls = sensors.getNumBalls();
+        if(balls >= 4)
+        {
+            DriverStation.getInstance().setDigitalOut(3, true);
+            balls -= 4;
+        }
+        else
+            DriverStation.getInstance().setDigitalOut(3, false);
+        if(balls >= 2)
+        {
+            DriverStation.getInstance().setDigitalOut(2, true);
+            balls -= 2;
+        }
+        else
+            DriverStation.getInstance().setDigitalOut(2, false);
+        if(balls >= 1)
+            DriverStation.getInstance().setDigitalOut(1, true);
+        else
+            DriverStation.getInstance().setDigitalOut(1, false);
+
     }
 
     // Make this return true when this Command no longer needs to run execute()
