@@ -13,7 +13,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
     private static boolean bottomWasBlocked = false;  //was the top garage sensor blocked?
     private static boolean topWasBlocked = false;
     private static boolean done = true;
-    private static int spaceUp = 20;//If delay is needed, make this >1
+    private static int spaceUp = 0;//If delay is needed, make this >1
     boolean conveyorUp = false;
     boolean conveyorDown = false;
     boolean rollerIn = false;
@@ -48,6 +48,11 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
     protected void execute() 
     {
 
+        conveyorUp = false;
+        conveyorDown = false;
+        rollerIn = false;
+        rollerOut = false;
+
         //Auto collect balls with counting. Does not space
         if(OI.secondXboxLeftJoyClick())
         {
@@ -67,13 +72,15 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
 
         //Code for shooting
         if (OI.getSecondaryTrigger())   //warm up the shooter -- think gatling gun
-        {                           
-            shooter.run(1);
+        {
+            if(OI.getAnalogIn(4) > 1)
+                shooter.run(1);
+            else
+                shooter.run(OI.getAnalogIn(4));
 
             if (OI.getPrimaryTrigger()) // push balls into shooter
                 conveyorUp = true;
         }
-        
         else
             shooter.run(0);
 
@@ -89,10 +96,13 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             conveyorUp = false;
             
             if(sensors.bottomChannelBlocked())
+            {
+                spaceUp = 20;
                 conveyorUp = true;
+            }
         }
 
-        if(spaceUp > 0)
+        if(spaceUp > 0)//space the ball
         {
             spaceUp--;
             conveyorUp = true;
@@ -117,8 +127,8 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             rollerOut = true;
         }
         
-        //LUCAS- isn't this redundant? the same code is at the top of this method, isn't it?
-        if(OI.secondXboxLeftJoyClick())//this needs to be something else
+        
+        if(OI.secondXboxRightJoyClick())
         {
             rollerIn = true;
             rollerOut = false;
