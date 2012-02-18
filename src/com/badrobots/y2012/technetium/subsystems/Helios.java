@@ -58,8 +58,9 @@ public class Helios extends Subsystem
         
         //gyro = new Gyro(RobotMap.verticalGyro);
         bottomSensor = new AnalogChannel(RobotMap.bottomSensor);
-        /*topSensor = new AnalogChannel(RobotMap.topSensor);
+        topSensor = new AnalogChannel(RobotMap.topSensor);
 
+        /*
         //Note: If this doesn't work, use digital In and Outs as arguements
         lFront = new Ultrasonic(1, 2);
         lBack = new Ultrasonic(3, 4);
@@ -126,7 +127,7 @@ public class Helios extends Subsystem
         if (topSensor.getAverageVoltage() < threshold)
         {
             topCount++;
-            if(topCount > 4)
+            if(topCount > 8)
                 return true;
         }
         else
@@ -142,7 +143,13 @@ public class Helios extends Subsystem
     public boolean bottomChannelBlocked()
     {
         if (bottomSensor.getAverageVoltage() < threshold)
-            return true;
+        {
+            bottomCount++;
+            if(bottomCount > 8)
+                return true;
+        }
+        else
+            bottomCount = 0;
 
         return false;
     }

@@ -5,7 +5,7 @@
 package com.badrobots.y2012.technetium.commands;
 
 import com.badrobots.y2012.technetium.subsystems.Helios;
-
+import com.badrobots.y2012.technetium.subsystems.Demeter;
 
 /**
  *
@@ -34,7 +34,7 @@ public class Monitor extends CommandBase {
         {
             
             bottomWasBlocked = true;
-            System.out.println("Blocked");
+            //System.out.println("Blocked");
         }
         else if(bottomWasBlocked)
         {
@@ -43,17 +43,21 @@ public class Monitor extends CommandBase {
             System.out.println("BallAdded : " + sensors.getNumBalls());
         }
 
-        /*if(sensors.topChannelBlocked())
+        if(sensors.topChannelBlocked())
         {
             topWasBlocked = true;
-            System.out.println("TopBlocked");
+            //System.out.println("TopBlocked");
         }
         else if(topWasBlocked)
         {
-            sensors.setNumBalls(sensors.getNumBalls() - 1);
+            if(Demeter.getInstance().conveyorDown())
+            {
+                sensors.setNumBalls(sensors.getNumBalls() - 1);
+                System.out.println("BallRemoved : " + sensors.getNumBalls());
+            }
             topWasBlocked = false;
-            System.out.println("BallRemoved : " + sensors.getNumBalls());
-        }*/
+            
+        }
 
         //Does not account for shooting
     }

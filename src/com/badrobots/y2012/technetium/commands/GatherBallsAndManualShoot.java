@@ -97,7 +97,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             
             if(sensors.bottomChannelBlocked())
             {
-                spaceUp = 20;
+                spaceUp = 35;//was 20
                 conveyorUp = true;
             }
         }
@@ -138,6 +138,8 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         ballGatherer.runConveyor(conveyorUp, conveyorDown);
 
     }
+
+
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() 

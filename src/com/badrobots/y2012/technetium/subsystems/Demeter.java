@@ -22,6 +22,7 @@ public class Demeter extends Subsystem
     public Relay conveyor, bottomRoller;
     double threshold = 2; // voltage readout from the analog channel
     private int balls = 0;
+    protected boolean conveyorDown;
 
     
     /**
@@ -49,6 +50,7 @@ public class Demeter extends Subsystem
         bottomRoller = new Relay(RobotMap.bottomRoller);
         bottomRoller.setDirection(Relay.Direction.kBoth);
         conveyor.setDirection(Relay.Direction.kBoth);
+        conveyorDown = false;
     }
     
     /*
@@ -57,11 +59,25 @@ public class Demeter extends Subsystem
     public void runConveyor(boolean up, boolean down)
     {
         if(up)
+        {
+            conveyorDown = false;
             conveyor.set(Relay.Value.kForward);//The actual direction is in fact backwards
+        }
         else if(down)
+        {
+            conveyorDown = true;
             conveyor.set(Relay.Value.kReverse);
+        }
         else
+        {
+            conveyorDown = false;
             conveyor.set(Relay.Value.kOff);
+        }
+    }
+
+    public boolean conveyorDown()
+    {
+        return conveyorDown;
     }
     
     /*
