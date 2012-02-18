@@ -50,6 +50,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         conveyorDown = false;
         rollerIn = false;
         rollerOut = false;
+        double shooterSpeed = 0;
 
         //Auto collect balls with counting. Does not space
         if(OI.secondXboxLeftJoyClick())
@@ -72,15 +73,15 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         if (OI.getSecondaryTrigger())   //warm up the shooter -- think gatling gun
         {
             if(OI.getAnalogIn(4) > 1)
-                shooter.run(1);
+                shooterSpeed = 1;
             else
-                shooter.run(OI.getAnalogIn(4));
+                shooterSpeed = OI.getAnalogIn(4);
 
             if (OI.getPrimaryTrigger()) // push balls into shooter
                 conveyorUp = true;
         }
         else
-            shooter.run(0);
+            shooterSpeed = 0;
 
         //Ball Spacing
         if(OI.secondXboxA())
@@ -104,6 +105,16 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         {
             spaceUp--;
             conveyorUp = true;
+        }
+
+        if(OI.secondXboxLeftTrigger())
+        {
+            conveyorUp = true;
+            conveyorDown = false;
+            rollerIn = true;
+            rollerOut = false;
+            shooterSpeed = OI.getAnalogIn(4);
+
         }
 
         //Manual controlls here
@@ -135,6 +146,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
 
         ballGatherer.runBottomRoller(rollerIn, rollerOut);
         ballGatherer.runConveyor(conveyorUp, conveyorDown);
+        shooter.run(shooterSpeed);
 
     }
 

@@ -72,7 +72,7 @@ public class Hermes extends Subsystem
         if (scaledLeftStrafe > 1)
             scaledLeftStrafe = 1;
 
-        System.out.println(OI.getSensitivity());
+        //System.out.println(OI.getSensitivity());
         
         //correct for strafing code
         double scaledLeftTurn = (OI.getUsedLeftX() + (.19 * -scaledRightStrafe)) * OI.getSensitivity();  // forces slight turn

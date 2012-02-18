@@ -266,6 +266,11 @@ public class OI
         return secondXboxRB();
     }
 
+    public static boolean secondXboxLeftTrigger()
+    {
+        return xboxController2.getRawAxis(3) > .7;
+    }
+
     /*
      * Creates a deadzone for joysticks Status:Untested, must test scaling
      *
