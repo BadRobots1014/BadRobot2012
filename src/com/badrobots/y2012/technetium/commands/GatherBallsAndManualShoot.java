@@ -10,8 +10,6 @@ import edu.wpi.first.wpilibj.Relay;
  */
 public class GatherBallsAndManualShoot extends CommandBase //We need to rename this. Just maybe
 {    
-    private static boolean bottomWasBlocked = false;  //was the top garage sensor blocked?
-    private static boolean topWasBlocked = false;
     private static boolean done = true;
     private static int spaceUp = 20;//If delay is needed, make this >1
     boolean conveyorUp = false;
@@ -104,6 +102,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             conveyorUp = true;
             spaceUp = 0;
         }
+        
         if(OI.secondXboxB())
         {
             conveyorUp = false;

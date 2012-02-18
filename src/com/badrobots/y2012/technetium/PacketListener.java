@@ -17,82 +17,99 @@ import javax.microedition.io.UDPDatagramConnection;
  */
 public class PacketListener extends Thread
 {
+
     String host, port;
     UDPDatagramConnection server;
     double depth, offAxis;
     protected String buffer;
-    
+    static int step = 0;
+    static final int startOfFrame = 1;
+    static final int readingDepth = 2;
+    static final int readingSplitChar = 3;
+    static final int readingAxis = 4;
+    static final int findingEndOfFrame = 5;
+
     public PacketListener()
     {
         super("PacketListener");
     }
-    
-    public PacketListener(String name) throws IOException 
+
+    public PacketListener(String name) throws IOException
     {
         super(name);
         server = (UDPDatagramConnection) Connector.open("Datagram:" + host + "//" + port);
-
-    } 
-    
-    public void recieveData() throws IOException
-    {
-       Datagram d = server.newDatagram(255);
-       server.receive(d);
-       
-       String recieved = new String(d.getData());
-       String parsed = "";
-       
-       int step = 1; 
-       
-       System.out.println("Recieved: " + recieved);
-       
-       for (int i = 0; i < recieved.length() ; i++)
-       {
-           switch (step)
-           {
-               case 1: //looks for start
-                   if (recieved.charAt(i) == 'A')
-                   step = 2;    
-                   break;
-                   
-               case 2: //reads
-                   if (recieved.charAt(i) == '|')
-                       step = 3;
-                   
-                   else
-                       parsed += recieved.charAt(i);
-                   
-                   break;
-                   
-               case 3: //reads
-                   if (recieved.charAt(i) == 'B')
-                       i = recieved.length();
-                   
-                   else
-                       parsed += recieved.charAt(i);
-                   
-                   break;
-           }
-       }
-       
-       //if (parsed.length() != 16)
-           //return;
-       
-       depth = Double.parseDouble(parsed.substring(0,7));
-       offAxis = Double.parseDouble(parsed.substring(8, 15));       
-       System.out.println("depth " + depth + " offAxis: " + offAxis);
+        step = startOfFrame;
 
     }
-    
+
+    public void recieveData() throws IOException
+    {
+        Datagram d = server.newDatagram(255);
+        server.receive(d);
+
+        String recieved = new String(d.getData());
+        String parsed = "";
+
+        System.out.println("Recieved: " + recieved);
+
+        for (int i = 0; i < recieved.length(); i++)
+        {
+            switch (step)
+            {
+                case startOfFrame:
+                    if (recieved.charAt(i) == 'A')
+                    {
+                        step = readingDepth;
+                    }
+                    break;
+
+                case readingDepth:
+                    if (recieved.charAt(i) == '|')
+                    {
+                        step = readingAxis;
+                    } else
+                    {
+                        parsed += recieved.charAt(i);
+                    }
+
+                    break;
+
+                case readingSplitChar:
+                    //TODO: here
+                    break;
+                    
+                case readingAxis:
+                    if (recieved.charAt(i) == 'B')
+                    {
+                        i = recieved.length();
+                    } else
+                    {
+                        parsed += recieved.charAt(i);
+                    }
+                    break;
+                    
+                case findingEndOfFrame:
+                    //TODO: this
+                    break;
+            }
+        }
+
+        //if (parsed.length() != 16)
+        //return;
+
+        depth = Double.parseDouble(parsed.substring(0, 7));
+        offAxis = Double.parseDouble(parsed.substring(8, 15));
+        System.out.println("depth " + depth + " offAxis: " + offAxis);
+
+    }
+
     public double getDepth()
     {
         return depth;
     }
-    
+
     public double getOffAxis()
     {
         return offAxis;
     }
-    
-    
 }

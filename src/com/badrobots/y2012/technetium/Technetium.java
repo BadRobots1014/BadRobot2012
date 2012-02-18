@@ -74,7 +74,6 @@ public class Technetium extends IterativeRobot
     public void teleopInit()
     {
         new TankDriveTrigger();
-        new SwitchScalingSpeeds();
         new MechanumDriveTrigger();
         //new StartGatheringButton();
         //new BalanceButton();
