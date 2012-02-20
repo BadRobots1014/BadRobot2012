@@ -16,6 +16,8 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
     boolean conveyorDown = false;
     boolean rollerIn = false;
     boolean rollerOut = false;
+    boolean autoPickup = false;
+    boolean autoAiming = false;
     
 
     
@@ -45,7 +47,6 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
 
     protected void execute() 
     {
-
         conveyorUp = false;
         conveyorDown = false;
         rollerIn = false;
@@ -70,7 +71,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         }
 
         //Code for shooting
-        if (OI.getSecondaryTrigger())   //warm up the shooter -- think gatling gun
+        if (OI.getSecondaryTrigger() && !autoAiming)   //warm up the shooter -- think gatling gun
         {
             if(OI.getAnalogIn(4) > 1)
                 shooterSpeed = 1;
@@ -82,9 +83,25 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         }
         else
             shooterSpeed = 0;
+        
+        //autoAim and autoGather
+        if (OI.secondXboxRB())
+        {
+            driveTrain.autoAimMechanum();
+            
+            autoAiming = true;
+            autoPickup = true;
+        }
+        
+        //done autoAiming and autoGathering, reset booleans
+        else
+        {
+            autoAiming = false;
+            autoPickup = false;
+        }
 
         //Ball Spacing
-        if(OI.secondXboxA())
+        if(OI.secondXboxA() || autoPickup)
         {
             conveyorUp = false;
             conveyorDown = false;
@@ -107,14 +124,14 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             conveyorUp = true;
         }
 
-        if(OI.secondXboxLeftTrigger())
+        //Runs everything, full speed ahead
+        if(OI.secondXboxLeftTrigger() && !autoAiming)
         {
             conveyorUp = true;
             conveyorDown = false;
             rollerIn = true;
             rollerOut = false;
             shooterSpeed = OI.getAnalogIn(4);
-
         }
 
         //Manual controlls here
@@ -135,8 +152,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         {
             rollerIn = false;
             rollerOut = true;
-        }
-        
+        }    
         
         if(OI.secondXboxRightJoyClick())
         {
