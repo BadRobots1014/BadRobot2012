@@ -11,6 +11,7 @@ import com.badrobots.y2012.technetium.commands.PolarMechanumDrive;
 import com.badrobots.y2012.technetium.commands.TankDrive;
 import com.badrobots.y2012.technetium.commands.MechanumDrive;
 import com.badrobots.y2012.technetium.commands.CommandBase;
+import com.badrobots.y2012.technetium.commands.DriveToWall;
 import com.badrobots.y2012.technetium.subsystems.Hermes;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Watchdog;
@@ -69,6 +70,8 @@ public class Technetium extends IterativeRobot
 
     public void autonomousInit()
     {
+        //System.out.println("Init");
+        Scheduler.getInstance().add(new DriveToWall());
     }
 
     /**
@@ -76,6 +79,8 @@ public class Technetium extends IterativeRobot
      */
     public void autonomousPeriodic()
     {
+        //System.out.println("AutoPeriod ran");
+        Scheduler.getInstance().run();
     }
 
     /*
@@ -110,7 +115,7 @@ public class Technetium extends IterativeRobot
         Watchdog.getInstance().feed();
         //Runs the correct commands with their subsytems
         Scheduler.getInstance().run();
-        OI.detectAxis();
+        //OI.detectAxis();
     }
 
     public void disabledInit()

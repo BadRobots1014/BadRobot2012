@@ -29,13 +29,14 @@ public class Helios extends Subsystem
 {
     private static Helios sensors;
     private static AxisCamera camera;
-    private static Ultrasonic lFront, lBack;
+    private static Ultrasonic lFront, lBack, back;
     public static AnalogChannel bottomSensor, topSensor;
     private static final double threshold = .7;
     private static final double spacing = 25;
     protected static int numBalls;
     protected static Gyro gyro;
     protected static int topCount, bottomCount;
+    protected double lastRange;
     public static Helios getInstance()
     {
         if (sensors == null)
@@ -59,6 +60,10 @@ public class Helios extends Subsystem
         //gyro = new Gyro(RobotMap.verticalGyro);
         bottomSensor = new AnalogChannel(RobotMap.bottomSensor);
         topSensor = new AnalogChannel(RobotMap.topSensor);
+        back = new Ultrasonic(2,3,Ultrasonic.Unit.kMillimeter);
+        back.setEnabled(true);
+        back.setAutomaticMode(true);
+        lastRange = 0;
 
         /*
         //Note: If this doesn't work, use digital In and Outs as arguements
@@ -82,6 +87,11 @@ public class Helios extends Subsystem
     public double getDifferenceInSensors()
     {
         return (lFront.getRangeMM() - lBack.getRangeMM());
+    }
+
+    public double getUtraFrontRange()
+    {
+        return back.getRangeMM();
     }
     
     /**
@@ -170,6 +180,24 @@ public class Helios extends Subsystem
     public void setNumBalls(int n)
     {
         numBalls = n;
+    }
+
+
+    public boolean closerThan(int millimeters) {
+        //System.out.println(lastRange + "  " + front.isRangeValid());
+        //System.out.println("Mili" + millimeters);
+        if (back.isRangeValid() && back.getRangeMM() < millimeters) {
+            if (lastRange > 10) // 10 checks to stop
+            {
+                return true;
+            } else {
+                lastRange++;
+            }
+        } else {
+            lastRange = 0;
+        }
+        return false;
+
     }
     
     /*

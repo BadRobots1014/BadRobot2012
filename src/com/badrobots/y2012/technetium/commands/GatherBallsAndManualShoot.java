@@ -61,6 +61,19 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
 
         
 
+        
+
+        if(manualOveride)
+        {
+            manualControl();
+            DriverStation.getInstance().setDigitalOut(8, true);
+        }
+        else
+        {
+            semiAutoControl();
+            DriverStation.getInstance().setDigitalOut(8, false);
+        }
+
         //Code for shooting
         if (OI.getSecondaryTrigger())   //warm up the shooter -- think gatling gun
         {
@@ -79,17 +92,10 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             if (OI.getPrimaryTrigger()) // push balls into shooter
                 conveyorUp = true;
         }
-
-        if(manualOveride)
-        {
-            manualControl();
-            DriverStation.getInstance().setDigitalOut(8, true);
-        }
         else
-        {
-            semiAutoControl();
-            DriverStation.getInstance().setDigitalOut(8, false);
-        }
+            shooterSpeed = 0;
+
+        //System.out.println("Manual: " + manualShooterSpeed + " Auto: " + OI.getAnalogIn(4) + " Final: " + shooterSpeed);
 
         ballGatherer.runBottomRoller(rollerIn, rollerOut);
         ballGatherer.runConveyor(conveyorUp, conveyorDown);
@@ -129,6 +135,8 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             rollerIn = true;
             rollerOut = false;
         }
+
+        autoSpeed = true;//for testing
         
     }
 
@@ -142,6 +150,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
          //Ball Spacing
         if(OI.secondXboxA())
         {
+            System.out.println("Spacing");
             conveyorUp = false;
             conveyorDown = false;
             rollerIn = false;
@@ -166,6 +175,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         if(OI.secondXboxX())
         {
             autoShooterSpeed = 1;
+            autoSpeed = true;
         }
         
         if(OI.secondXboxY())
@@ -175,6 +185,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         else if(switchSpeedUp)
         {
             switchSpeedUp = false;
+            autoSpeed = false;
             if(manualShooterSpeed < .8)
                 manualShooterSpeed += .2;
             else 
@@ -188,10 +199,16 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         else if(switchSpeedDown)
         {
             switchSpeedDown = false;
+            autoSpeed = false;
             if(manualShooterSpeed > .2)
                 manualShooterSpeed -= .2;
             else
                 manualShooterSpeed = 0;
+        }
+
+        if(OI.secondXboxLeftTrigger())//run with the manual control
+        {
+            autoSpeed = false;
         }
 
         

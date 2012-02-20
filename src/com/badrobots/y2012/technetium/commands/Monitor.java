@@ -31,6 +31,9 @@ public class Monitor extends CommandBase {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() 
     {
+
+        //System.out.println("Meters: " + sensors.getUtraFrontRange()/1000);
+
         if(sensors.bottomChannelBlocked())
         {
             
