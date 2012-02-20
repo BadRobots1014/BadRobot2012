@@ -37,29 +37,7 @@ public class GatherBallsAndAutoShoot extends CommandBase
      */
     protected void execute()
     {
-        /*if (ballGatherer.numBalls() >= 3)
-        {
-            ballGatherer.runBottomRoller(0);
-            
-            if (aligned) //replace with condition of when the turret is lined up for a shot
-            {
-                shooter.run(1);
-                ballGatherer.runConveyor(.5);
-            }
-           
-        }
         
-        else if (ballGatherer.numBalls() < 3)
-            ballGatherer.runBottomRoller(.2);   //"Ball pickup" mode
-        
-        //If the bottom garage sensor is blocked, and the top isn't blocked, pull the ball until
-        //it is no longer blocking the bottom sensor
-        if (Helios.getInstance().bottomChannelBlocked() && !topBlocked)
-        {
-            ballGatherer.runConveyor(.5);//WARNING: This may cause more than 1 ball to be picked up
-            ballGatherer.addBall();
-        }
-        */
         
     }
 

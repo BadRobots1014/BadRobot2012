@@ -94,7 +94,7 @@ public class Technetium extends IterativeRobot
         {
             ex.printStackTrace();
         }
-        kinecter.start();
+        //kinecter.start();
         
         // thread = new ImageProcessing(camera);
         // thread.start();
@@ -110,7 +110,7 @@ public class Technetium extends IterativeRobot
         Watchdog.getInstance().feed();
         //Runs the correct commands with their subsytems
         Scheduler.getInstance().run();
-        //OI.detectAxis();
+        OI.detectAxis();
     }
 
     public void disabledInit()
@@ -122,6 +122,7 @@ public class Technetium extends IterativeRobot
             thread.setRunning(false);
         }
         
-        kinecter.setRunning(false);
+        else
+            kinecter.setRunning(false);
     }
 }

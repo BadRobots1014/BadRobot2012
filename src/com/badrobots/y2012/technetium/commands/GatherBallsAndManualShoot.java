@@ -68,7 +68,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             shooterSpeed = 0;
         
         //autoAim and autoGather
-        if (OI.secondXboxY())
+        if (OI.getSecondaryTrigger())
         {
             driveTrain.autoAimMechanum(kinecter);
             
@@ -131,7 +131,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             spaceUp = 0;
         }
         
-        if(OI.secondXboxLeftJoyClick())
+        if(OI.secondXboxY())
         {
             rollerIn = false;
             rollerOut = true;

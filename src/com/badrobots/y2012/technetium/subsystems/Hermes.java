@@ -75,8 +75,8 @@ public class Hermes extends Subsystem
 
         
         //correct for strafing code
-        double scaledLeftTurn = (OI.getUsedLeftX() + (.19 * -scaledRightStrafe)) * OI.getSensitivity();  // forces slight turn
-        double scaledRightTurn = (OI.getUsedRightX() + (.19 * -scaledLeftStrafe)) * OI.getSensitivity();
+        double scaledLeftTurn = (OI.getUsedLeftX() + (1 * scaledRightStrafe)) * OI.getSensitivity();  // forces slight turn
+        double scaledRightTurn = (OI.getUsedRightX() + (1 * scaledLeftStrafe)) * OI.getSensitivity();
         
          if (OI.rightStrafe())          
              drive.mecanumDrive_Cartesian(-scaledRightStrafe, (OI.getUsedRightY()*OI.getSensitivity()), scaledLeftTurn, 0); //if right hand stick is being used for strafing left, right, up and down
