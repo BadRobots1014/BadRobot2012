@@ -87,7 +87,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         //autoAim and autoGather
         if (OI.secondXboxRB())
         {
-            driveTrain.autoAimMechanum();
+            driveTrain.autoAimMechanum(kinecter);
             
             autoAiming = true;
             autoPickup = true;
