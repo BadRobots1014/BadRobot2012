@@ -53,23 +53,6 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         rollerOut = false;
         double shooterSpeed = 0;
 
-        //Auto collect balls with counting. Does not space
-        if(OI.secondXboxLeftJoyClick())
-        {
-            //Does not account for ball shooting yet
-            if(sensors.getNumBalls() < 3)
-            {
-                rollerIn = true;
-                conveyorUp = true;
-            }
-             else
-            {
-                 System.out.println("Balls Full");
-                 rollerIn = false;
-                 conveyorUp = false;
-            }
-        }
-
         //Code for shooting
         if (OI.getSecondaryTrigger() && !autoAiming)   //warm up the shooter -- think gatling gun
         {
@@ -85,7 +68,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             shooterSpeed = 0;
         
         //autoAim and autoGather
-        if (OI.secondXboxRB())
+        if (OI.secondXboxY())
         {
             driveTrain.autoAimMechanum(kinecter);
             
@@ -148,7 +131,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             spaceUp = 0;
         }
         
-        if(OI.secondXboxY())
+        if(OI.secondXboxLeftJoyClick())
         {
             rollerIn = false;
             rollerOut = true;
@@ -163,7 +146,6 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         ballGatherer.runBottomRoller(rollerIn, rollerOut);
         ballGatherer.runConveyor(conveyorUp, conveyorDown);
         shooter.run(shooterSpeed);
-
     }
 
 
