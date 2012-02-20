@@ -25,7 +25,7 @@ public class Hermes extends Subsystem
     protected static double oneForOneDepth = 5000; // millimeters
     private SoftPID rotationPID;
     private PIDController pidController;
-    private int requestedAngle = 0;
+    private double requestedAngle = 0;
     private double orientation = 1;
     private boolean changeDirection = false;
 
@@ -67,7 +67,8 @@ public class Hermes extends Subsystem
         // safety enable = false
 
         rotationPID = new SoftPID();
-        pidController = new PIDController(.01, 0, 0, horizontalGyro, rotationPID);
+        pidController = new PIDController(OI.getAnalogIn(1), OI.getAnalogIn(2), OI.getAnalogIn(3), horizontalGyro, rotationPID);
+        pidController.setTolerance(.05);
     }
 
     /*
@@ -92,9 +93,10 @@ public class Hermes extends Subsystem
         
         if (OI.getUsedRightX() != 0)
         {
-            //requestedAngle += (int) (OI.getUsedRightX() * 2);
+            requestedAngle += (OI.getUsedRightX()) * 2;
             pidController.setSetpoint(requestedAngle);
         }
+        
         if (!pidController.isEnable())
         {
             pidController.enable();
@@ -116,23 +118,23 @@ public class Hermes extends Subsystem
 
        System.out.println("Orientation: " + orientation);
 
-         if (OI.rightStrafe())
+        /* if (OI.rightStrafe())
         {
             drive.mecanumDrive_Cartesian(-scaledRightStrafe * orientation, (OI.getUsedRightY() * OI.getSensitivity()) * orientation, -scaledLeftTurn, 0); //if right hand stick is being used for strafing left, right, up and down
         } else // if left hand stick is being used for strafing
         {
             drive.mecanumDrive_Cartesian(-scaledLeftStrafe * orientation, (OI.getUsedLeftY() * OI.getSensitivity()) * orientation, -scaledRightTurn, 0);
         }
-
+*/
 
         //For PID
-        /*if (OI.rightStrafe())
+        if (OI.rightStrafe())
         {
             drive.mecanumDrive_Cartesian(-scaledRightStrafe, (OI.getUsedRightY() * OI.getSensitivity()), -rotationPID.getValue(), 0); //if right hand stick is being used for strafing left, right, up and down
         } else                       // if left hand stick is being used for strafing
         {
             drive.mecanumDrive_Cartesian(-scaledLeftStrafe, (OI.getUsedLeftY() * OI.getSensitivity()), -rotationPID.getValue(), 0);
-        }*/
+        }
     }
 
     public void autoAimMechanum(PacketListener kinecter)
@@ -257,7 +259,15 @@ public class Hermes extends Subsystem
     {
         horizontalGyro.reset();
     }
-
+    
+    public void resetRequestedAngle()
+    {
+        pidController.reset();
+        requestedAngle = 0;
+        rotationPID.output = 0;
+        pidController.enable();
+    }
+    
     public void initDefaultCommand()
     {
         setDefaultCommand(new MechanumDrive());

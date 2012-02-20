@@ -58,16 +58,14 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             manualOveride = true;
         if(OI.secondXboxStart())
             manualOveride = false;
-
-        
-
-        
+   
 
         if(manualOveride)
         {
             manualControl();
             DriverStation.getInstance().setDigitalOut(8, true);
         }
+        
         else
         {
             semiAutoControl();
