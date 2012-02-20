@@ -5,6 +5,7 @@
 package com.badrobots.y2012.technetium;
 
 import com.sun.squawk.io.BufferedReader;
+import edu.wpi.first.wpilibj.Timer;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -30,6 +31,8 @@ public class PacketListener extends Thread
     static final int readingSplitChar = 3;
     static final int readingAxis = 4;
     static final int findingEndOfFrame = 5;
+    protected double timeSinceLastUpdated = -1;
+    protected double timeOfLastUpdate = 0;
 
     public PacketListener() throws IOException
     {
@@ -39,10 +42,6 @@ public class PacketListener extends Thread
     public PacketListener(String name) throws IOException
     {
         super(name);
-
-
-
-
         step = startOfFrame;
     }
 
@@ -53,22 +52,8 @@ public class PacketListener extends Thread
         s = (ServerSocketConnection) Connector.open(hp);
         System.out.println("Connected!");
 
-
-        //server = (SocketConnection) s.acceptAndOpen();
-
-        //StreamConnection sc = s.acceptAndOpen();
         server = (SocketConnection)s.acceptAndOpen();
-        //if (server == null)
-        //{
-        //    System.out.println("server is null");
-        //    return;
-        //}
-        //server.setSocketOption(SocketConnection.DELAY, 0);
-        //server.setSocketOption(SocketConnection.LINGER, 0);
-        //server.setSocketOption(SocketConnection.KEEPALIVE, 0);
-        //server.setSocketOption(SocketConnection.RCVBUF, 256);
-
-        //System.out.println("Gotcha:" + server.getSocketOption(SocketConnection.RCVBUF));
+        
         DataInputStream is = server.openDataInputStream(); //server.openDataInputStream();
         
         byte[] bytes = new byte[256];
@@ -130,6 +115,8 @@ public class PacketListener extends Thread
             depth = Double.parseDouble(parsed.substring(0, 8));
             offAxis = Double.parseDouble(parsed.substring(8, 16));
             System.out.println("depth " + depth + " offAxis: " + offAxis);
+            
+            timeOfLastUpdate = Timer.getFPGATimestamp();
         }
         else
         {
@@ -141,6 +128,7 @@ public class PacketListener extends Thread
         s.close();
     }
 
+    int counter = 0;
     public void run()
     {
         while (true)
@@ -149,7 +137,9 @@ public class PacketListener extends Thread
             {
                 try
                 {
+                    System.out.println("Running" + counter);
                     receiveData();
+                    counter++;
                 } catch (IOException ex)
                 {
                     ex.printStackTrace();
@@ -167,6 +157,19 @@ public class PacketListener extends Thread
     public double getOffAxis()
     {
         return offAxis;
+    }
+    
+    public boolean isUpdated()
+    {
+        timeSinceLastUpdated = Timer.getFPGATimestamp() - timeOfLastUpdate;
+        
+        if (timeSinceLastUpdated == -1)
+            System.out.println("Never updated");
+                    
+        else if (timeSinceLastUpdated > 1000)
+            return false;
+        
+        return true;
     }
 
     public void setRunning(boolean run)
