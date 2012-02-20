@@ -19,7 +19,9 @@ public class Hermes extends Subsystem
     public Victor lFront, lBack, rFront, rBack;
     private Gyro horizontalGyro;
     private Accelerometer accel;
-
+    protected static double strafeCorrectionFactor = 1; //Ahh it is pathetic we have to have this so high
+    protected static double oneForOneDepth = 5000; // millimeters
+    
     /**
      * Singleton Design getter method -- ensures that only one instance of DriveTrain
      * is every used. If one has not been made, this method also invokes the constructor
@@ -75,8 +77,8 @@ public class Hermes extends Subsystem
 
         
         //correct for strafing code
-        double scaledLeftTurn = (OI.getUsedLeftX() + (1 * scaledRightStrafe)) * OI.getSensitivity();  // forces slight turn
-        double scaledRightTurn = (OI.getUsedRightX() + (1 * scaledLeftStrafe)) * OI.getSensitivity();
+        double scaledLeftTurn = (OI.getUsedLeftX() + (strafeCorrectionFactor * scaledRightStrafe)) * OI.getSensitivity();  // forces slight turn
+        double scaledRightTurn = (OI.getUsedRightX() + (strafeCorrectionFactor * scaledLeftStrafe)) * OI.getSensitivity();
         
          if (OI.rightStrafe())          
              drive.mecanumDrive_Cartesian(-scaledRightStrafe, (OI.getUsedRightY()*OI.getSensitivity()), scaledLeftTurn, 0); //if right hand stick is being used for strafing left, right, up and down
@@ -95,15 +97,25 @@ public class Hermes extends Subsystem
         if (scaledLeftStrafe > 1)
             scaledLeftStrafe = 1;
 
-
         double scaledLeftTurn = 0;
         double scaledRightTurn = 0;
         //correct for strafing code
-        if(kinecter.getOffAxis() > .1)
+        if(Math.abs(kinecter.getOffAxis()) > 5)
         {
-            scaledLeftTurn = (kinecter.getOffAxis() * (.19 * -scaledRightStrafe)) * OI.getSensitivity();  // forces slight turn
-            scaledRightTurn = (kinecter.getOffAxis() * (.19 * -scaledLeftStrafe)) * OI.getSensitivity();
+            scaledLeftTurn = ((1/320) * (kinecter.getDepth()/oneForOneDepth) * kinecter.getOffAxis() * (strafeCorrectionFactor * scaledRightStrafe));  // forces slight turn
+            scaledRightTurn = ((1/320) * (kinecter.getDepth()/oneForOneDepth) * kinecter.getOffAxis() * (strafeCorrectionFactor * scaledLeftStrafe));
         }
+        
+        if (scaledLeftTurn > 1)
+            scaledLeftTurn = 1;
+        else if (scaledLeftTurn < -1)
+            scaledLeftTurn = -1;
+        
+        if (scaledRightTurn > 1)
+            scaledRightTurn = 1;
+        else if (scaledRightTurn < -1)
+            scaledRightTurn = -1;
+        
          if (OI.rightStrafe())
              drive.mecanumDrive_Cartesian(-scaledRightStrafe, (OI.getUsedRightY()*OI.getSensitivity()), scaledLeftTurn, 0); //if right hand stick is being used for strafing left, right, up and down
          else                       // if left hand stick is being used for strafing
