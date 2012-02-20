@@ -3,6 +3,7 @@ package com.badrobots.y2012.technetium.commands;
 import com.badrobots.y2012.technetium.OI;
 import com.badrobots.y2012.technetium.subsystems.Helios;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Relay;
 
 /*
@@ -80,9 +81,15 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         }
 
         if(manualOveride)
+        {
             manualControl();
+            DriverStation.getInstance().setDigitalOut(8, true);
+        }
         else
+        {
             semiAutoControl();
+            DriverStation.getInstance().setDigitalOut(8, false);
+        }
 
         ballGatherer.runBottomRoller(rollerIn, rollerOut);
         ballGatherer.runConveyor(conveyorUp, conveyorDown);
