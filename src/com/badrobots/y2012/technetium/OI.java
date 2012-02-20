@@ -195,6 +195,15 @@ public class OI
         return xboxController2.getRawButton(10);
     }
 
+    public static boolean secondXboxSelect()
+    {
+        return xboxController2.getRawButton(7);
+    }
+
+    public static boolean secondXboxStart()
+    {
+        return xboxController2.getRawButton(8);
+    }
 
     /*
      * @return the currently used controller left x value status: all tested
