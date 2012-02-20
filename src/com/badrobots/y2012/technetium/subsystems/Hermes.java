@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.Victor;
 import com.badrobots.y2012.technetium.commands.MechanumDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import com.badrobots.y2012.technetium.OI;
+import com.badrobots.y2012.technetium.PacketListener;
 import com.badrobots.y2012.technetium.RobotMap;
 import edu.wpi.first.wpilibj.*;
 
@@ -78,6 +79,32 @@ public class Hermes extends Subsystem
         double scaledRightTurn = (OI.getUsedRightX() + (.19 * -scaledLeftStrafe)) * OI.getSensitivity();
         
          if (OI.rightStrafe())          
+             drive.mecanumDrive_Cartesian(-scaledRightStrafe, (OI.getUsedRightY()*OI.getSensitivity()), scaledLeftTurn, 0); //if right hand stick is being used for strafing left, right, up and down
+         else                       // if left hand stick is being used for strafing
+            drive.mecanumDrive_Cartesian(-scaledLeftStrafe, (OI.getUsedLeftY()*OI.getSensitivity()), scaledRightTurn, 0);
+    }
+
+    public void autoAimMechanum(PacketListener kinecter)
+    {
+        double scaledRightStrafe = OI.getUsedRightX() * 1.25 * OI.getSensitivity();
+        double scaledLeftStrafe = OI.getUsedLeftX() * 1.25 * OI.getSensitivity();
+
+        if (scaledRightStrafe > 1)
+            scaledRightStrafe = 1;
+
+        if (scaledLeftStrafe > 1)
+            scaledLeftStrafe = 1;
+
+
+        double scaledLeftTurn = 0;
+        double scaledRightTurn = 0;
+        //correct for strafing code
+        if(kinecter.getOffAxis() > .1)
+        {
+            scaledLeftTurn = (kinecter.getOffAxis() * (.19 * -scaledRightStrafe)) * OI.getSensitivity();  // forces slight turn
+            scaledRightTurn = (kinecter.getOffAxis() * (.19 * -scaledLeftStrafe)) * OI.getSensitivity();
+        }
+         if (OI.rightStrafe())
              drive.mecanumDrive_Cartesian(-scaledRightStrafe, (OI.getUsedRightY()*OI.getSensitivity()), scaledLeftTurn, 0); //if right hand stick is being used for strafing left, right, up and down
          else                       // if left hand stick is being used for strafing
             drive.mecanumDrive_Cartesian(-scaledLeftStrafe, (OI.getUsedLeftY()*OI.getSensitivity()), scaledRightTurn, 0);

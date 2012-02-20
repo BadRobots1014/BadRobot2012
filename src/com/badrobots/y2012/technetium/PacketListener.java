@@ -54,12 +54,11 @@ public class PacketListener extends Thread
 
         server = (SocketConnection)s.acceptAndOpen();
         
-        DataInputStream is = server.openDataInputStream(); //server.openDataInputStream();
+        DataInputStream is = server.openDataInputStream(); 
         
         byte[] bytes = new byte[256];
         is.read(bytes);
         String dat = new String(bytes);
-        //System.out.println("We made it so far and got:" + dat);
 
         String parsed = "";
         
@@ -109,9 +108,6 @@ public class PacketListener extends Thread
                 }
             }
 
-            //if (parsed.length() != 16)
-            //return;
-
             depth = Double.parseDouble(parsed.substring(0, 8));
             offAxis = Double.parseDouble(parsed.substring(8, 16));
             System.out.println("depth " + depth + " offAxis: " + offAxis);
@@ -123,7 +119,6 @@ public class PacketListener extends Thread
             System.out.println("Too short");
         }
         is.close();
-        //server.close();
         server.close();
         s.close();
     }
@@ -154,9 +149,9 @@ public class PacketListener extends Thread
         return depth;
     }
 
-    public double getOffAxis()
+    public double getOffAxis()//return between -1 and 1
     {
-        return offAxis;
+        return offAxis/320;
     }
     
     public boolean isUpdated()

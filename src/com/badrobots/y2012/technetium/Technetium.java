@@ -53,7 +53,7 @@ public class Technetium extends IterativeRobot
     public void robotInit()
     {
         // Initialize all subsystems
-        CommandBase.init();
+        
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
         try
         {
@@ -63,6 +63,7 @@ public class Technetium extends IterativeRobot
         {
             ex.printStackTrace();
         }
+        CommandBase.init(kinecter);
 
     }
 
