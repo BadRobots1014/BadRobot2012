@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.*;
  * @author 1014 Programming Team
  */
 public class Hermes extends Subsystem
-{
+{//tinychange
 
     private static Hermes instance;
     private static RobotDrive drive;
