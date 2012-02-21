@@ -29,10 +29,6 @@ public class Hermes extends Subsystem
     private double requestedAngle = 0;
     private double orientation = 1;
     private boolean changeDirection = false;
-    private boolean PIDControl = false;
-    private boolean toggleButton = false;
-    private boolean buttonTogglePIDOff = false;
-    private double rotation;
 
     /**
      * Singleton Design getter method -- ensures that only one instance of DriveTrain
@@ -70,7 +66,6 @@ public class Hermes extends Subsystem
         drive.setSafetyEnabled(false);  //because why not. Jon: because it will kill us all. 
         // Haven't you seen iRobot? They left their robots on
         // safety enable = false
-        rotation = 0;
 
         /*rotationPID = new SoftPID();
         pidController = new PIDController(OI.getAnalogIn(1), OI.getAnalogIn(2), OI.getAnalogIn(3), horizontalGyro, rotationPID);
@@ -81,37 +76,36 @@ public class Hermes extends Subsystem
      * Takes in 3 values from the joysticks, and sends voltages to speedcontrollers accordingly
      * Status:Tested
      */
-
-    //P:.01
-    //I:.001
-    //D:0
-    int i = 0;
     public void mechanumDrive()
     {
+<<<<<<< HEAD
         //pidController.setPID(OI.getAnalogIn(1), OI.getAnalogIn(2), OI.getAnalogIn(3));
+=======
+>>>>>>> parent of a643df6... End of the day code day before ship
 
         double scaledRightStrafe = OI.getUsedRightX() * 1.25 * OI.getSensitivity();
         double scaledLeftStrafe = OI.getUsedLeftX() * 1.25 * OI.getSensitivity();
 
         if (scaledRightStrafe > 1)
+        {
             scaledRightStrafe = 1;
-        if(scaledRightStrafe < -1)
-            scaledRightStrafe = -1;
+        }
 
         if (scaledLeftStrafe > 1)
-            scaledLeftStrafe = 1;
-        if(scaledLeftStrafe < -1)
-            scaledLeftStrafe = -1;
-        
-        /*if (OI.getUsedRightX() != 0)//this rotates the robot with PID only.
         {
-            requestedAngle += OI.getUsedRightX() * 2;
+            scaledLeftStrafe = 1;
+        }
+        
+        if (OI.getUsedRightX() != 0)
+        {
+            requestedAngle += (OI.getUsedRightX()) * 2;
             pidController.setSetpoint(requestedAngle);
         }
         
-        if (!pidController.isEnable())//Enables PID
+        if (!pidController.isEnable())
         {
             pidController.enable();
+<<<<<<< HEAD
         }*/
 
         if(OI.primaryXboxB())
@@ -125,18 +119,25 @@ public class Hermes extends Subsystem
         }
 
 
+=======
+        }
+        //System.out.println("Requested Angle: " + requestedAngle + " Current Angle: " + horizontalGyro.getAngle());
+        //System.out.println("PID Output: " + rotationPID.getValue());
+        
+>>>>>>> parent of a643df6... End of the day code day before ship
         //correct for strafing code
-        double scaledLeftTurn = (OI.getUsedLeftX() + (strafeCorrectionFactor * scaledRightStrafe)) * OI.getSensitivity();  // forces slight turn
-        double scaledRightTurn = (OI.getUsedRightX() + (strafeCorrectionFactor * scaledLeftStrafe)) * OI.getSensitivity();
+       double scaledLeftTurn = (OI.getUsedLeftX() + (strafeCorrectionFactor * scaledRightStrafe)) * OI.getSensitivity();  // forces slight turn
+       double scaledRightTurn = (OI.getUsedRightX() + (strafeCorrectionFactor * scaledLeftStrafe)) * OI.getSensitivity();
 
-        //reverse orientation of control
-        if(OI.primaryXboxRB())
+       if(OI.primaryXboxRB())
             changeDirection = true;
-        else if(changeDirection)
-        {
+       else if(changeDirection)
+       {
            orientation = orientation * -1;
            changeDirection = false;
-        }
+       }
+
+       System.out.println("Orientation: " + orientation);
 
         /* if (OI.rightStrafe())
         {
@@ -145,12 +146,12 @@ public class Hermes extends Subsystem
         {
             drive.mecanumDrive_Cartesian(-scaledLeftStrafe * orientation, (OI.getUsedLeftY() * OI.getSensitivity()) * orientation, -scaledRightTurn, 0);
         }
-        */
+*/
 
-        if(buttonTogglePIDOff)
-            PIDControl = false;
-        else
+        //For PID
+        if (OI.rightStrafe())
         {
+<<<<<<< HEAD
             if((OI.rightStrafe() && Math.abs(scaledRightStrafe)< .05) || (!OI.rightStrafe() && Math.abs(scaledLeftStrafe) < .05)) // if not trying to strafe
             {
                 i++;
@@ -171,10 +172,14 @@ public class Hermes extends Subsystem
        PIDControl = false; // replace this!!! debugging line 
 
         if(PIDControl)
+=======
+            drive.mecanumDrive_Cartesian(-scaledRightStrafe, (OI.getUsedRightY() * OI.getSensitivity()), -rotationPID.getValue(), 0); //if right hand stick is being used for strafing left, right, up and down
+        } else                       // if left hand stick is being used for strafing
+>>>>>>> parent of a643df6... End of the day code day before ship
         {
-           scaledLeftTurn = rotationPID.getValue();
-           scaledRightTurn = rotationPID.getValue();
+            drive.mecanumDrive_Cartesian(-scaledLeftStrafe, (OI.getUsedLeftY() * OI.getSensitivity()), -rotationPID.getValue(), 0);
         }
+<<<<<<< HEAD
 
        // System.out.println("Wanted Angle: " + pidController.getSetpoint() + " Actual:" + horizontalGyro.getAngle());
 
@@ -185,6 +190,8 @@ public class Hermes extends Subsystem
             System.out.println("Mechanuming " + scaledRightStrafe);
             drive.mecanumDrive_Cartesian(-scaledLeftStrafe * orientation, (OI.getUsedLeftY() * OI.getSensitivity()) * orientation, -scaledRightTurn, 0);
         }
+=======
+>>>>>>> parent of a643df6... End of the day code day before ship
     }
 
     public void autoAimMechanum(PacketListener kinecter)
