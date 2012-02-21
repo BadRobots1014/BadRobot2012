@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.*;
  * @author 1014 Programming Team
  */
 public class Hermes extends Subsystem
-{
+{//tinychange
 
     private static Hermes instance;
     private static RobotDrive drive;
@@ -62,10 +62,11 @@ public class Hermes extends Subsystem
         rBack = new Jaguar(RobotMap.rBack);
 
         drive = new RobotDrive(lFront, lBack, rFront, rBack);   // feeds victors to RobotDrive
-        //drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
-        //drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true); //
+
+        drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
+        drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true); //
         drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true);
-        drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true); //
+        //drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true); //
         //horizontalGyro = new Gyro(RobotMap.verticalGyro); //that's wrong
         drive.setSafetyEnabled(false);  //because why not. Jon: because it will kill us all. 
         // Haven't you seen iRobot? They left their robots on
@@ -270,13 +271,12 @@ public class Hermes extends Subsystem
      */
     public void tankDrive()
     {
-                System.out.println("Left " + OI.getUsedLeftY());
-
-        lFront.set(OI.getUsedLeftY()); //deadzone(OI.leftJoystick.getY()));
-        lBack.set(OI.getUsedLeftY()); //-deadzone(OI.leftJoystick.getY()));
+        lFront.set(-OI.getUsedLeftY()); //deadzone(OI.leftJoystick.getY()));
+        lBack.set(-OI.getUsedLeftY()); //-deadzone(OI.leftJoystick.getY()));
 
         rFront.set(OI.getUsedRightY()); //deadzone(OI.rightJoystick.getY()));
         rBack.set(OI.getUsedRightY()); //deadzone(OI.rightJoystick.getY()));
+        System.out.println("Tank: " + OI.getUsedLeftY());
 
     }
 
