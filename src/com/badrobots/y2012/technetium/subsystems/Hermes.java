@@ -67,15 +67,15 @@ public class Hermes extends Subsystem
         drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true); //
         drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true);
         //drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true); //
-        //horizontalGyro = new Gyro(RobotMap.verticalGyro); //that's wrong
+        horizontalGyro = new Gyro(RobotMap.verticalGyro); //that's wrong
         drive.setSafetyEnabled(false);  //because why not. Jon: because it will kill us all. 
         // Haven't you seen iRobot? They left their robots on
         // safety enable = false
         rotation = 0;
 
-        /*rotationPID = new SoftPID();
+        rotationPID = new SoftPID();
         pidController = new PIDController(OI.getAnalogIn(1), OI.getAnalogIn(2), OI.getAnalogIn(3), horizontalGyro, rotationPID);
-        pidController.setTolerance(.05);*/
+        pidController.setTolerance(.05);
     }
 
     /*
@@ -89,7 +89,7 @@ public class Hermes extends Subsystem
     int i = 0;
     public void mechanumDrive()
     {
-        //pidController.setPID(OI.getAnalogIn(1), OI.getAnalogIn(2), OI.getAnalogIn(3));
+        pidController.setPID(OI.getAnalogIn(1), OI.getAnalogIn(2), OI.getAnalogIn(3));
 
         double scaledRightStrafe = OI.getUsedRightX() * 1.25 * OI.getSensitivity();
         double scaledLeftStrafe = OI.getUsedLeftX() * 1.25 * OI.getSensitivity();
@@ -108,12 +108,12 @@ public class Hermes extends Subsystem
         {
             requestedAngle += OI.getUsedRightX() * 2;
             pidController.setSetpoint(requestedAngle);
-        }
+        }*/
         
         if (!pidController.isEnable())//Enables PID
         {
             pidController.enable();
-        }*/
+        }
 
         if(OI.primaryXboxB())
         {
@@ -159,7 +159,7 @@ public class Hermes extends Subsystem
             }
             else if(!PIDControl) // if trying to strafe, and it is the first iteration of doing so
             {
-                //pidController.setSetpoint(horizontalGyro.getAngle());
+                pidController.setSetpoint(horizontalGyro.getAngle());
                 PIDControl = true;
             }
             else // continue to PID strafe
