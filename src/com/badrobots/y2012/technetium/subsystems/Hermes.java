@@ -28,6 +28,10 @@ public class Hermes extends Subsystem
     private double requestedAngle = 0;
     private double orientation = 1;
     private boolean changeDirection = false;
+    private boolean PIDControl = false;
+    private boolean toggleButton = false;
+    private boolean buttonTogglePIDOff = false;
+    private double rotation;
 
     /**
      * Singleton Design getter method -- ensures that only one instance of DriveTrain
@@ -65,6 +69,7 @@ public class Hermes extends Subsystem
         drive.setSafetyEnabled(false);  //because why not. Jon: because it will kill us all. 
         // Haven't you seen iRobot? They left their robots on
         // safety enable = false
+        rotation = 0;
 
         rotationPID = new SoftPID();
         pidController = new PIDController(OI.getAnalogIn(1), OI.getAnalogIn(2), OI.getAnalogIn(3), horizontalGyro, rotationPID);
@@ -75,48 +80,62 @@ public class Hermes extends Subsystem
      * Takes in 3 values from the joysticks, and sends voltages to speedcontrollers accordingly
      * Status:Tested
      */
+
+    //P:.01
+    //I:.001
+    //D:0
+    int i = 0;
     public void mechanumDrive()
     {
+        pidController.setPID(OI.getAnalogIn(1), OI.getAnalogIn(2), OI.getAnalogIn(3));
 
         double scaledRightStrafe = OI.getUsedRightX() * 1.25 * OI.getSensitivity();
         double scaledLeftStrafe = OI.getUsedLeftX() * 1.25 * OI.getSensitivity();
 
         if (scaledRightStrafe > 1)
-        {
             scaledRightStrafe = 1;
-        }
+        if(scaledRightStrafe < -1)
+            scaledRightStrafe = -1;
 
         if (scaledLeftStrafe > 1)
-        {
             scaledLeftStrafe = 1;
-        }
+        if(scaledLeftStrafe < -1)
+            scaledLeftStrafe = -1;
         
-        if (OI.getUsedRightX() != 0)
+        /*if (OI.getUsedRightX() != 0)//this rotates the robot with PID only.
         {
-            requestedAngle += (OI.getUsedRightX()) * 2;
+            requestedAngle += OI.getUsedRightX() * 2;
             pidController.setSetpoint(requestedAngle);
-        }
+        }*/
         
-        if (!pidController.isEnable())
+        if (!pidController.isEnable())//Enables PID
         {
             pidController.enable();
         }
-        //System.out.println("Requested Angle: " + requestedAngle + " Current Angle: " + horizontalGyro.getAngle());
-        //System.out.println("PID Output: " + rotationPID.getValue());
-        
-        //correct for strafing code
-       double scaledLeftTurn = (OI.getUsedLeftX() + (strafeCorrectionFactor * scaledRightStrafe)) * OI.getSensitivity();  // forces slight turn
-       double scaledRightTurn = (OI.getUsedRightX() + (strafeCorrectionFactor * scaledLeftStrafe)) * OI.getSensitivity();
 
-       if(OI.primaryXboxRB())
+        if(OI.primaryXboxB())
+        {
+            toggleButton = true;
+        }
+        else if(toggleButton)
+        {
+            toggleButton = false;
+            buttonTogglePIDOff = !buttonTogglePIDOff;
+        }
+
+
+        //correct for strafing code
+        double scaledLeftTurn = (OI.getUsedLeftX() + (strafeCorrectionFactor * scaledRightStrafe)) * OI.getSensitivity();  // forces slight turn
+        double scaledRightTurn = (OI.getUsedRightX() + (strafeCorrectionFactor * scaledLeftStrafe)) * OI.getSensitivity();
+
+        //reverse orientation of control
+        if(OI.primaryXboxRB())
             changeDirection = true;
-       else if(changeDirection)
-       {
+        else if(changeDirection)
+        {
            orientation = orientation * -1;
            changeDirection = false;
-       }
-
-       System.out.println("Orientation: " + orientation);
+        }
 
         /* if (OI.rightStrafe())
         {
@@ -125,16 +144,46 @@ public class Hermes extends Subsystem
         {
             drive.mecanumDrive_Cartesian(-scaledLeftStrafe * orientation, (OI.getUsedLeftY() * OI.getSensitivity()) * orientation, -scaledRightTurn, 0);
         }
-*/
+        */
 
-        //For PID
-        if (OI.rightStrafe())
+        if(buttonTogglePIDOff)
+            PIDControl = false;
+        else
         {
-            drive.mecanumDrive_Cartesian(-scaledRightStrafe, (OI.getUsedRightY() * OI.getSensitivity()), -rotationPID.getValue(), 0); //if right hand stick is being used for strafing left, right, up and down
-        } else                       // if left hand stick is being used for strafing
-        {
-            drive.mecanumDrive_Cartesian(-scaledLeftStrafe, (OI.getUsedLeftY() * OI.getSensitivity()), -rotationPID.getValue(), 0);
+            if((OI.rightStrafe() && Math.abs(scaledRightStrafe)< .05) || (!OI.rightStrafe() && Math.abs(scaledLeftStrafe) < .05)) // if not trying to strafe
+            {
+                System.out.println("NO PID");
+                i++;
+                PIDControl = false;
+            }
+            else if(!PIDControl) // if trying to strafe, and it is the first iteration of doing so
+            {
+                pidController.setSetpoint(horizontalGyro.getAngle());
+                PIDControl = true;
+            }
+            else // continue to PID strafe
+            {
+                PIDControl = true;
+                System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            }
         }
+
+        System.out.println("Before: " + scaledLeftTurn);
+
+        if(PIDControl)
+        {
+           scaledLeftTurn = rotationPID.getValue();
+           scaledRightTurn = rotationPID.getValue();
+        }
+
+        System.out.println("After: " + scaledLeftTurn);
+
+        System.out.println("Wanted Angle: " + pidController.getSetpoint() + " Actual:" + horizontalGyro.getAngle());
+
+        if (OI.rightStrafe())
+            drive.mecanumDrive_Cartesian(-scaledRightStrafe * orientation, (OI.getUsedRightY() * OI.getSensitivity()) * orientation, -scaledLeftTurn, 0); //if right hand stick is being used for strafing left, right, up and down
+        else// if left hand stick is being used for strafing
+            drive.mecanumDrive_Cartesian(-scaledLeftStrafe * orientation, (OI.getUsedLeftY() * OI.getSensitivity()) * orientation, -scaledRightTurn, 0);
     }
 
     public void autoAimMechanum(PacketListener kinecter)
