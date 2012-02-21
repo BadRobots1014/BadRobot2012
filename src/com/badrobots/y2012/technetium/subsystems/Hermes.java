@@ -28,14 +28,10 @@ public class Hermes extends Subsystem
     private double requestedAngle = 0;
     private double orientation = 1;
     private boolean changeDirection = false;
-    protected boolean pidEnabled = false;
-    protected boolean bDepressed = false;
 
     /**
-     * Singleton Design getter method -- ensures that only one instance of
-     * DriveTrain is every used. If one has not been made, this method also
-     * invokes the constructor
-     *
+     * Singleton Design getter method -- ensures that only one instance of DriveTrain
+     * is every used. If one has not been made, this method also invokes the constructor
      * @return the single instance of DriveTrain per program
      */
     public static Hermes getInstance()
@@ -48,8 +44,8 @@ public class Hermes extends Subsystem
     }
 
     /*
-     * Initailizes four Victors, feeds them into a RobotDrive instance, and sets
-     * the motors in RobotDrive to the correct running direction.
+     * Initailizes four Victors, feeds them into a RobotDrive instance,
+     * and sets the motors in RobotDrive to the correct running direction.
      */
     private Hermes()
     {
@@ -76,13 +72,14 @@ public class Hermes extends Subsystem
     }
 
     /*
-     * Takes in 3 values from the joysticks, and sends voltages to
-     * speedcontrollers accordingly Status:Tested
+     * Takes in 3 values from the joysticks, and sends voltages to speedcontrollers accordingly
+     * Status:Tested
      */
     public void mechanumDrive()
     {
-        double scaledRightStrafe = OI.getUsedRightX() * OI.getSensitivity() * orientation;
-        double scaledLeftStrafe = OI.getUsedLeftX() * OI.getSensitivity() * orientation;
+
+        double scaledRightStrafe = OI.getUsedRightX() * 1.25 * OI.getSensitivity();
+        double scaledLeftStrafe = OI.getUsedLeftX() * 1.25 * OI.getSensitivity();
 
         if (scaledRightStrafe > 1)
         {
@@ -94,85 +91,50 @@ public class Hermes extends Subsystem
             scaledLeftStrafe = 1;
         }
         
-        if (OI.rightStrafe() && scaledRightStrafe == 0)
-            pidEnabled = false;
-        
-        else if (!OI.rightStrafe() && scaledLeftStrafe == 0)
-            pidEnabled = false;
-        
-        else 
-            pidEnabled = true;
-            
-
         if (OI.getUsedRightX() != 0)
         {
             requestedAngle += (OI.getUsedRightX()) * 2;
             pidController.setSetpoint(requestedAngle);
         }
         
-       /* else
-        {
-            pidController.setSetpoint(horizontalGyro.getAngle());
-        }*/
-
         if (!pidController.isEnable())
         {
             pidController.enable();
         }
         //System.out.println("Requested Angle: " + requestedAngle + " Current Angle: " + horizontalGyro.getAngle());
         //System.out.println("PID Output: " + rotationPID.getValue());
-
+        
         //correct for strafing code
-        double scaledLeftTurn = (OI.getUsedLeftX() + (strafeCorrectionFactor * scaledRightStrafe)) * OI.getSensitivity();  // forces slight turn
-        double scaledRightTurn = (OI.getUsedRightX() + (strafeCorrectionFactor * scaledLeftStrafe)) * OI.getSensitivity();
+       double scaledLeftTurn = (OI.getUsedLeftX() + (strafeCorrectionFactor * scaledRightStrafe)) * OI.getSensitivity();  // forces slight turn
+       double scaledRightTurn = (OI.getUsedRightX() + (strafeCorrectionFactor * scaledLeftStrafe)) * OI.getSensitivity();
 
-        if (OI.primaryXboxRB())
-        {
+       if(OI.primaryXboxRB())
             changeDirection = true;
-        } 
-        
-        else if (changeDirection)
-        {
-            orientation = orientation * -1;
-            changeDirection = false;
-        }
+       else if(changeDirection)
+       {
+           orientation = orientation * -1;
+           changeDirection = false;
+       }
 
-        System.out.println("PIDEnabled: " + pidEnabled);
-        
-        if (OI.primaryXboxB())
-        {
-            bDepressed = true;
-        }
-        
-        else if (bDepressed)
-        {
-            bDepressed = false;
-            pidEnabled = !pidEnabled;
-        }          
+       System.out.println("Orientation: " + orientation);
 
-        if (!pidEnabled)
+        /* if (OI.rightStrafe())
         {
-             if (OI.rightStrafe())
-            {
-                drive.mecanumDrive_Cartesian(-scaledRightStrafe, (OI.getUsedRightY() * OI.getSensitivity())*orientation, OI.getUsedRightX(), 0); //if right hand stick is being used for strafing left, right, up and down
-            } else                       // if left hand stick is being used for strafing
-            {
-                drive.mecanumDrive_Cartesian(-scaledLeftStrafe, (OI.getUsedLeftY() * OI.getSensitivity())*orientation, OI.getUsedLeftX(), 0);
-            }
-        } 
-              
-        else
+            drive.mecanumDrive_Cartesian(-scaledRightStrafe * orientation, (OI.getUsedRightY() * OI.getSensitivity()) * orientation, -scaledLeftTurn, 0); //if right hand stick is being used for strafing left, right, up and down
+        } else // if left hand stick is being used for strafing
         {
-            if (OI.rightStrafe())
-            {
-                drive.mecanumDrive_Cartesian(-scaledRightStrafe, (OI.getUsedRightY() * OI.getSensitivity())*orientation, rotationPID.getValue(), 0); //if right hand stick is being used for strafing left, right, up and down
-            } else                       // if left hand stick is being used for strafing
-            {
-                drive.mecanumDrive_Cartesian(-scaledLeftStrafe, (OI.getUsedLeftY() * OI.getSensitivity())*orientation, rotationPID.getValue(), 0);
-            }
+            drive.mecanumDrive_Cartesian(-scaledLeftStrafe * orientation, (OI.getUsedLeftY() * OI.getSensitivity()) * orientation, -scaledRightTurn, 0);
         }
+*/
+
         //For PID
-
+        if (OI.rightStrafe())
+        {
+            drive.mecanumDrive_Cartesian(-scaledRightStrafe, (OI.getUsedRightY() * OI.getSensitivity()), -rotationPID.getValue(), 0); //if right hand stick is being used for strafing left, right, up and down
+        } else                       // if left hand stick is being used for strafing
+        {
+            drive.mecanumDrive_Cartesian(-scaledLeftStrafe, (OI.getUsedLeftY() * OI.getSensitivity()), -rotationPID.getValue(), 0);
+        }
     }
 
     public void autoAimMechanum(PacketListener kinecter)
@@ -202,23 +164,17 @@ public class Hermes extends Subsystem
         if (scaledLeftTurn > 1)
         {
             scaledLeftTurn = 1;
-        } else
+        } else if (scaledLeftTurn < -1)
         {
-            if (scaledLeftTurn < -1)
-            {
-                scaledLeftTurn = -1;
-            }
+            scaledLeftTurn = -1;
         }
 
         if (scaledRightTurn > 1)
         {
             scaledRightTurn = 1;
-        } else
+        } else if (scaledRightTurn < -1)
         {
-            if (scaledRightTurn < -1)
-            {
-                scaledRightTurn = -1;
-            }
+            scaledRightTurn = -1;
         }
 
         if (OI.rightStrafe())
@@ -231,7 +187,8 @@ public class Hermes extends Subsystem
     }
 
     /*
-     * Used for cartesian control of a mechanum drive Status: Untested
+     * Used for cartesian control of a mechanum drive
+     * Status: Untested
      */
     public void autoMechanumDrive(double x, double y, double rotation)
     {
@@ -243,11 +200,13 @@ public class Hermes extends Subsystem
     }
 
     /*
-     * @param mag the speed desired to be moved, theta the angle that the robot
-     * will move towards, rotation the speed at which the robot is turning
+     * @param mag the speed desired to be moved,
+     *        theta the angle that the robot will move towards,
+     *        rotation the speed at which the robot is turning
      *
-     * Moves the robot using polar coordinates - takes in three components and
-     * moves the robot accordingly Status: Untested
+     * Moves the robot using polar coordinates - takes in three components and moves
+     * the robot accordingly
+     * Status: Untested
      */
     public void polarMechanum(double mag, double theta, double rotation)
     {
@@ -255,9 +214,9 @@ public class Hermes extends Subsystem
     }
 
     /*
-     * Tank drives using joystick controls, sets left side to Y value of left
-     * joystick and right side as Y value of right joystick Status:Tested for
-     * both xbox + joysticks
+     * Tank drives using joystick controls, sets left side to Y value of left joystick
+     * and right side as Y value of right joystick
+     * Status:Tested for both xbox + joysticks
      */
     public void tankDrive()
     {
@@ -270,8 +229,8 @@ public class Hermes extends Subsystem
     }
 
     /*
-     * Tank drives using two doubles, left side speed and right speed Status:
-     * untested
+     * Tank drives using two doubles, left side speed and right speed
+     * Status: untested
      */
     public void tankDrive(double left, double right)
     {
@@ -283,8 +242,8 @@ public class Hermes extends Subsystem
     }
 
     /*
-     * This method may or may not be used depending on whether we use an
-     * accelerometer @return the accelerometer's value
+     * This method may or may not be used depending on whether we use an accelerometer
+     * @return the accelerometer's value
      */
     public double getMovement()
     {
@@ -292,15 +251,15 @@ public class Hermes extends Subsystem
     }
 
     /*
-     * Right now, this will not be called because we don't have a gyro hooked
-     * up. However, it will be used in autonomous, so we might as well keep it
+     * Right now, this will not be called because we don't have a gyro hooked up. However,
+     * it will be used in autonomous, so we might as well keep it
      * 2/6/12
      */
     public void resetGyro()
     {
         horizontalGyro.reset();
     }
-
+    
     public void resetRequestedAngle()
     {
         pidController.reset();
@@ -308,7 +267,7 @@ public class Hermes extends Subsystem
         rotationPID.output = 0;
         pidController.enable();
     }
-
+    
     public void initDefaultCommand()
     {
         setDefaultCommand(new MechanumDrive());
