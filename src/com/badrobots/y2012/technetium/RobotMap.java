@@ -15,10 +15,10 @@ public class RobotMap
 
     public static final int cRIOsidecar = 1; // port from the cRIO to the digital
     // sidecar
-    public static final int lFront = 1;// 3
-    public static final int rFront = 5;// 2
-    public static final int lBack = 2;// 5
-    public static final int rBack = 3;//1
+    public static final int lFront = 4;// 3
+    public static final int rFront = 2;// 2
+    public static final int lBack = 3;// 5
+    public static final int rBack = 1;//1
     public static final int leftJoystick = 1;
     public static final int rightJoystick = 2;
     public static final int controller = 3;
@@ -33,8 +33,8 @@ public class RobotMap
     public static final int verticalGyro = 1;
     public static final int conveyor = 2; //TODO (find all these ports)
     public static final int bottomRoller = 1;
-    public static final int topRoller = 7;
-    public static final int leftShooter = 4;
+    //public static final int topRoller = 7;
+    public static final int leftShooter = 6;
     public static final int rightShooter = 7;
     public static final int bridgingTool = 9;//TODO Find port
 }

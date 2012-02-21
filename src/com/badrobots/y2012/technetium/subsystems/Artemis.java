@@ -91,6 +91,7 @@ public class Artemis extends Subsystem
      */
     public void run(double speed)
     {
+        System.out.println("Shooting:"  + speed);
         right.set(speed);
         left.set(-speed);
     }

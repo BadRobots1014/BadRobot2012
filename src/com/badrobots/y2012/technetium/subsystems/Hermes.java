@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import com.badrobots.y2012.technetium.OI;
 import com.badrobots.y2012.technetium.PacketListener;
 import com.badrobots.y2012.technetium.RobotMap;
+import com.badrobots.y2012.technetium.commands.TankDrive;
 import edu.wpi.first.wpilibj.*;
 
 /*
@@ -18,7 +19,7 @@ public class Hermes extends Subsystem
 
     private static Hermes instance;
     private static RobotDrive drive;
-    public Victor lFront, lBack, rFront, rBack;
+    public Jaguar lFront, lBack, rFront, rBack;
     private Gyro horizontalGyro;
     private Accelerometer accel;
     protected static double strafeCorrectionFactor = .165;
@@ -55,14 +56,14 @@ public class Hermes extends Subsystem
     {
         super();
 
-        lFront = new Victor(RobotMap.lFront);   //initializes all victors
-        lBack = new Victor(RobotMap.lBack);
-        rFront = new Victor(RobotMap.rFront);
-        rBack = new Victor(RobotMap.rBack);
+        lFront = new Jaguar(RobotMap.lFront);   //initializes all victors
+        lBack = new Jaguar(RobotMap.lBack);
+        rFront = new Jaguar(RobotMap.rFront);
+        rBack = new Jaguar(RobotMap.rBack);
 
         drive = new RobotDrive(lFront, lBack, rFront, rBack);   // feeds victors to RobotDrive
-        // drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
-        drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true); //
+        drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
+        drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true); //
         drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true);
         // drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true); //
         horizontalGyro = new Gyro(RobotMap.verticalGyro); //that's wrong
@@ -269,11 +270,12 @@ public class Hermes extends Subsystem
      */
     public void tankDrive()
     {
-        lFront.set(OI.getUsedLeftY()); //deadzone(OI.leftJoystick.getY()));
+        lFront.set(-OI.getUsedLeftY()); //deadzone(OI.leftJoystick.getY()));
         lBack.set(-OI.getUsedLeftY()); //-deadzone(OI.leftJoystick.getY()));
 
-        rFront.set(-OI.getUsedRightY()); //deadzone(OI.rightJoystick.getY()));
+        rFront.set(OI.getUsedRightY()); //deadzone(OI.rightJoystick.getY()));
         rBack.set(OI.getUsedRightY()); //deadzone(OI.rightJoystick.getY()));
+        System.out.println("Tank: " + OI.getUsedLeftY());
 
     }
 
@@ -319,7 +321,7 @@ public class Hermes extends Subsystem
     
     public void initDefaultCommand()
     {
-        setDefaultCommand(new MechanumDrive());
+        setDefaultCommand(new TankDrive());
     }
 
     public class SoftPID implements PIDOutput
