@@ -79,7 +79,10 @@ public class Hermes extends Subsystem
     public void mechanumDrive()
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         //pidController.setPID(OI.getAnalogIn(1), OI.getAnalogIn(2), OI.getAnalogIn(3));
+=======
+>>>>>>> parent of a643df6... End of the day code day before ship
 =======
 >>>>>>> parent of a643df6... End of the day code day before ship
 
@@ -106,6 +109,7 @@ public class Hermes extends Subsystem
         {
             pidController.enable();
 <<<<<<< HEAD
+<<<<<<< HEAD
         }*/
 
         if(OI.primaryXboxB())
@@ -120,10 +124,15 @@ public class Hermes extends Subsystem
 
 
 =======
+=======
+>>>>>>> parent of a643df6... End of the day code day before ship
         }
         //System.out.println("Requested Angle: " + requestedAngle + " Current Angle: " + horizontalGyro.getAngle());
         //System.out.println("PID Output: " + rotationPID.getValue());
         
+<<<<<<< HEAD
+>>>>>>> parent of a643df6... End of the day code day before ship
+=======
 >>>>>>> parent of a643df6... End of the day code day before ship
         //correct for strafing code
        double scaledLeftTurn = (OI.getUsedLeftX() + (strafeCorrectionFactor * scaledRightStrafe)) * OI.getSensitivity();  // forces slight turn
@@ -151,6 +160,7 @@ public class Hermes extends Subsystem
         //For PID
         if (OI.rightStrafe())
         {
+<<<<<<< HEAD
 <<<<<<< HEAD
             if((OI.rightStrafe() && Math.abs(scaledRightStrafe)< .05) || (!OI.rightStrafe() && Math.abs(scaledLeftStrafe) < .05)) // if not trying to strafe
             {
@@ -191,6 +201,13 @@ public class Hermes extends Subsystem
             drive.mecanumDrive_Cartesian(-scaledLeftStrafe * orientation, (OI.getUsedLeftY() * OI.getSensitivity()) * orientation, -scaledRightTurn, 0);
         }
 =======
+>>>>>>> parent of a643df6... End of the day code day before ship
+=======
+            drive.mecanumDrive_Cartesian(-scaledRightStrafe, (OI.getUsedRightY() * OI.getSensitivity()), -rotationPID.getValue(), 0); //if right hand stick is being used for strafing left, right, up and down
+        } else                       // if left hand stick is being used for strafing
+        {
+            drive.mecanumDrive_Cartesian(-scaledLeftStrafe, (OI.getUsedLeftY() * OI.getSensitivity()), -rotationPID.getValue(), 0);
+        }
 >>>>>>> parent of a643df6... End of the day code day before ship
     }
 
