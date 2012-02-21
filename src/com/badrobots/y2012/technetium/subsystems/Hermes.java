@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import com.badrobots.y2012.technetium.OI;
 import com.badrobots.y2012.technetium.PacketListener;
 import com.badrobots.y2012.technetium.RobotMap;
+import com.badrobots.y2012.technetium.commands.TankDrive;
 import edu.wpi.first.wpilibj.*;
 
 /*
@@ -18,7 +19,7 @@ public class Hermes extends Subsystem
 
     private static Hermes instance;
     private static RobotDrive drive;
-    public Victor lFront, lBack, rFront, rBack;
+    public Jaguar lFront, lBack, rFront, rBack;
     private Gyro horizontalGyro;
     private Accelerometer accel;
     protected static double strafeCorrectionFactor = .165;
@@ -55,25 +56,25 @@ public class Hermes extends Subsystem
     {
         super();
 
-        lFront = new Victor(RobotMap.lFront);   //initializes all victors
-        lBack = new Victor(RobotMap.lBack);
-        rFront = new Victor(RobotMap.rFront);
-        rBack = new Victor(RobotMap.rBack);
+        lFront = new Jaguar(RobotMap.lFront);   //initializes all victors
+        lBack = new Jaguar(RobotMap.lBack);
+        rFront = new Jaguar(RobotMap.rFront);
+        rBack = new Jaguar(RobotMap.rBack);
 
         drive = new RobotDrive(lFront, lBack, rFront, rBack);   // feeds victors to RobotDrive
-        // drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
-        drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true); //
+        //drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
+        //drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true); //
         drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true);
-        // drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true); //
-        horizontalGyro = new Gyro(RobotMap.verticalGyro); //that's wrong
+        drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true); //
+        //horizontalGyro = new Gyro(RobotMap.verticalGyro); //that's wrong
         drive.setSafetyEnabled(false);  //because why not. Jon: because it will kill us all. 
         // Haven't you seen iRobot? They left their robots on
         // safety enable = false
         rotation = 0;
 
-        rotationPID = new SoftPID();
+        /*rotationPID = new SoftPID();
         pidController = new PIDController(OI.getAnalogIn(1), OI.getAnalogIn(2), OI.getAnalogIn(3), horizontalGyro, rotationPID);
-        pidController.setTolerance(.05);
+        pidController.setTolerance(.05);*/
     }
 
     /*
@@ -87,7 +88,7 @@ public class Hermes extends Subsystem
     int i = 0;
     public void mechanumDrive()
     {
-        pidController.setPID(OI.getAnalogIn(1), OI.getAnalogIn(2), OI.getAnalogIn(3));
+        //pidController.setPID(OI.getAnalogIn(1), OI.getAnalogIn(2), OI.getAnalogIn(3));
 
         double scaledRightStrafe = OI.getUsedRightX() * 1.25 * OI.getSensitivity();
         double scaledLeftStrafe = OI.getUsedLeftX() * 1.25 * OI.getSensitivity();
@@ -106,12 +107,12 @@ public class Hermes extends Subsystem
         {
             requestedAngle += OI.getUsedRightX() * 2;
             pidController.setSetpoint(requestedAngle);
-        }*/
+        }
         
         if (!pidController.isEnable())//Enables PID
         {
             pidController.enable();
-        }
+        }*/
 
         if(OI.primaryXboxB())
         {
@@ -152,13 +153,12 @@ public class Hermes extends Subsystem
         {
             if((OI.rightStrafe() && Math.abs(scaledRightStrafe)< .05) || (!OI.rightStrafe() && Math.abs(scaledLeftStrafe) < .05)) // if not trying to strafe
             {
-                System.out.println("NO PID");
                 i++;
                 PIDControl = false;
             }
             else if(!PIDControl) // if trying to strafe, and it is the first iteration of doing so
             {
-                pidController.setSetpoint(horizontalGyro.getAngle());
+                //pidController.setSetpoint(horizontalGyro.getAngle());
                 PIDControl = true;
             }
             else // continue to PID strafe
@@ -167,8 +167,8 @@ public class Hermes extends Subsystem
                 System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             }
         }
-
-        System.out.println("Before: " + scaledLeftTurn);
+        
+       PIDControl = false; // replace this!!! debugging line 
 
         if(PIDControl)
         {
@@ -176,14 +176,15 @@ public class Hermes extends Subsystem
            scaledRightTurn = rotationPID.getValue();
         }
 
-        System.out.println("After: " + scaledLeftTurn);
-
-        System.out.println("Wanted Angle: " + pidController.getSetpoint() + " Actual:" + horizontalGyro.getAngle());
+       // System.out.println("Wanted Angle: " + pidController.getSetpoint() + " Actual:" + horizontalGyro.getAngle());
 
         if (OI.rightStrafe())
             drive.mecanumDrive_Cartesian(-scaledRightStrafe * orientation, (OI.getUsedRightY() * OI.getSensitivity()) * orientation, -scaledLeftTurn, 0); //if right hand stick is being used for strafing left, right, up and down
         else// if left hand stick is being used for strafing
+        {
+            System.out.println("Mechanuming " + scaledRightStrafe);
             drive.mecanumDrive_Cartesian(-scaledLeftStrafe * orientation, (OI.getUsedLeftY() * OI.getSensitivity()) * orientation, -scaledRightTurn, 0);
+        }
     }
 
     public void autoAimMechanum(PacketListener kinecter)
@@ -269,10 +270,12 @@ public class Hermes extends Subsystem
      */
     public void tankDrive()
     {
-        lFront.set(OI.getUsedLeftY()); //deadzone(OI.leftJoystick.getY()));
-        lBack.set(-OI.getUsedLeftY()); //-deadzone(OI.leftJoystick.getY()));
+                System.out.println("Left " + OI.getUsedLeftY());
 
-        rFront.set(-OI.getUsedRightY()); //deadzone(OI.rightJoystick.getY()));
+        lFront.set(OI.getUsedLeftY()); //deadzone(OI.leftJoystick.getY()));
+        lBack.set(OI.getUsedLeftY()); //-deadzone(OI.leftJoystick.getY()));
+
+        rFront.set(OI.getUsedRightY()); //deadzone(OI.rightJoystick.getY()));
         rBack.set(OI.getUsedRightY()); //deadzone(OI.rightJoystick.getY()));
 
     }
@@ -282,7 +285,7 @@ public class Hermes extends Subsystem
      * Status: untested
      */
     public void tankDrive(double left, double right)
-    {
+    {  
         lFront.set(left); //deadzone(OI.leftJoystick.getY()));
         lBack.set(left); //-deadzone(OI.leftJoystick.getY()));
 
@@ -319,7 +322,7 @@ public class Hermes extends Subsystem
     
     public void initDefaultCommand()
     {
-        setDefaultCommand(new MechanumDrive());
+        setDefaultCommand(new TankDrive());
     }
 
     public class SoftPID implements PIDOutput

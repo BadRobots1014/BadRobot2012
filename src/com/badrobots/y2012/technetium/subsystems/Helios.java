@@ -209,6 +209,6 @@ public class Helios extends Subsystem
     }
     public void initDefaultCommand()
     {
-        setDefaultCommand(new Monitor());
+        //setDefaultCommand(new Monitor());
     }
 }

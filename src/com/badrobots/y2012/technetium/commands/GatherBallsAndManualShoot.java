@@ -30,7 +30,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
     public GatherBallsAndManualShoot() 
     {
         requires(ballGatherer);
-        requires(shooter);
+        //requires(shooter);
     }
 
     protected void initialize() 
@@ -97,7 +97,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
 
         ballGatherer.runBottomRoller(rollerIn, rollerOut);
         ballGatherer.runConveyor(conveyorUp, conveyorDown);
-        shooter.run(shooterSpeed);
+        //shooter.run(shooterSpeed);
     }
 
 

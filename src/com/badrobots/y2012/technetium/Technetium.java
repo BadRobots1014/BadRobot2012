@@ -56,14 +56,14 @@ public class Technetium extends IterativeRobot
         // Initialize all subsystems
         
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-        try
+        /*try
         {
             kinecter = new PacketListener();
             //camera = AxisCamera.getInstance();
         } catch (IOException ex)
         {
             ex.printStackTrace();
-        }
+        }*/
         CommandBase.init(kinecter);
 
     }
@@ -90,16 +90,18 @@ public class Technetium extends IterativeRobot
     {
         new TankDriveTrigger();
         new MechanumDriveTrigger();
-        new ResetGyro();
+        //new ResetGyro();
         //new StartGatheringButton();
         //new BalanceButton();
-        try
+        /*try
         {
             kinecter = new PacketListener();
         } catch (IOException ex)
         {
             ex.printStackTrace();
         }
+        *
+        */
         //kinecter.start();
         
         // thread = new ImageProcessing(camera);
@@ -122,13 +124,13 @@ public class Technetium extends IterativeRobot
     public void disabledInit()
     {
         System.out.println("Default IterativeRobot.disabledInit() method... Overload you!");
-        Helios.getInstance().setNumBalls(0);
-        if (thread != null)
+        //Helios.getInstance().setNumBalls(0); //TODO
+        /*if (thread != null)
         {
             thread.setRunning(false);
         }
         
         else
-            kinecter.setRunning(false);
+            kinecter.setRunning(false);*/
     }
 }
