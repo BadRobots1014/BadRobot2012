@@ -33,6 +33,7 @@ public class Hermes extends Subsystem
     private boolean toggleButton = false;
     private boolean buttonTogglePIDOff = false;
     private double rotation;
+    private double wantedAngle;
 
     /**
      * Singleton Design getter method -- ensures that only one instance of DriveTrain
@@ -64,8 +65,8 @@ public class Hermes extends Subsystem
         drive = new RobotDrive(lFront, lBack, rFront, rBack);   // feeds victors to RobotDrive
 
         drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
-        drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true); //
-        drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true);
+        //drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true); //
+        drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
         //drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true); //
         horizontalGyro = new Gyro(RobotMap.verticalGyro); //that's wrong
         drive.setSafetyEnabled(false);  //because why not. Jon: because it will kill us all. 
@@ -115,12 +116,13 @@ public class Hermes extends Subsystem
             pidController.enable();
         }
 
-        if(OI.primaryXboxB())
+        if(OI.primaryXboxY())
         {
             toggleButton = true;
         }
         else if(toggleButton)
         {
+            System.out.println("TOGGLE" + buttonTogglePIDOff);
             toggleButton = false;
             buttonTogglePIDOff = !buttonTogglePIDOff;
         }
@@ -139,6 +141,7 @@ public class Hermes extends Subsystem
            changeDirection = false;
         }
 
+
         /* if (OI.rightStrafe())
         {
             drive.mecanumDrive_Cartesian(-scaledRightStrafe * orientation, (OI.getUsedRightY() * OI.getSensitivity()) * orientation, -scaledLeftTurn, 0); //if right hand stick is being used for strafing left, right, up and down
@@ -148,43 +151,46 @@ public class Hermes extends Subsystem
         }
         */
 
+
         if(buttonTogglePIDOff)
             PIDControl = false;
         else
         {
             if((OI.rightStrafe() && Math.abs(scaledRightStrafe)< .05) || (!OI.rightStrafe() && Math.abs(scaledLeftStrafe) < .05)) // if not trying to strafe
             {
+                System.out.println("Not moving enough");
                 i++;
                 PIDControl = false;
             }
             else if(!PIDControl) // if trying to strafe, and it is the first iteration of doing so
             {
+                System.out.println("RESET");
                 pidController.setSetpoint(horizontalGyro.getAngle());
                 PIDControl = true;
+                wantedAngle = horizontalGyro.getAngle();
             }
             else // continue to PID strafe
             {
                 PIDControl = true;
-                System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             }
         }
-        
-       PIDControl = false; // replace this!!! debugging line 
+
+        System.out.println("GYRO: " + horizontalGyro.getAngle() + " Wanted: " + wantedAngle);
 
         if(PIDControl)
         {
            scaledLeftTurn = rotationPID.getValue();
            scaledRightTurn = rotationPID.getValue();
+           System.out.println("PID: " + scaledRightTurn);
         }
 
        // System.out.println("Wanted Angle: " + pidController.getSetpoint() + " Actual:" + horizontalGyro.getAngle());
 
         if (OI.rightStrafe())
-            drive.mecanumDrive_Cartesian(-scaledRightStrafe * orientation, (OI.getUsedRightY() * OI.getSensitivity()) * orientation, -scaledLeftTurn, 0); //if right hand stick is being used for strafing left, right, up and down
+            drive.mecanumDrive_Cartesian(-scaledRightStrafe * orientation, (OI.getUsedRightY() * OI.getSensitivity()) * orientation, scaledLeftTurn, 0); //if right hand stick is being used for strafing left, right, up and down
         else// if left hand stick is being used for strafing
         {
-            System.out.println("Mechanuming " + scaledRightStrafe);
-            drive.mecanumDrive_Cartesian(-scaledLeftStrafe * orientation, (OI.getUsedLeftY() * OI.getSensitivity()) * orientation, -scaledRightTurn, 0);
+            drive.mecanumDrive_Cartesian(-scaledLeftStrafe * orientation, (OI.getUsedLeftY() * OI.getSensitivity()) * orientation, scaledRightTurn, 0);
         }
     }
 
@@ -322,7 +328,7 @@ public class Hermes extends Subsystem
     
     public void initDefaultCommand()
     {
-        setDefaultCommand(new TankDrive());
+        setDefaultCommand(new MechanumDrive());
     }
 
     public class SoftPID implements PIDOutput

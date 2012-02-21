@@ -335,7 +335,7 @@ public class OI
      */
     public static double getXboxSensitivity()
     {
-        return (-rightJoystick.getZ() + 1) / 2;
+        return (-rightJoystick.getZ() + 1);
     }
 
     /*
