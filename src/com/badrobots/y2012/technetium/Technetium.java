@@ -12,6 +12,7 @@ import com.badrobots.y2012.technetium.commands.TankDrive;
 import com.badrobots.y2012.technetium.commands.MechanumDrive;
 import com.badrobots.y2012.technetium.commands.CommandBase;
 //import com.badrobots.y2012.technetium.commands.DriveToWall;
+import com.badrobots.y2012.technetium.commands.DriveToWall;
 import com.badrobots.y2012.technetium.subsystems.Hermes;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Watchdog;
@@ -79,7 +80,7 @@ public class Technetium extends IterativeRobot
      */
     public void autonomousPeriodic()
     {
-        //System.out.println("AutoPeriod ran");
+        Scheduler.getInstance().add(new DriveToWall());//We need to test to see if this is stopped after autonomous is over
         Scheduler.getInstance().run();
     }
 
