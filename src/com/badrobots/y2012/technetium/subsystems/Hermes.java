@@ -33,10 +33,13 @@ public class Hermes extends Subsystem
     private boolean toggleButton = false;
     private boolean buttonTogglePIDOff = false;
     private double rotation;
+    private double wantedAngle;
 
     /**
-     * Singleton Design getter method -- ensures that only one instance of DriveTrain
-     * is every used. If one has not been made, this method also invokes the constructor
+     * Singleton Design getter method -- ensures that only one instance of
+     * DriveTrain is every used. If one has not been made, this method also
+     * invokes the constructor
+     *
      * @return the single instance of DriveTrain per program
      */
     public static Hermes getInstance()
@@ -49,8 +52,8 @@ public class Hermes extends Subsystem
     }
 
     /*
-     * Initailizes four Victors, feeds them into a RobotDrive instance,
-     * and sets the motors in RobotDrive to the correct running direction.
+     * Initailizes four Victors, feeds them into a RobotDrive instance, and sets
+     * the motors in RobotDrive to the correct running direction.
      */
     private Hermes()
     {
@@ -64,120 +67,149 @@ public class Hermes extends Subsystem
         drive = new RobotDrive(lFront, lBack, rFront, rBack);   // feeds victors to RobotDrive
 
         drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
-        drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true); //
-        drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true);
+        //drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true); //
+        drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
         //drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true); //
-        //horizontalGyro = new Gyro(RobotMap.verticalGyro); //that's wrong
-        drive.setSafetyEnabled(false);  //because why not. Jon: because it will kill us all. 
+        horizontalGyro = new Gyro(RobotMap.horizontalGyro); //that's wrong
+        drive.setSafetyEnabled(false);
+        //because why not. Jon: because it will kill us all. 
         // Haven't you seen iRobot? They left their robots on
         // safety enable = false
-        rotation = 0;
 
+        //Rotation and angle requesting stuff for PID
+        rotation = 0;
         rotationPID = new SoftPID();
+        //TODO: Set these to constants
+        pidController = new PIDController(OI.getAnalogIn(1), OI.getAnalogIn(2), OI.getAnalogIn(3), horizontalGyro, rotationPID);
+        pidController.setTolerance(.05);
     }
 
     /*
-     * Takes in 3 values from the joysticks, and sends voltages to speedcontrollers accordingly
-     * Status:Tested
+     * Takes in 3 values from the joysticks, and sends voltages to
+     * speedcontrollers accordingly Status:Tested
      */
     public void mechanumDrive()
     {
-        double scaledRightStrafe = OI.getUsedRightX() * 1.25 * OI.getSensitivity();
-        double scaledLeftStrafe = OI.getUsedLeftX() * 1.25 * OI.getSensitivity();
+        double strafeX = 0;
+        double strafeY = 0;
+        double scaledTurn = 0;
+        double leftX = OI.getUsedLeftX();
+        double leftY = OI.getUsedLeftY();
+        double rightX = OI.getUsedRightX();
+        double rightY = OI.getUsedRightY();
+        double sensitivity = OI.getSensitivity();
+        boolean useRightJoystickForStrafe = OI.rightStrafe();
 
-        if (scaledRightStrafe > 1)
-            scaledRightStrafe = 1;
-        if(scaledRightStrafe < -1)
-            scaledRightStrafe = -1;
-
-        if (scaledLeftStrafe > 1)
-            scaledLeftStrafe = 1;
-        if(scaledLeftStrafe < -1)
-            scaledLeftStrafe = -1;
-        
         //correct for strafing code
-        double scaledLeftTurn = (OI.getUsedLeftX() + (strafeCorrectionFactor * scaledRightStrafe)) * OI.getSensitivity();  // forces slight turn
-        double scaledRightTurn = (OI.getUsedRightX() + (strafeCorrectionFactor * scaledLeftStrafe)) * OI.getSensitivity();
-
-        //reverse orientation of control
-        if(OI.primaryXboxRB())
-            changeDirection = true;
-        else if(changeDirection)
+        //if right hand stick is being used for strafing left, right, up and down
+        if (useRightJoystickForStrafe)
         {
-           orientation = orientation * -1;
-           changeDirection = false;
+            strafeY = rightY * sensitivity;
+            strafeX = rightX * 1.25 * sensitivity;
+            strafeX = clampMotorValues(strafeX);
+            scaledTurn = (rightX + (strafeCorrectionFactor * strafeX)) * sensitivity;
         }
-        
+        else
+        {
+            strafeY = leftY * sensitivity;
+            strafeX = leftX * 1.25 * sensitivity;
+            strafeX = clampMotorValues(strafeX);
+            scaledTurn = (leftX + (strafeCorrectionFactor * strafeX)) * sensitivity;
+        }
+        checkForOrientationChange();
+
         //apply PID if it should
-        checkAndRunPIDOperations(scaledLeftTurn, scaledRightTurn);
+        scaledTurn = checkAndRunPIDOperations(strafeX, scaledTurn);
 
-        if (OI.rightStrafe())
-            drive.mecanumDrive_Cartesian(-scaledRightStrafe * orientation, (OI.getUsedRightY() * OI.getSensitivity()) * orientation, -scaledLeftTurn, 0); //if right hand stick is being used for strafing left, right, up and down
-        else// if left hand stick is being used for strafing
-            drive.mecanumDrive_Cartesian(-scaledLeftStrafe * orientation, (OI.getUsedLeftY() * OI.getSensitivity()) * orientation, -scaledRightTurn, 0);
+        drive.mecanumDrive_Cartesian(-strafeX * orientation, strafeY * orientation, -scaledTurn, 0);
     }
-    
-    /*
-     * Takes care of all PID code and if the PID operations cshould be used, it applies
-     * the operations to the values given in the parameter.
-     */
-    public void checkAndRunPIDOperations(double left, double right)
+
+    private void checkForOrientationChange()
     {
-        
-    //P:.01
-    //I:.001
-    //D:0
-        if (pidController == null)
-            return;
-        
-        pidController.setPID(OI.getAnalogIn(1), OI.getAnalogIn(2), OI.getAnalogIn(3));
-        
-        if (OI.getUsedRightX() != 0)//this rotates the robot with PID only.
+        //reverse orientation of control
+        if (OI.primaryXboxRB())
         {
-            requestedAngle += OI.getUsedRightX() * 2;
-            pidController.setSetpoint(requestedAngle);
+            changeDirection = true;
         }
-        
+        else if (changeDirection)
+        {
+            orientation = orientation * -1;
+            changeDirection = false;
+        }
+    }
+
+    private double clampMotorValues(double scaledStrafe)
+    {
+        //double scaledLeftStrafe = OI.getUsedLeftX() * 1.25 * OI.getSensitivity();
+
+        if (scaledStrafe > 1)
+        {
+            scaledStrafe = 1;
+        }
+        if (scaledStrafe < -1)
+        {
+            scaledStrafe = -1;
+        }
+        return scaledStrafe;
+    }
+
+    /*
+     * Takes care of all PID code and if the PID operations cshould be used, it
+     * applies the operations to the values given in the parameter.
+     */
+    public double checkAndRunPIDOperations(double strafe, double rotation)
+    {
+        double finalRotation = 0;
+        //P:.01
+        //I:.001
+        //D:0
+        if (pidController == null)
+        {
+            return 0;
+        }
+
+        pidController.setPID(OI.getAnalogIn(1), OI.getAnalogIn(2), OI.getAnalogIn(3));
+
         if (!pidController.isEnable())//Enables PID
         {
             pidController.enable();
         }
-        
-        if(OI.primaryXboxB())
+
+        //Checks if the toggle button is pressed, and if it is, it toggles PID enabled
+        if (OI.primaryXboxY())
         {
             toggleButton = true;
         }
-        
-        else if(toggleButton)
+        else if (toggleButton)
         {
             toggleButton = false;
             buttonTogglePIDOff = !buttonTogglePIDOff;
         }
-        
-        if(buttonTogglePIDOff)
+
+        //disables PID if the toggle is on
+        if (buttonTogglePIDOff)
+        {
             PIDControl = false;
+        }
         else
         {
-            if((OI.rightStrafe() && Math.abs(left)< .05) || (!OI.rightStrafe() && Math.abs(right) < .05)) // if not trying to strafe
+            if (Math.abs(strafe) < .05) // if not trying to strafe
+            {
                 PIDControl = false;
-            
-            else if(!PIDControl) // if trying to strafe, and it is the first iteration of doing so
+            }
+            else if (!PIDControl) // if trying to strafe, and it is the first iteration of doing so
             {
                 pidController.setSetpoint(horizontalGyro.getAngle());
                 PIDControl = true;
             }
-            else // continue to PID strafe
-            {
-                PIDControl = true;
-                System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            }
         }
-        
-        if(PIDControl)
+
+
+        if (PIDControl)
         {
-           left = rotationPID.getValue();
-           right = rotationPID.getValue();
+            finalRotation = rotationPID.getValue();
         }
+        return finalRotation;
     }
 
     public void autoAimMechanum(PacketListener kinecter)
@@ -200,14 +232,15 @@ public class Hermes extends Subsystem
         //correct for strafing code
         if (Math.abs(kinecter.getOffAxis()[0]) > 5)
         {
-            scaledLeftTurn = ((1 / 320) * (kinecter.getDepth()[0] / oneForOneDepth) * kinecter.getOffAxis()[0]/320 * (strafeCorrectionFactor * scaledRightStrafe));  // forces slight turn
-            scaledRightTurn = ((1 / 320) * (kinecter.getDepth()[0] / oneForOneDepth) * kinecter.getOffAxis()[0]/320 * (strafeCorrectionFactor * scaledLeftStrafe));
+            scaledLeftTurn = ((1 / 320) * (kinecter.getDepth()[0] / oneForOneDepth) * kinecter.getOffAxis()[0] / 320 * (strafeCorrectionFactor * scaledRightStrafe));  // forces slight turn
+            scaledRightTurn = ((1 / 320) * (kinecter.getDepth()[0] / oneForOneDepth) * kinecter.getOffAxis()[0] / 320 * (strafeCorrectionFactor * scaledLeftStrafe));
         }
 
         if (scaledLeftTurn > 1)
         {
             scaledLeftTurn = 1;
-        } else if (scaledLeftTurn < -1)
+        }
+        else if (scaledLeftTurn < -1)
         {
             scaledLeftTurn = -1;
         }
@@ -215,7 +248,8 @@ public class Hermes extends Subsystem
         if (scaledRightTurn > 1)
         {
             scaledRightTurn = 1;
-        } else if (scaledRightTurn < -1)
+        }
+        else if (scaledRightTurn < -1)
         {
             scaledRightTurn = -1;
         }
@@ -223,15 +257,15 @@ public class Hermes extends Subsystem
         if (OI.rightStrafe())
         {
             drive.mecanumDrive_Cartesian(-scaledRightStrafe, (OI.getUsedRightY() * OI.getSensitivity()), scaledLeftTurn, 0); //if right hand stick is being used for strafing left, right, up and down
-        } else                       // if left hand stick is being used for strafing
+        }
+        else                       // if left hand stick is being used for strafing
         {
             drive.mecanumDrive_Cartesian(-scaledLeftStrafe, (OI.getUsedLeftY() * OI.getSensitivity()), scaledRightTurn, 0);
         }
     }
 
     /*
-     * Used for cartesian control of a mechanum drive
-     * Status: Untested
+     * Used for cartesian control of a mechanum drive Status: Untested
      */
     public void autoMechanumDrive(double x, double y, double rotation)
     {
@@ -243,13 +277,11 @@ public class Hermes extends Subsystem
     }
 
     /*
-     * @param mag the speed desired to be moved,
-     *        theta the angle that the robot will move towards,
-     *        rotation the speed at which the robot is turning
+     * @param mag the speed desired to be moved, theta the angle that the robot
+     * will move towards, rotation the speed at which the robot is turning
      *
-     * Moves the robot using polar coordinates - takes in three components and moves
-     * the robot accordingly
-     * Status: Untested
+     * Moves the robot using polar coordinates - takes in three components and
+     * moves the robot accordingly Status: Untested
      */
     public void polarMechanum(double mag, double theta, double rotation)
     {
@@ -257,9 +289,9 @@ public class Hermes extends Subsystem
     }
 
     /*
-     * Tank drives using joystick controls, sets left side to Y value of left joystick
-     * and right side as Y value of right joystick
-     * Status:Tested for both xbox + joysticks
+     * Tank drives using joystick controls, sets left side to Y value of left
+     * joystick and right side as Y value of right joystick Status:Tested for
+     * both xbox + joysticks
      */
     public void tankDrive()
     {
@@ -273,11 +305,11 @@ public class Hermes extends Subsystem
     }
 
     /*
-     * Tank drives using two doubles, left side speed and right speed
-     * Status: untested
+     * Tank drives using two doubles, left side speed and right speed Status:
+     * untested
      */
     public void tankDrive(double left, double right)
-    {  
+    {
         lFront.set(left); //deadzone(OI.leftJoystick.getY()));
         lBack.set(left); //-deadzone(OI.leftJoystick.getY()));
 
@@ -286,8 +318,8 @@ public class Hermes extends Subsystem
     }
 
     /*
-     * This method may or may not be used depending on whether we use an accelerometer
-     * @return the accelerometer's value
+     * This method may or may not be used depending on whether we use an
+     * accelerometer @return the accelerometer's value
      */
     public double getMovement()
     {
@@ -295,15 +327,15 @@ public class Hermes extends Subsystem
     }
 
     /*
-     * Right now, this will not be called because we don't have a gyro hooked up. However,
-     * it will be used in autonomous, so we might as well keep it
+     * Right now, this will not be called because we don't have a gyro hooked
+     * up. However, it will be used in autonomous, so we might as well keep it
      * 2/6/12
      */
     public void resetGyro()
     {
         horizontalGyro.reset();
     }
-    
+
     public void resetRequestedAngle()
     {
         pidController.reset();
@@ -311,17 +343,17 @@ public class Hermes extends Subsystem
         rotationPID.output = 0;
         pidController.enable();
     }
-    
+
     public void initDefaultCommand()
     {
-        setDefaultCommand(new TankDrive());
+        setDefaultCommand(new MechanumDrive());
     }
 
     public class SoftPID implements PIDOutput
     {
 
         double output = 0;
-        
+
         public SoftPID()
         {
             super();
