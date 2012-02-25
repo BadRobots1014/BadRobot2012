@@ -73,24 +73,15 @@ public class Hermes extends Subsystem
         // safety enable = false
         rotation = 0;
 
-        /*rotationPID = new SoftPID();
-        pidController = new PIDController(OI.getAnalogIn(1), OI.getAnalogIn(2), OI.getAnalogIn(3), horizontalGyro, rotationPID);
-        pidController.setTolerance(.05);*/
+        rotationPID = new SoftPID();
     }
 
     /*
      * Takes in 3 values from the joysticks, and sends voltages to speedcontrollers accordingly
      * Status:Tested
      */
-
-    //P:.01
-    //I:.001
-    //D:0
-    int i = 0;
     public void mechanumDrive()
     {
-        //pidController.setPID(OI.getAnalogIn(1), OI.getAnalogIn(2), OI.getAnalogIn(3));
-
         double scaledRightStrafe = OI.getUsedRightX() * 1.25 * OI.getSensitivity();
         double scaledLeftStrafe = OI.getUsedLeftX() * 1.25 * OI.getSensitivity();
 
@@ -104,28 +95,6 @@ public class Hermes extends Subsystem
         if(scaledLeftStrafe < -1)
             scaledLeftStrafe = -1;
         
-        /*if (OI.getUsedRightX() != 0)//this rotates the robot with PID only.
-        {
-            requestedAngle += OI.getUsedRightX() * 2;
-            pidController.setSetpoint(requestedAngle);
-        }
-        
-        if (!pidController.isEnable())//Enables PID
-        {
-            pidController.enable();
-        }*/
-
-        if(OI.primaryXboxB())
-        {
-            toggleButton = true;
-        }
-        else if(toggleButton)
-        {
-            toggleButton = false;
-            buttonTogglePIDOff = !buttonTogglePIDOff;
-        }
-
-
         //correct for strafing code
         double scaledLeftTurn = (OI.getUsedLeftX() + (strafeCorrectionFactor * scaledRightStrafe)) * OI.getSensitivity();  // forces slight turn
         double scaledRightTurn = (OI.getUsedRightX() + (strafeCorrectionFactor * scaledLeftStrafe)) * OI.getSensitivity();
@@ -138,28 +107,63 @@ public class Hermes extends Subsystem
            orientation = orientation * -1;
            changeDirection = false;
         }
+        
+        //apply PID if it should
+        checkAndRunPIDOperations(scaledLeftTurn, scaledRightTurn);
 
-        /* if (OI.rightStrafe())
-        {
+        if (OI.rightStrafe())
             drive.mecanumDrive_Cartesian(-scaledRightStrafe * orientation, (OI.getUsedRightY() * OI.getSensitivity()) * orientation, -scaledLeftTurn, 0); //if right hand stick is being used for strafing left, right, up and down
-        } else // if left hand stick is being used for strafing
-        {
+        else// if left hand stick is being used for strafing
             drive.mecanumDrive_Cartesian(-scaledLeftStrafe * orientation, (OI.getUsedLeftY() * OI.getSensitivity()) * orientation, -scaledRightTurn, 0);
+    }
+    
+    /*
+     * Takes care of all PID code and if the PID operations cshould be used, it applies
+     * the operations to the values given in the parameter.
+     */
+    public void checkAndRunPIDOperations(double left, double right)
+    {
+        
+    //P:.01
+    //I:.001
+    //D:0
+        if (pidController == null)
+            return;
+        
+        pidController.setPID(OI.getAnalogIn(1), OI.getAnalogIn(2), OI.getAnalogIn(3));
+        
+        if (OI.getUsedRightX() != 0)//this rotates the robot with PID only.
+        {
+            requestedAngle += OI.getUsedRightX() * 2;
+            pidController.setSetpoint(requestedAngle);
         }
-        */
-
+        
+        if (!pidController.isEnable())//Enables PID
+        {
+            pidController.enable();
+        }
+        
+        if(OI.primaryXboxB())
+        {
+            toggleButton = true;
+        }
+        
+        else if(toggleButton)
+        {
+            toggleButton = false;
+            buttonTogglePIDOff = !buttonTogglePIDOff;
+        }
+        
         if(buttonTogglePIDOff)
             PIDControl = false;
         else
         {
-            if((OI.rightStrafe() && Math.abs(scaledRightStrafe)< .05) || (!OI.rightStrafe() && Math.abs(scaledLeftStrafe) < .05)) // if not trying to strafe
-            {
-                i++;
+            if((OI.rightStrafe() && Math.abs(left)< .05) || (!OI.rightStrafe() && Math.abs(right) < .05)) // if not trying to strafe
                 PIDControl = false;
-            }
+            
             else if(!PIDControl) // if trying to strafe, and it is the first iteration of doing so
             {
-                //pidController.setSetpoint(horizontalGyro.getAngle());
+                pidController.setSetpoint(horizontalGyro.getAngle());
                 PIDControl = true;
             }
             else // continue to PID strafe
@@ -169,22 +173,10 @@ public class Hermes extends Subsystem
             }
         }
         
-       PIDControl = false; // replace this!!! debugging line 
-
         if(PIDControl)
         {
-           scaledLeftTurn = rotationPID.getValue();
-           scaledRightTurn = rotationPID.getValue();
-        }
-
-       // System.out.println("Wanted Angle: " + pidController.getSetpoint() + " Actual:" + horizontalGyro.getAngle());
-
-        if (OI.rightStrafe())
-            drive.mecanumDrive_Cartesian(-scaledRightStrafe * orientation, (OI.getUsedRightY() * OI.getSensitivity()) * orientation, -scaledLeftTurn, 0); //if right hand stick is being used for strafing left, right, up and down
-        else// if left hand stick is being used for strafing
-        {
-            System.out.println("Mechanuming " + scaledRightStrafe);
-            drive.mecanumDrive_Cartesian(-scaledLeftStrafe * orientation, (OI.getUsedLeftY() * OI.getSensitivity()) * orientation, -scaledRightTurn, 0);
+           left = rotationPID.getValue();
+           right = rotationPID.getValue();
         }
     }
 
@@ -206,10 +198,10 @@ public class Hermes extends Subsystem
         double scaledLeftTurn = 0;
         double scaledRightTurn = 0;
         //correct for strafing code
-        if (Math.abs(kinecter.getOffAxis()) > 5)
+        if (Math.abs(kinecter.getOffAxis()[0]) > 5)
         {
-            scaledLeftTurn = ((1 / 320) * (kinecter.getDepth() / oneForOneDepth) * kinecter.getOffAxis() * (strafeCorrectionFactor * scaledRightStrafe));  // forces slight turn
-            scaledRightTurn = ((1 / 320) * (kinecter.getDepth() / oneForOneDepth) * kinecter.getOffAxis() * (strafeCorrectionFactor * scaledLeftStrafe));
+            scaledLeftTurn = ((1 / 320) * (kinecter.getDepth()[0] / oneForOneDepth) * kinecter.getOffAxis()[0]/320 * (strafeCorrectionFactor * scaledRightStrafe));  // forces slight turn
+            scaledRightTurn = ((1 / 320) * (kinecter.getDepth()[0] / oneForOneDepth) * kinecter.getOffAxis()[0]/320 * (strafeCorrectionFactor * scaledLeftStrafe));
         }
 
         if (scaledLeftTurn > 1)
@@ -329,6 +321,13 @@ public class Hermes extends Subsystem
     {
 
         double output = 0;
+        
+        public SoftPID()
+        {
+            super();
+            pidController = new PIDController(OI.getAnalogIn(1), OI.getAnalogIn(2), OI.getAnalogIn(3), horizontalGyro, rotationPID);
+            pidController.setTolerance(.05);
+        }
 
         public double getValue()
         {
