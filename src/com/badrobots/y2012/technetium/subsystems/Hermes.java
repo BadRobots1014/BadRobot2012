@@ -138,6 +138,19 @@ public class Hermes extends Subsystem
         }
     }
 
+    public void checkForPIDButton()
+    {
+        if (OI.primaryXboxY())
+        {
+            toggleButton = true;
+        }
+        else if (toggleButton)
+        {
+            toggleButton = false;
+            buttonTogglePIDOff = !buttonTogglePIDOff;
+        }
+    }
+
     private double clampMotorValues(double scaledStrafe)
     {
         //double scaledLeftStrafe = OI.getUsedLeftX() * 1.25 * OI.getSensitivity();
@@ -176,15 +189,7 @@ public class Hermes extends Subsystem
         }
 
         //Checks if the toggle button is pressed, and if it is, it toggles PID enabled
-        if (OI.primaryXboxY())
-        {
-            toggleButton = true;
-        }
-        else if (toggleButton)
-        {
-            toggleButton = false;
-            buttonTogglePIDOff = !buttonTogglePIDOff;
-        }
+        checkForPIDButton();
 
         //disables PID if the toggle is on
         if (buttonTogglePIDOff)
@@ -203,7 +208,6 @@ public class Hermes extends Subsystem
                 PIDControl = true;
             }
         }
-
 
         if (PIDControl)
         {
