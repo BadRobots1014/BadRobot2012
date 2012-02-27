@@ -18,11 +18,11 @@ import javax.microedition.io.*;
  */
 public class PacketListener extends Thread
 {
-
     String port = "1180";
     ServerSocketConnection s;
     SocketConnection server;
-    double depth, offAxis;
+    double[] depth = new double[4];
+    double[] offAxis = new double[4];
     protected String buffer;
     protected boolean running = true;
     static int step = 0;
@@ -60,8 +60,7 @@ public class PacketListener extends Thread
         is.read(bytes);
         String dat = new String(bytes);
 
-        String parsed = "";
-        
+        String parsed = "";     
 
         System.out.println("Recieved: " + dat);
         if (dat.length() > 10)
@@ -79,12 +78,10 @@ public class PacketListener extends Thread
 
                     case readingDepth:
                         if (dat.charAt(i) == '|')
-                        {
                             step = readingAxis;
-                        } else
-                        {
+                        
+                        else
                             parsed += dat.charAt(i);
-                        }
 
                         break;
 
@@ -94,22 +91,27 @@ public class PacketListener extends Thread
 
                     case readingAxis:
                         if (dat.charAt(i) == 'B')
-                        {
                             i = dat.length();
-                        } else
-                        {
+                        
+                        else if (dat.charAt(i) == '|')
+                            step = readingDepth;
+                          
+                        else
                             parsed += dat.charAt(i);
-                        }
+                        
                         break;
 
                     case findingEndOfFrame:
-                        //TODO: this
                         break;
                 }
             }
 
-            depth = Double.parseDouble(parsed.substring(0, 8));
-            offAxis = Double.parseDouble(parsed.substring(8, 16));
+            for (int i = 0; i < parsed.length()/8; i++)
+            {
+                depth[i] = Double.parseDouble(parsed.substring(i*8, (i*8) + 8));
+                offAxis[i] = Double.parseDouble(parsed.substring((i*8), (i*8)+8));
+            }
+           
             System.out.println("depth " + depth + " offAxis: " + offAxis);
             
             timeOfLastUpdate = Timer.getFPGATimestamp();
@@ -144,14 +146,15 @@ public class PacketListener extends Thread
         }
     }
 
-    public double getDepth()
+    public double[] getDepth()
     {
         return depth;
     }
 
-    public double getOffAxis()//return between -1 and 1
+    public double[] getOffAxis()//return between -1 and 1
     {
-        return offAxis/320;
+        //return offAxis/320;
+        return offAxis;
     }
     
     public boolean isUpdated()
