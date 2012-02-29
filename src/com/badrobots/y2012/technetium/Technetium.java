@@ -57,14 +57,19 @@ public class Technetium extends IterativeRobot
         // Initialize all subsystems
         
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-        /*try
+        
+        if(OI.kinnectOn)
         {
-            kinecter = new PacketListener();
-            //camera = AxisCamera.getInstance();
-        } catch (IOException ex)
-        {
-            ex.printStackTrace();
-        }*/
+            try
+            {
+                kinecter = new PacketListener();
+                //camera = AxisCamera.getInstance();
+            } catch (IOException ex)
+            {
+                ex.printStackTrace();
+            }
+        }
+
         CommandBase.init(kinecter);
 
     }
@@ -72,7 +77,7 @@ public class Technetium extends IterativeRobot
     public void autonomousInit()
     {
         //System.out.println("Init");
-//        Scheduler.getInstance().add(new DriveToWall());
+        //Scheduler.getInstance().add(new DriveToWall());
     }
 
     /**

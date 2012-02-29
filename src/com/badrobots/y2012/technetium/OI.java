@@ -17,6 +17,9 @@ public class OI
     public static Joystick xboxController;
     public static Joystick xboxController2;
 
+    //This is where we will put the on/off functionality booleans
+    public static final boolean kinnectOn = false;
+
     /*
      * initializes all input methods (eg. joysticks)
      */
