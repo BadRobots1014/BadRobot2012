@@ -54,9 +54,9 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
     protected void execute() 
     {
 
-        if(OI.secondXboxSelect())
+        if(OI.secondXboxSelectButton())
             manualOveride = true;
-        if(OI.secondXboxStart())
+        if(OI.secondXboxStartButton())
             manualOveride = false;
    
 
@@ -109,26 +109,26 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         rollerOut = false;
         spaceUp = 0;
 
-        if(OI.secondXboxX())//conveyor up
+        if(OI.secondXboxXButton())//conveyor up
         {
             conveyorUp = true;
             conveyorDown = false;
             spaceUp = 0;
         }
 
-        if(OI.secondXboxB())//roller out
+        if(OI.secondXboxBButton())//roller out
         {
             rollerIn = false;
             rollerOut = true;
         }
 
-        if(OI.secondXboxY())//conveyor down
+        if(OI.secondXboxYButton())//conveyor down
         {
             conveyorDown = true;
             conveyorUp = false;
         }
 
-        if(OI.secondXboxA())//roller in
+        if(OI.secondXboxAButton())//roller in
         {
             rollerIn = true;
             rollerOut = false;
@@ -146,7 +146,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         rollerOut = false;
 
          //Ball Spacing
-        if(OI.secondXboxA())
+        if(OI.secondXboxAButton())
         {
             System.out.println("Spacing");
             conveyorUp = false;
@@ -170,13 +170,13 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             conveyorUp = true;
         }
 
-        if(OI.secondXboxX())
+        if(OI.secondXboxXButton())
         {
             autoShooterSpeed = 1;
             autoSpeed = true;
         }
         
-        if(OI.secondXboxY())
+        if(OI.secondXboxYButton())
         {
             switchSpeedUp = true;
         }
@@ -190,7 +190,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
                 manualShooterSpeed = 1;
         }
         
-        if(OI.secondXboxB())
+        if(OI.secondXboxBButton())
         {
             switchSpeedDown = true;
         }

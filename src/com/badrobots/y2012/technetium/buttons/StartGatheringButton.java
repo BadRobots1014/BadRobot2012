@@ -27,13 +27,13 @@ public class StartGatheringButton extends Button
      */
     public boolean get() 
     {
-        /*if (OI.secondXboxX() && Demeter.getInstance().getCurrentCommand().)
+        /*if (OI.secondXboxXButton() && Demeter.getInstance().getCurrentCommand().)
         {
             System.out.println("Command already found");
             //Demeter.getInstance().getCurrentCommand().cancel();
         }*/
         
-        if (OI.secondXboxX())
+        if (OI.secondXboxXButton())
         {
             System.out.println("Adding command");
             return true;

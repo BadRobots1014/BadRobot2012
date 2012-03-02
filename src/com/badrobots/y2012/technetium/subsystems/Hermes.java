@@ -127,7 +127,7 @@ public class Hermes extends Subsystem
     private void checkForOrientationChange()
     {
         //reverse orientation of control
-        if (OI.primaryXboxRB())
+        if (OI.primaryXboxRButton())
         {
             changeDirection = true;
         }
@@ -140,7 +140,7 @@ public class Hermes extends Subsystem
 
     public void checkForPIDButton()
     {
-        if (OI.primaryXboxY())
+        if (OI.primaryXboxYButton())
         {
             toggleButton = true;
         }

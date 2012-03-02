@@ -1,7 +1,6 @@
 package com.badrobots.y2012.technetium;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStationLCD;
 
@@ -11,7 +10,7 @@ import edu.wpi.first.wpilibj.DriverStationLCD;
 public class OI
 {
 
-    public static Joystick leftJoystick, rightJoystick, shooterJoystick;
+    public static Joystick leftJoystick, rightJoystick;
     public static DriverStation ds;
     public static DriverStationLCD screen;
     public static Joystick xboxController;
@@ -43,7 +42,7 @@ public class OI
     }
 
     /*
-     * Printles a string to the driverstation LCD Status: Untested //TODO: Test!
+     * Prints a string to the driverstation LCD Status: Untested //TODO: Test!
      */
     public static void printToDS(String out)
     {
@@ -51,6 +50,27 @@ public class OI
         DriverStationLCD.getInstance().updateLCD();
     }
 
+    /**
+     * @return whether the Xbox should be used to control the driveTrain
+     */
+    public static boolean xboxControl()
+    {
+        return ds.getDigitalIn(1);
+    }
+
+    /**
+     * @return whether the right joystick should be used for strafing commands
+     */
+    public static boolean rightStrafe()
+    {
+        return ds.getDigitalIn(2);
+    }
+
+
+
+    /*
+     * These are controls from the Logitech Joysticks
+     */
     public static double getLeftX()
     {
         return deadzone(leftJoystick.getX());
@@ -71,79 +91,60 @@ public class OI
         return deadzone(rightJoystick.getY());
     }
 
-    public static double getShooterX()
-    {
-        return deadzone(shooterJoystick.getX());
-    }
 
-    public static double getShooterY()
+    /*
+     * The joystick values from the primary Xbox Controller
+     */
+    public static double getPrimaryXboxLeftX()
     {
-        return deadzone(shooterJoystick.getY());
-    }
-
-    public static double getXboxLeftX()
-    {
-        detectAxis();
         return deadzone(-xboxController.getRawAxis(1));
     }
 
-    public static double getXboxLeftY()
+    public static double getPrimaryXboxLeftY()
     {
         return deadzone(xboxController.getRawAxis(2));
     }
 
-    public static double getXboxRightX()
+    public static double getPrimaryXboxRightX()
     {
         return deadzone(-xboxController.getRawAxis(4));
     }
 
-    public static double getXboxRightY()
+    public static double getPrimaryXboxRightY()
     {
         return deadzone(xboxController.getRawAxis(5));
     }
 
-    /**
-     * @return whether the xbox should be used to control the driveTrain
-     */
-    public static boolean xboxControl()
-    {
-        return ds.getDigitalIn(1);
-    }
 
-    /**
-     * @return whether the right joystick should be used for strafing commands
+    /*
+     * The buttons from the Primary Xbox Controller
      */
-    public static boolean rightStrafe()
-    {
-        return ds.getDigitalIn(2);
-    }
-
-    public static boolean primaryXboxX()
+    public static boolean primaryXboxXButton()
     {
         return xboxController.getRawButton(3);
     }
 
-    public static boolean primaryXboxY()
+    public static boolean primaryXboxYButton()
     {
         return xboxController.getRawButton(4);
     }
 
-    public static boolean primaryXboxA()
+    public static boolean primaryXboxAButton()
     {
         return xboxController.getRawButton(1);
     }
 
-    public static boolean primaryXboxB()
+    public static boolean primaryXboxBButton()
     {
         return xboxController.getRawButton(2);
     }
 
-    public static boolean primaryXboxRB()
+    public static boolean primaryXboxRButton()
     {
         return xboxController.getRawButton(6);
     }
 
-    public static boolean primaryXboxLB()
+    public static boolean primaryXboxLBButton()
     {
         return xboxController.getRawButton(5);
     }
@@ -158,32 +159,36 @@ public class OI
         return xboxController.getRawButton(10);
     }
 
-    public static boolean secondXboxX()
+
+    /*
+     * Button values from the second Xbox controller
+     */
+    public static boolean secondXboxXButton()
     {
-        return xboxController2.getRawButton(3);//X
+        return xboxController2.getRawButton(3);
     }
 
-    public static boolean secondXboxY()
+    public static boolean secondXboxYButton()
     {
-        return xboxController2.getRawButton(4);//Y
+        return xboxController2.getRawButton(4);
     }
 
-    public static boolean secondXboxA()
+    public static boolean secondXboxAButton()
     {
-        return xboxController2.getRawButton(1);//A
+        return xboxController2.getRawButton(1);
     }
 
-    public static boolean secondXboxB()
+    public static boolean secondXboxBButton()
     {
-        return xboxController2.getRawButton(2);//B
+        return xboxController2.getRawButton(2);
     }
 
-    public static boolean secondXboxRB()//Right Bumper
+    public static boolean secondXboxRBButton()//Right Bumper
     {
         return xboxController2.getRawButton(6);
     }
 
-    public static boolean secondXboxLB()
+    public static boolean secondXboxLBButton()
     {
         return xboxController2.getRawButton(5);
     }
@@ -198,18 +203,23 @@ public class OI
         return xboxController2.getRawButton(10);
     }
 
-    public static boolean secondXboxSelect()
+    public static boolean secondXboxSelectButton()
     {
         return xboxController2.getRawButton(7);
     }
 
-    public static boolean secondXboxStart()
+    public static boolean secondXboxStartButton()
     {
         return xboxController2.getRawButton(8);
     }
 
+    public static boolean secondXboxLeftTrigger()
+    {
+        return xboxController2.getRawAxis(3) > .7;
+    }
+
     /*
-     * @return the currently used controller left x value status: all tested
+     * @return the primary controller left x value status: all tested
      * 1/30/12
      */
     public static double getUsedLeftX()
@@ -224,7 +234,7 @@ public class OI
     }
 
     /*
-     * @return the currently used controller left y value
+     * @return the primary controller left y value
      */
     public static double getUsedLeftY()
     {
@@ -237,7 +247,7 @@ public class OI
     }
 
     /*
-     * @return the currently used controller right x value
+     * @return the primary controller right x value
      */
     public static double getUsedRightX()
     {
@@ -250,7 +260,7 @@ public class OI
     }
 
     /*
-     * @return the currently used controller right y value
+     * @return the primary controller right y value
      */
     public static double getUsedRightY()
     {
@@ -263,25 +273,21 @@ public class OI
     }
 
     /**
-     * @return whether the secondary trigger is depressed
+     * @return whether the secondary trigger is depressed on the second Xbox
      */
     public static boolean getSecondaryTrigger()
     {
-        return secondXboxLB();
+        return secondXboxLBButton();
     }
 
     /**
-     * @return whether the shoot trigger is depressed
+     * @return whether the shoot trigger is depressed on the second Xbox
      */
     public static boolean getPrimaryTrigger()
     {
-        return secondXboxRB();
+        return secondXboxRBButton();
     }
 
-    public static boolean secondXboxLeftTrigger()
-    {
-        return xboxController2.getRawAxis(3) > .7;
-    }
 
     /*
      * Creates a deadzone for joysticks Status:Untested, must test scaling
@@ -326,7 +332,7 @@ public class OI
     }
 
     /*
-     * @return the deadzone for the Joysticks controller
+     * @return the deadzone for the Joysticks controller, taken from the logitech throttle control
      */
     public static double getJoystickSensitivity()
     {
@@ -334,7 +340,7 @@ public class OI
     }
 
     /*
-     * @return the deadzone for the Xbox controller
+     * @return the deadzone for the Xbox controller, taken from the logitech throttle control
      */
     public static double getXboxSensitivity()
     {
@@ -374,12 +380,11 @@ public class OI
 
     /**
      * @param channel the channel the method should query for a value
-     * @return the value of the analog input from the driverstaion of a specific
+     * @return the value of the analog input from the DriverStaion of a specific
      * input channel.
      */
     public static double getAnalogIn(int channel)
     {
-
         return ds.getAnalogIn(channel);
     }
 }

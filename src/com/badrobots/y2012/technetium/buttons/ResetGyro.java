@@ -22,7 +22,7 @@ public class ResetGyro extends Button
 
     public boolean get() 
     {
-        if (OI.primaryXboxA())
+        if (OI.primaryXboxAButton())
         {
             Hermes.getInstance().resetGyro();
             Hermes.getInstance().resetRequestedAngle();

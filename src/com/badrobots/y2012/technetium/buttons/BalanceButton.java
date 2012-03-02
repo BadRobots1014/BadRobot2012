@@ -22,7 +22,7 @@ public class BalanceButton extends Button
 
     public boolean get()
     {
-        if (OI.primaryXboxLB())
+        if (OI.primaryXboxLBButton())
             return true;
         
         return false;

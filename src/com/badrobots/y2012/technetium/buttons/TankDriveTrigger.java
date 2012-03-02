@@ -27,7 +27,7 @@ public class TankDriveTrigger extends Button
      */
     public boolean get()
     {
-       if (OI.leftJoystick.getRawButton(10) || OI.xboxController.getRawButton(1))
+       if (OI.leftJoystick.getRawButton(10) || OI.xboxController.getRawButton(1))//A button on Xbox
            return true;
 
        return false;

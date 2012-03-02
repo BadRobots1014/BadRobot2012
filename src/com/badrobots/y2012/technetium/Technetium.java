@@ -70,6 +70,7 @@ public class Technetium extends IterativeRobot
             }
         }
 
+        //This is where all subsystems are actually initialized
         CommandBase.init(kinecter);
 
     }
@@ -96,9 +97,7 @@ public class Technetium extends IterativeRobot
     {
         new TankDriveTrigger();
         new MechanumDriveTrigger();
-        //new ResetGyro();
-        //new StartGatheringButton();
-        //new BalanceButton();
+
         /*try
         {
             kinecter = new PacketListener();
@@ -121,10 +120,11 @@ public class Technetium extends IterativeRobot
      */
     public void teleopPeriodic()
     {
+        //Feed it or it dies. And then stops the robot. From the grave. Really it is a poor metaphor.
         Watchdog.getInstance().feed();
+
         //Runs the correct commands with their subsytems
         Scheduler.getInstance().run();
-        //OI.detectAxis();
     }
 
     public void disabledInit()
@@ -135,7 +135,6 @@ public class Technetium extends IterativeRobot
         {
             thread.setRunning(false);
         }
-        
         else
             kinecter.setRunning(false);*/
     }
