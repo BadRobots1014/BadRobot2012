@@ -70,7 +70,10 @@ public class Hermes extends Subsystem
         //drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true); 
         drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
         //drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true); //
-        horizontalGyro = new Gyro(RobotMap.horizontalGyro); //that's wrong
+        if (OI.PIDOn)
+        {
+            horizontalGyro = new Gyro(RobotMap.horizontalGyro); //that's wrong
+        }
         drive.setSafetyEnabled(false);
         //because why not. Jon: because it will kill us all. 
         // Haven't you seen iRobot? They left their robots on
@@ -78,10 +81,13 @@ public class Hermes extends Subsystem
 
         //Rotation and angle requesting stuff for PID
         rotation = 0;
-        rotationPID = new SoftPID();
-        //TODO: Set these to constants
-        pidController = new PIDController(OI.getAnalogIn(1), OI.getAnalogIn(2), OI.getAnalogIn(3), horizontalGyro, rotationPID);
-        pidController.setTolerance(.05);
+        if (horizontalGyro != null)
+        {
+            rotationPID = new SoftPID();
+            //TODO: Set these to constants
+            pidController = new PIDController(OI.getAnalogIn(1), OI.getAnalogIn(2), OI.getAnalogIn(3), horizontalGyro, rotationPID);
+            pidController.setTolerance(.05);
+        }
     }
 
     /*
@@ -178,7 +184,7 @@ public class Hermes extends Subsystem
         //D:0
         if (pidController == null)
         {
-            return 0;
+            return rotation;
         }
 
         pidController.setPID(OI.getAnalogIn(1), OI.getAnalogIn(2), OI.getAnalogIn(3));

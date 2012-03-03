@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj.Gyro;
  */
 public class Helios extends Subsystem
 {
+
     private static Helios sensors;
     private static AxisCamera camera;
     private static Ultrasonic lFront, lBack, back;
@@ -37,6 +38,7 @@ public class Helios extends Subsystem
     protected static Gyro gyro;
     protected static int topCount, bottomCount;
     protected double lastRange;
+
     public static Helios getInstance()
     {
         if (sensors == null)
@@ -51,38 +53,28 @@ public class Helios extends Subsystem
     {
         //camera = AxisCamera.getInstance();
 
-        if(camera == null)
+        if (camera == null)
+        {
             System.out.println("Unable to find camera");
+        }
         numBalls = 0;
         topCount = 0;
         bottomCount = 0;
-        
+
         //gyro = new Gyro(RobotMap.verticalGyro);
         bottomSensor = new AnalogChannel(RobotMap.bottomSensor);
         topSensor = new AnalogChannel(RobotMap.topSensor);
-        back = new Ultrasonic(2,3,Ultrasonic.Unit.kMillimeter);
+        back = new Ultrasonic(RobotMap.ultrasonicIn, RobotMap.ultrasonicOut, Ultrasonic.Unit.kMillimeter);
         back.setEnabled(true);
         back.setAutomaticMode(true);
         lastRange = 0;
 
-        /*
-        //Note: If this doesn't work, use digital In and Outs as arguements
-        lFront = new Ultrasonic(1, 2);
-        lBack = new Ultrasonic(3, 4);
-        lFront.setEnabled(true);
-        lBack.setEnabled(true);
-        //Stops interference between sensors
-        lFront.setAutomaticMode(true);
-        lBack.setAutomaticMode(true);*/
-
-        
         //TODO
     }
 
     /**
-     * 
-     * @return the difference in distances (inches) that the two side sensors are reading,
-     * front minus left
+     * @return the difference in distances (inches) that the two side sensors
+     * are reading, front minus left
      */
     public double getDifferenceInSensors()
     {
@@ -93,7 +85,7 @@ public class Helios extends Subsystem
     {
         return back.getRangeMM();
     }
-    
+
     /**
      * @return the average distanced sensed from the left side of the robot
      */
@@ -101,35 +93,36 @@ public class Helios extends Subsystem
     {
         double front = lFront.getRangeMM();
         double back = lBack.getRangeMM();
-        
-        if (Math.abs(back-front) > 15)//needs to be calibrated
+
+        if (Math.abs(back - front) > 15)//needs to be calibrated
+        {
             return -1; // not accurate enough to use, return a nonpossible value
-            
-        return (front+back)/2;
+        }
+        return (front + back) / 2;
     }
 
     /*
-     * @return the angle at which the robot is oriented. 0 degrees is when
-     * the robot is parallel with the arena walls.  
+     * @return the angle at which the robot is oriented. 0 degrees is when the
+     * robot is parallel with the arena walls.
      */
     public double getAngleOfOrientation()
     {
         double difference = getDifferenceInSensors();
 
-        double theta = MathUtils.atan(difference/spacing);
-        theta *= (180/Math.PI);
+        double theta = MathUtils.atan(difference / spacing);
+        theta *= (180 / Math.PI);
 
         return theta;
     }
-    
+
     public double getAngleToTarget()
     {
         return 3.14;//XXX:Really? Remeber to fix this
     }
-    
+
     /*
-     * @return whether the top garage door sensor is obscured. 
-     * This method uses analog threshold to detect this
+     * @return whether the top garage door sensor is obscured. This method uses
+     * analog threshold to detect this
      */
     public boolean topChannelBlocked()
     {
@@ -137,35 +130,43 @@ public class Helios extends Subsystem
         if (topSensor.getAverageVoltage() < threshold)
         {
             topCount++;
-            if(topCount > 8)
+            if (topCount > 8)
+            {
                 return true;
+            }
         }
         else
+        {
             topCount = 0;
-        
+        }
+
         return false;
     }
-    
+
     /*
-     * @return whether the bottom garage door sensor is obscured. 
-     * This method uses analog threshold to detect this
+     * @return whether the bottom garage door sensor is obscured. This method
+     * uses analog threshold to detect this
      */
     public boolean bottomChannelBlocked()
     {
         if (bottomSensor.getAverageVoltage() < threshold)
         {
             bottomCount++;
-            if(bottomCount > 8)
+            if (bottomCount > 8)
+            {
                 return true;
+            }
         }
         else
+        {
             bottomCount = 0;
+        }
 
         return false;
     }
-    
+
     /*
-     * @return the angle of the incline/decline the robot is at 
+     * @return the angle of the incline/decline the robot is at
      */
     public double getVerticalGyro()
     {
@@ -182,24 +183,29 @@ public class Helios extends Subsystem
         numBalls = n;
     }
 
-
-    public boolean closerThan(int millimeters) {
+    public boolean closerThan(int millimeters)
+    {
         //System.out.println(lastRange + "  " + front.isRangeValid());
         //System.out.println("Mili" + millimeters);
-        if (back.isRangeValid() && back.getRangeMM() < millimeters) {
+        if (back.isRangeValid() && back.getRangeMM() < millimeters)
+        {
             if (lastRange > 10) // 10 checks to stop
             {
                 return true;
-            } else {
+            }
+            else
+            {
                 lastRange++;
             }
-        } else {
+        }
+        else
+        {
             lastRange = 0;
         }
         return false;
 
     }
-    
+
     /*
      * Resets the vertical gyro so that its current heading is 0
      */
@@ -207,6 +213,7 @@ public class Helios extends Subsystem
     {
         gyro.reset();
     }
+
     public void initDefaultCommand()
     {
         //setDefaultCommand(new Monitor());

@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.badrobots.y2012.technetium.subsystems.Helios;
+import com.badrobots.y2012.technetium.subsystems.Xerxes;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
@@ -122,7 +123,15 @@ public class Technetium extends IterativeRobot
     {
         //Feed it or it dies. And then stops the robot. From the grave. Really it is a poor metaphor.
         Watchdog.getInstance().feed();
-
+        
+        if (OI.primaryXboxYButton())
+        {
+            Xerxes.getInstance().setMotor(1.0);
+        }
+        else if(OI.primaryXboxXButton()) //not working
+            Xerxes.getInstance().setMotor(-1.0);
+        else
+            Xerxes.getInstance().setMotor(0);
         //Runs the correct commands with their subsytems
         Scheduler.getInstance().run();
     }

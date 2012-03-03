@@ -18,6 +18,7 @@ public class OI
 
     //This is where we will put the on/off functionality booleans
     public static final boolean kinnectOn = false;
+    public static final boolean PIDOn = false;
 
     /*
      * initializes all input methods (eg. joysticks)
@@ -378,6 +379,7 @@ public class OI
         }
     }
 
+    
     /**
      * @param channel the channel the method should query for a value
      * @return the value of the analog input from the DriverStaion of a specific

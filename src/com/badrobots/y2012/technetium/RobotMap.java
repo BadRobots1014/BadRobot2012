@@ -24,17 +24,16 @@ public class RobotMap
     public static final int controller = 3;
     public static final int controller2 = 4;
     public static final int shooterJoystick = 4;
-    public static final int ultrasonicOut = 0; // TODO
-    public static final int ultrasonicIn = 0; // TODO
+    public static final int ultrasonicOut = 2; // TODO
+    public static final int ultrasonicIn = 3; // TODO
     public static final int topSensor = 5;
     public static final int bottomSensor = 7;
     public static final int camera = 4;
-    public static final int horizontalGyro = 2;
+    public static final int horizontalGyro = 1;
     public static final int verticalGyro = 10;
-    public static final int conveyor = 2; //TODO (find all these ports)
-    public static final int bottomRoller = 1;
-    //public static final int topRoller = 7;
+    public static final int conveyor = 1;
+    public static final int bottomRoller = 2;
     public static final int leftShooter = 6;
     public static final int rightShooter = 7;
-    public static final int bridgingTool = 9;//TODO Find port
+    public static final int bridgingTool = 8;
 }
