@@ -126,12 +126,15 @@ public class Technetium extends IterativeRobot
         
         if (OI.primaryXboxYButton())
         {
-            Xerxes.getInstance().setMotor(1.0);
+            Xerxes.getInstance().setMotor(-1.0);
         }
         else if(OI.primaryXboxXButton()) //not working
-            Xerxes.getInstance().setMotor(-1.0);
+            Xerxes.getInstance().setMotor(1.0);
         else
             Xerxes.getInstance().setMotor(0);
+        
+        System.out.println(Hermes.getInstance().getGyro().getAngle() + "  -- angle");
+        
         //Runs the correct commands with their subsytems
         Scheduler.getInstance().run();
     }

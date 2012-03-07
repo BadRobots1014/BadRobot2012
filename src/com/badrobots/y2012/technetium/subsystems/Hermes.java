@@ -74,6 +74,8 @@ public class Hermes extends Subsystem
         {
             horizontalGyro = new Gyro(RobotMap.horizontalGyro); //that's wrong
         }
+        
+        horizontalGyro = new Gyro(RobotMap.horizontalGyro);
         drive.setSafetyEnabled(false);
         //because why not. Jon: because it will kill us all. 
         // Haven't you seen iRobot? They left their robots on
@@ -344,6 +346,11 @@ public class Hermes extends Subsystem
     public void resetGyro()
     {
         horizontalGyro.reset();
+    }
+    
+    public Gyro getGyro()
+    {
+        return horizontalGyro;
     }
 
     public void resetRequestedAngle()
