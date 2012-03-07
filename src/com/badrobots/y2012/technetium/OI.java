@@ -140,7 +140,7 @@ public class OI
         return xboxController.getRawButton(2);
     }
 
-    public static boolean primaryXboxRButton()
+    public static boolean primaryXboxRBButton()
     {
         return xboxController.getRawButton(6);
     }

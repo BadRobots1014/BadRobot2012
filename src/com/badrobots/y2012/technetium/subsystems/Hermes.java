@@ -135,7 +135,7 @@ public class Hermes extends Subsystem
     private void checkForOrientationChange()
     {
         //reverse orientation of control
-        if (OI.primaryXboxRButton())
+        if (OI.primaryXboxRBButton())
         {
             changeDirection = true;
         }

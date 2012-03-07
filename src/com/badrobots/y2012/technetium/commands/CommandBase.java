@@ -38,6 +38,7 @@ public abstract class CommandBase extends Command
         sensors = Helios.getInstance();
         shooter = Artemis.getInstance();
         ballGatherer = Demeter.getInstance();
+        bridgeTool = Xerxes.getInstance();
         //kinecter = listener;
 
         

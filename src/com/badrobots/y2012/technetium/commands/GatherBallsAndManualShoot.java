@@ -30,6 +30,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
     public GatherBallsAndManualShoot() 
     {
         requires(ballGatherer);
+        requires(bridgeTool);
         //requires(shooter);
     }
 
@@ -98,6 +99,18 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         ballGatherer.runBottomRoller(rollerIn, rollerOut);
         ballGatherer.runConveyor(conveyorUp, conveyorDown);
         //shooter.run(shooterSpeed);
+        if(OI.primaryXboxLeftJoyClick())
+        {
+            bridgeTool.setMotor(1); System.out.println("Toolup");
+        }
+        else if(OI.primaryXboxRightJoyClick())
+        {
+            bridgeTool.setMotor(-1); System.out.println("Tooldown");
+        }
+        else
+        {
+            bridgeTool.setMotor(0); System.out.println("Toolstill");
+        }
     }
 
 
