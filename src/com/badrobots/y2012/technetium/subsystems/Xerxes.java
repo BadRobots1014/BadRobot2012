@@ -44,7 +44,7 @@ public class Xerxes extends Subsystem
 
     public void initDefaultCommand()
     {
-        System.out.println("setting default ocmmand of Xerxes");
+        System.out.println("setting default command of Xerxes");
         setDefaultCommand(new ManualBridge());
     }
 }

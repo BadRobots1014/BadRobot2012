@@ -29,15 +29,13 @@ public class ManualBridge extends CommandBase
         double speed = 0;
         System.out.println("executing from ManualBridge");
         
-        if (OI.primaryXboxYButton())
+        if (OI.primaryXboxLeftJoyClick())
         {
             System.out.println("y depressed");
             speed = 1;
         }
-        
-        else if (OI.primaryXboxXButton())
-            speed = -1;
-        
+        else if (OI.primaryXboxRightJoyClick())
+            speed = -1;   
         bridgeTool.setMotor(speed);
     }
 

@@ -362,6 +362,7 @@ public class Hermes extends Subsystem
 
     public void initDefaultCommand()
     {
+        System.out.println("DefaultCommandHermes");
         setDefaultCommand(new MechanumDrive());
     }
 

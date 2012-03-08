@@ -39,6 +39,7 @@ public abstract class CommandBase extends Command
         shooter = Artemis.getInstance();
         ballGatherer = Demeter.getInstance();
         bridgeTool = Xerxes.getInstance();
+        bridgeTool.initDefaultCommand();//this is only for testing...  I hope
         //kinecter = listener;
 
         
