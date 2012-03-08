@@ -8,6 +8,7 @@ package com.badrobots.y2012.technetium.subsystems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.Victor;
 import com.badrobots.y2012.technetium.RobotMap;
+import com.badrobots.y2012.technetium.commands.ManualBridge;
 import edu.wpi.first.wpilibj.Gyro;
 import edu.wpi.first.wpilibj.Jaguar;
 
@@ -19,7 +20,6 @@ public class Xerxes extends Subsystem
     private static Xerxes instance;
     private static Jaguar motor;
     private static Gyro verticalGyro;
-    private boolean stopCondition;
 
     public static Xerxes getInstance()
     {
@@ -35,20 +35,16 @@ public class Xerxes extends Subsystem
         super();
         motor = new Jaguar(RobotMap.bridgingTool);
        /// verticalGyro = new Gyro(RobotMap.verticalGyro);
-        stopCondition = false;//THIS NEEDS TO BE REPLACED WITH AN ENCODER OR LIMIT SWITCH
     }
 
     public void setMotor(double speed)
     {
-        /*if((verticalGyro.getAngle() > 10 || verticalGyro.getAngle() < -10) && stopCondition)
-        {
-            motor.set(-1);
-        }*/
-        
         motor.set(speed);
     }
 
     public void initDefaultCommand()
     {
+        System.out.println("setting default ocmmand of Xerxes");
+        setDefaultCommand(new ManualBridge());
     }
 }

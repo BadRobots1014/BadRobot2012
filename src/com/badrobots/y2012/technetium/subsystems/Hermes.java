@@ -64,7 +64,7 @@ public class Hermes extends Subsystem
         rFront = new Jaguar(RobotMap.rFront);
         rBack = new Jaguar(RobotMap.rBack);
 
-        drive = new RobotDrive(lFront, lBack, rFront, rBack);   // feeds victors to RobotDrive
+        drive = new RobotDrive(lFront, lBack, rFront, rBack);   // feeds jaguars to RobotDrive
 
         drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
         //drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true); 
@@ -75,7 +75,6 @@ public class Hermes extends Subsystem
             horizontalGyro = new Gyro(RobotMap.horizontalGyro); //that's wrong
         }
         
-        horizontalGyro = new Gyro(RobotMap.horizontalGyro);
         drive.setSafetyEnabled(false);
         //because why not. Jon: because it will kill us all. 
         // Haven't you seen iRobot? They left their robots on

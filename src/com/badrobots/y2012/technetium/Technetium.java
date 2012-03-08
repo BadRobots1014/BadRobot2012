@@ -124,16 +124,7 @@ public class Technetium extends IterativeRobot
         //Feed it or it dies. And then stops the robot. From the grave. Really it is a poor metaphor.
         Watchdog.getInstance().feed();
         
-        if (OI.primaryXboxYButton())
-        {
-            Xerxes.getInstance().setMotor(-1.0);
-        }
-        else if(OI.primaryXboxXButton()) //not working
-            Xerxes.getInstance().setMotor(1.0);
-        else
-            Xerxes.getInstance().setMotor(0);
-        
-        System.out.println(Hermes.getInstance().getGyro().getAngle() + "  -- angle");
+        //System.out.println(Hermes.getInstance().getGyro().getAngle() + "  -- angle");
         
         //Runs the correct commands with their subsytems
         Scheduler.getInstance().run();
