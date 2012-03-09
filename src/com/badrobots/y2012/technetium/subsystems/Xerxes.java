@@ -34,6 +34,7 @@ public class Xerxes extends Subsystem
     {
         super();
         motor = new Jaguar(RobotMap.bridgingTool);
+        System.out.println("Xerxes: initialized");
        /// verticalGyro = new Gyro(RobotMap.verticalGyro);
     }
 
@@ -45,6 +46,6 @@ public class Xerxes extends Subsystem
     public void initDefaultCommand()
     {
         System.out.println("setting default command of Xerxes");
-        setDefaultCommand(new ManualBridge());
+        super.setDefaultCommand(new ManualBridge());
     }
 }

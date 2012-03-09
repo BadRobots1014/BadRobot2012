@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.badrobots.y2012.technetium.OI;
 import com.badrobots.y2012.technetium.PacketListener;
 import com.badrobots.y2012.technetium.subsystems.*;
+import edu.wpi.first.wpilibj.command.Scheduler;
 
 /**
  * The base for all commands. All atomic commands should subclass CommandBase.
@@ -41,6 +42,7 @@ public abstract class CommandBase extends Command
         bridgeTool = Xerxes.getInstance();
         bridgeTool.initDefaultCommand();//this is only for testing...  I hope
         //kinecter = listener;
+        Scheduler.getInstance().add(new ManualBridge());
 
         
         

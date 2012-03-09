@@ -103,6 +103,8 @@ public class Hermes extends Subsystem
         double leftX = OI.getUsedLeftX();
         double leftY = OI.getUsedLeftY();
         double rightX = OI.getUsedRightX();
+        //TODO delete
+        System.out.println(rightX + " right X");
         double rightY = OI.getUsedRightY();
         double sensitivity = OI.getSensitivity();
         boolean useRightJoystickForStrafe = OI.rightStrafe();
@@ -185,6 +187,7 @@ public class Hermes extends Subsystem
         //D:0
         if (pidController == null)
         {
+            System.out.println("no PID, turn = " + rotation);
             return rotation;
         }
 
