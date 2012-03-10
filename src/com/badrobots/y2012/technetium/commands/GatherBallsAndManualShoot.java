@@ -30,7 +30,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
     public GatherBallsAndManualShoot() 
     {
         requires(ballGatherer);
-        requires(bridgeTool);
+        //requires(bridgeTool);
         //requires(shooter);
     }
 

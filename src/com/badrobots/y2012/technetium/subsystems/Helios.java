@@ -216,6 +216,7 @@ public class Helios extends Subsystem
 
     public void initDefaultCommand()
     {
+        System.out.println("DefaultCommandHelios");
         //setDefaultCommand(new Monitor());
     }
 }

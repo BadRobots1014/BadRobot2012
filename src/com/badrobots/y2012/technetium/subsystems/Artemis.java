@@ -101,6 +101,7 @@ public class Artemis extends Subsystem
 
     protected void initDefaultCommand()
     {
+        System.out.println("DefaultCommandArtemis");
         //super.setDefaultCommand(new GatherBalls);
     }
 }

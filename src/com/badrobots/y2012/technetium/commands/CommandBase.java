@@ -22,9 +22,9 @@ public abstract class CommandBase extends Command
     // Create a single static instance of all of your subsystems
     public static Hermes driveTrain;
     public static Artemis shooter;
-    public static Helios sensors;
-    public static Demeter ballGatherer;
     public static Xerxes bridgeTool;
+    public static Helios sensors;
+    public static Demeter ballGatherer;  
     public static PacketListener kinecter;
 
     public static void init(PacketListener listener)
@@ -37,12 +37,12 @@ public abstract class CommandBase extends Command
         OI.init();
         driveTrain = Hermes.getInstance();
         sensors = Helios.getInstance();
+        bridgeTool = Xerxes.getInstance();
         shooter = Artemis.getInstance();
         ballGatherer = Demeter.getInstance();
-        bridgeTool = Xerxes.getInstance();
-        bridgeTool.initDefaultCommand();//this is only for testing...  I hope
+        //bridgeTool.initDefaultCommand();//this is only for testing...  I hope
         //kinecter = listener;
-        Scheduler.getInstance().add(new ManualBridge());
+        //Scheduler.getInstance().add(new ManualBridge());
 
         
         

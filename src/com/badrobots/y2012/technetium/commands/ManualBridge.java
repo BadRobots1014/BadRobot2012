@@ -16,6 +16,7 @@ public class ManualBridge extends CommandBase
     public ManualBridge()
     {
         requires(bridgeTool);
+        System.out.println("constructed manbridge");
     }
 
     // Called just before this Command runs the first time

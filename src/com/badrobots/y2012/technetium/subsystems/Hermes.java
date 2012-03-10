@@ -104,9 +104,9 @@ public class Hermes extends Subsystem
         double leftY = OI.getUsedLeftY();
         double rightX = OI.getUsedRightX();
         //TODO delete
-        System.out.println(rightX + " right X");
+        //System.out.println(rightX + " right X");
         double rightY = OI.getUsedRightY();
-        double sensitivity = OI.getSensitivity();
+        double sensitivity = .75;//OI.getSensitivity();
         boolean useRightJoystickForStrafe = OI.rightStrafe();
 
         //correct for strafing code
@@ -116,21 +116,22 @@ public class Hermes extends Subsystem
             strafeY = rightY * sensitivity;
             strafeX = rightX * 1.25 * sensitivity;
             strafeX = clampMotorValues(strafeX);
-            scaledTurn = (rightX + (strafeCorrectionFactor * strafeX)) * sensitivity;
+            scaledTurn = (leftX)*sensitivity; //+ (strafeCorrectionFactor * strafeX)) * sensitivity;
         }
         else
         {
             strafeY = leftY * sensitivity;
             strafeX = leftX * 1.25 * sensitivity;
             strafeX = clampMotorValues(strafeX);
-            scaledTurn = (leftX + (strafeCorrectionFactor * strafeX)) * sensitivity;
+            scaledTurn = (rightX)*sensitivity; //+ (strafeCorrectionFactor * strafeX)) * sensitivity;
+            //System.out.println("Scaled Turn:" + scaledTurn);
         }
         checkForOrientationChange();
 
         //apply PID if it should
         scaledTurn = checkAndRunPIDOperations(strafeX, scaledTurn);
 
-        drive.mecanumDrive_Cartesian(-strafeX * orientation, strafeY * orientation, -scaledTurn, 0);
+        drive.mecanumDrive_Cartesian(-strafeX * orientation, strafeY * orientation, scaledTurn, 0);
     }
 
     private void checkForOrientationChange()
@@ -187,7 +188,7 @@ public class Hermes extends Subsystem
         //D:0
         if (pidController == null)
         {
-            System.out.println("no PID, turn = " + rotation);
+            //System.out.println("no PID, turn = " + rotation);
             return rotation;
         }
 

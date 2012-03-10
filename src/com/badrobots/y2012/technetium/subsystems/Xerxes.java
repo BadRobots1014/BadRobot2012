@@ -30,7 +30,7 @@ public class Xerxes extends Subsystem
         return instance;
     }
 
-    public Xerxes()
+    private Xerxes()
     {
         super();
         motor = new Jaguar(RobotMap.bridgingTool);
