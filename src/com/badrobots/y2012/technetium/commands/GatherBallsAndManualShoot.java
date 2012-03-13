@@ -78,7 +78,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             if(autoSpeed)
             {
                 if(OI.getAnalogIn(4) > 1) // Lucas, is this old code? Are we still using an analog input
-                    shooterSpeed = 1;
+                    shooterSpeed = 1;     //Jon, yeah, it's older, but we still will need it for testing soon
                 else
                     shooterSpeed = OI.getAnalogIn(4);
             }

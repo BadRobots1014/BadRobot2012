@@ -12,6 +12,7 @@ import com.badrobots.y2012.technetium.commands.AutoAim;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.Victor;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
 import edu.wpi.first.wpilibj.camera.AxisCameraException;
@@ -28,6 +29,7 @@ public class Artemis extends Subsystem
     private static Artemis instance;
     private static Victor right, left;
     private static Jaguar turnTable; //TODO Change to correct speed controller
+    private static Encoder turnTableEncoder;
     private static Ultrasonic ranger;
     private static AxisCamera camera;
 
@@ -48,10 +50,11 @@ public class Artemis extends Subsystem
         left = new Victor (RobotMap.leftShooter);
         
         //turnTable = new Jaguar(RobotMap.turnTable);
-                
-       // ranger = new Ultrasonic (RobotMap.ultrasonicOut, RobotMap.ultrasonicIn); //init
+
+        //turnTableEncoder = new Encoder(RobotMap.turnTableEncoderAChannel, RobotMap.turnTableEncoderBChannel);
+        //ranger = new Ultrasonic (RobotMap.ultrasonicOut, RobotMap.ultrasonicIn); //init
         //ranger.setEnabled(true);
-       // ranger.setAutomaticMode(true);
+        //ranger.setAutomaticMode(true);
 
        // camera.getInstance(); //init
 
