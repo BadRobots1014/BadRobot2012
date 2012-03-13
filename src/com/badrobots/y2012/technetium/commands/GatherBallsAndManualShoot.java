@@ -11,26 +11,25 @@ import edu.wpi.first.wpilibj.Relay;
  */
 public class GatherBallsAndManualShoot extends CommandBase //We need to rename this. Just maybe
 {    
-    private static boolean done = true;
-    private static int spaceUp = 0;//If delay is needed, make this >1
-    private boolean conveyorUp = false;
-    private boolean conveyorDown = false;
-    private boolean rollerIn = false;
-    private boolean rollerOut = false;
-    private boolean manualOveride = false;
-    private boolean autoSpeed = true;
-    private double manualShooterSpeed = 0;
-    private double autoShooterSpeed = 0;
-    private double shooterSpeed = 0;
-    private boolean switchSpeedUp;
-    private boolean switchSpeedDown;
+    protected static boolean done = true;
+    protected static int spaceUp = 0;//If delay is needed, make this >1
+    protected boolean conveyorUp = false;
+    protected boolean conveyorDown = false;
+    protected boolean rollerIn = false;
+    protected boolean rollerOut = false;
+    protected boolean manualOveride = false;
+    protected boolean autoSpeed = true;
+    protected double manualShooterSpeed = 0;
+    protected double autoShooterSpeed = 0;
+    protected double shooterSpeed = 0;
+    protected boolean switchSpeedUp;
+    protected boolean switchSpeedDown;
     
 
     
     public GatherBallsAndManualShoot() 
     {
         requires(ballGatherer);
-        //requires(bridgeTool);
         //requires(shooter);
     }
 
@@ -57,7 +56,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
 
         if(OI.secondXboxSelectButton())
             manualOveride = true;
-        if(OI.secondXboxStartButton())
+        else if(OI.secondXboxStartButton())
             manualOveride = false;
    
 
@@ -78,7 +77,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         {
             if(autoSpeed)
             {
-                if(OI.getAnalogIn(4) > 1)
+                if(OI.getAnalogIn(4) > 1) // Lucas, is this old code? Are we still using an analog input
                     shooterSpeed = 1;
                 else
                     shooterSpeed = OI.getAnalogIn(4);

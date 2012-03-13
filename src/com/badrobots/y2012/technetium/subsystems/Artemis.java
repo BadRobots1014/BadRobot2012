@@ -27,6 +27,7 @@ public class Artemis extends Subsystem
 {
     private static Artemis instance;
     private static Victor right, left;
+    private static Jaguar turnTable; //TODO Change to correct speed controller
     private static Ultrasonic ranger;
     private static AxisCamera camera;
 
@@ -45,6 +46,8 @@ public class Artemis extends Subsystem
         super();
         right = new Victor (RobotMap.rightShooter); // initialize the motor
         left = new Victor (RobotMap.leftShooter);
+        
+        //turnTable = new Jaguar(RobotMap.turnTable);
                 
        // ranger = new Ultrasonic (RobotMap.ultrasonicOut, RobotMap.ultrasonicIn); //init
         //ranger.setEnabled(true);
@@ -54,12 +57,17 @@ public class Artemis extends Subsystem
 
     }
 
-    public void aim()
+    
+    /*
+     * Turns the turnTable/turreter
+     * 
+     * @param speed from -1 to 1, where -1 is full speed counterclockwise and 
+     * 1 is full speed clockwise
+     */
+    public void turn(double speed)
     {
-        //TODO
-        //track rectangle using kinect/camera
-
-        
+        clampMotorValues(speed);
+        turnTable.set(speed);
     }
 
     public void shootMiddle() // read distance from kinect/ultrasonic
@@ -91,12 +99,26 @@ public class Artemis extends Subsystem
      */
     public void run(double speed)
     {
+        clampMotorValues(speed);
         System.out.println("Shooting:"  + speed);
         right.set(speed);
         left.set(-speed);
     }
 
+    private double clampMotorValues(double scaledStrafe)
+    {
+        //double scaledLeftStrafe = OI.getUsedLeftX() * 1.25 * OI.getSensitivity();
 
+        if (scaledStrafe > 1)
+        {
+            scaledStrafe = 1;
+        }
+        if (scaledStrafe < -1)
+        {
+            scaledStrafe = -1;
+        }
+        return scaledStrafe;
+    }
     
 
     protected void initDefaultCommand()

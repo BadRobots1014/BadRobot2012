@@ -36,4 +36,5 @@ public class RobotMap
     public static final int leftShooter = 6;
     public static final int rightShooter = 7;
     public static final int bridgingTool = 8;
+    public static final int turnTable = 9;
 }
