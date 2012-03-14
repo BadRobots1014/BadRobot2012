@@ -52,6 +52,7 @@ public class Artemis extends Subsystem
         //turnTable = new Jaguar(RobotMap.turnTable);
 
         //turnTableEncoder = new Encoder(RobotMap.turnTableEncoderAChannel, RobotMap.turnTableEncoderBChannel);
+        //turnTableEncoder.start();
         //ranger = new Ultrasonic (RobotMap.ultrasonicOut, RobotMap.ultrasonicIn); //init
         //ranger.setEnabled(true);
         //ranger.setAutomaticMode(true);
@@ -121,6 +122,35 @@ public class Artemis extends Subsystem
             scaledStrafe = -1;
         }
         return scaledStrafe;
+    }
+
+    public void resetEncoder()
+    {
+        turnTableEncoder.reset();
+    }
+
+    public int encoderValue()
+    {
+        return turnTableEncoder.get();
+    }
+
+    /*
+     * Turns the shooter to a specific encoder value
+     */
+    public boolean turnByEncoderTo(int value)
+    {
+        int currentAngle = turnTableEncoder.get();
+
+        if(Math.abs(currentAngle - value) <= 5 )//TODO: Tune
+        {
+            turn(0);
+            return true;
+        }
+        else if(currentAngle - value < 0)
+            turn(1);
+        else
+            turn(-1);
+        return false;
     }
     
 
