@@ -15,6 +15,7 @@ public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
 {
     private boolean topBlocked = false;
     private boolean aligned = false;
+    protected boolean shooting = false;
     
     public GatherBallsAndAutoShoot() 
     {
@@ -32,28 +33,58 @@ public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
         {
             if (Helios.getInstance().topChannelBlocked())
                 topBlocked = true;
-        }      
-    }
-
-    /*
-     * Picks up balls the same way as GatherBallsAndManualShoot. When it has three balls,
-     * it will shoot off a ball each time it senses it is aligned with the hoop.
-     */
-    protected void execute()
-    {
-        double turn = kinecter.getOffAxis()[0]*(kinecter.getDepth()[0]/3657); //TODO - callibrate
+        }   
         
-        if (turn == 0) //aligned with basket
+        autoSpeed = true;
+    }
+    
+    public void runShootingOperations()
+    {
+        //if lined up 
+        if (aligned)
+        {
+            // if aligned and there is more than zero balls available
+            if (Helios.getInstance().getNumBalls() > 0)
+            {
+                shooterSpeed = 1;//TODO change speed to scale with depth
+                conveyorUp = true;
+                
+                //if a ball is ready to be shot
+                if (Helios.getInstance().topChannelBlocked())
+                    shooting = true;
+                
+                //ball is no longer blocking the topSensor, decrease ball count and sets shooting to false
+                else if (shooting)
+                {
+                    Helios.getInstance().setNumBalls(Helios.getInstance().getNumBalls()-1);
+                    conveyorUp = false;
+                    shooting = false;
+                }
+            }        
+        }
+    }
+    
+    public void runTurretingOperations()
+    {
+        autoAlign();
+    }
+    
+    public void autoAlign()
+    {
+        turretTurn = kinecter.getOffAxis()[0]*(kinecter.getDepth()[0]/3657); //TODO - callibrate
+        
+        if (turretTurn == 0) //aligned with basket
         {            
             aligned = true;
             System.out.println("lined up! -- Artemis execute()");
         }
         
-        else 
-        {
-            shooter.turn(turn/50); //a simple linear function of turn, at 50 turn, it turns full speed
-        }
-        
+        turretTurn/=50;
+    }
+    
+    public void runBallGathererOperations()
+    {
+        autoControl();
     }
     
     public void autoControl()

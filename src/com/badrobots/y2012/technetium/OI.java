@@ -218,6 +218,16 @@ public class OI
     {
         return xboxController2.getRawAxis(3) > .7;
     }
+    
+    public static double secondXboxLeftX()
+    {
+        return deadzone(xboxController2.getRawAxis(1)); 
+    }
+    
+    public static double secondXboxLeftY()
+    {
+        return deadzone(xboxController2.getRawAxis(2));
+    }
 
     /*
      * @return the primary controller left x value status: all tested
