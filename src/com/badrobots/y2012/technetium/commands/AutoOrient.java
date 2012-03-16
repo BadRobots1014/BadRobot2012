@@ -31,7 +31,6 @@ public class AutoOrient extends CommandBase
 
         if (distance > 0)
             driveTrain.autoMechanumDrive(0, 0, .5); //We must test
-        
         else if (distance < 0)
             driveTrain.autoMechanumDrive(0, 0, -.5); //Testtt testt testtttt
     }
