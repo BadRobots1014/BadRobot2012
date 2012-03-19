@@ -55,18 +55,19 @@ public class Demeter extends Subsystem
     
     /*
      * Runs the conveyor motor
+     * forward, reverse, off for mike
      */
     public void runConveyor(boolean up, boolean down)
     {
         if(up)
         {
             conveyorDown = false;
-            conveyor.set(Relay.Value.kForward);//The actual direction is in fact backwards
+            conveyor.set(Relay.Value.kReverse);//The actual direction is in fact backwards
         }
         else if(down)
         {
             conveyorDown = true;
-            conveyor.set(Relay.Value.kReverse);
+            conveyor.set(Relay.Value.kForward);
         }
         else
         {
