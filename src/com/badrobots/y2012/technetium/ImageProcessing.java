@@ -24,14 +24,14 @@ public class ImageProcessing extends Thread
     protected static final boolean LOGGING = true;
     protected AxisCamera camera;
     protected ParticleAnalysisReport[] toReturn;
-    protected int sleepTimer = 2000;
+    protected int sleepTimer = 1000;
     protected boolean running;
 
     public ImageProcessing(AxisCamera c)
     {
         camera = c;
         this.setPriority(MIN_PRIORITY);
-        running = false;
+        running = true;
 
         /* while (!camera.freshImage())
         {
@@ -92,15 +92,16 @@ public class ImageProcessing extends Thread
             img = camera.getImage();
 
             //Created a binary image where pixels meeting threshold
-            BinaryImage binary = img.thresholdHSL(0, (int) (OI.getAnalogIn(1) * 100), 0, (int) (OI.getAnalogIn(2) * 100), (int) (OI.getAnalogIn(3) * 100), (int) (OI.getAnalogIn(4) * 100));
-            println(" " + (int) (OI.getAnalogIn(1) * 100));
-            //BinaryImage binary = img.thresholdHSL(0, 180, 40, 60, 60, 100);
+            //BinaryImage binary = img.thresholdHSL(0, (int) (OI.getAnalogIn(1) * 100), 0, (int) (OI.getAnalogIn(2) * 100), (int) (OI.getAnalogIn(3) * 100), (int) (OI.getAnalogIn(4) * 100));
+            //println(" " + (int) (OI.getAnalogIn(1) * 100));
+            BinaryImage binary = img.thresholdHSL(0, 180, 40, 60, 60, 100);
 
             //binary = binary.convexHull(true);
             //Array of all detected rectangles, right?
             ParticleAnalysisReport[] particles = binary.getOrderedParticleAnalysisReports();
 
             ParticleAnalysisReport test;
+
             //Makes checks to see if the rectangle meets size and ratio requirements
             for (int i = 0; i < particles.length; i++)
             {

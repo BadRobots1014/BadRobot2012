@@ -74,7 +74,7 @@ public class Artemis extends Subsystem
     public void turn(double speed)
     {
         clampMotorValues(speed);
-        System.out.println(speed + ". WHEAT");
+        //System.out.println(speed + ". WHEAT");
         turnTable.set(speed);
     }
 
@@ -108,9 +108,9 @@ public class Artemis extends Subsystem
     public void run(double speed)
     {
         clampMotorValues(speed);
-        System.out.println("Shooting:"  + speed);
+        //System.out.println("Shooting:"  + speed);
         right.set(-speed);
-        //left.set(speed);
+        left.set(speed);
     }
 
     private double clampMotorValues(double scaledStrafe)
