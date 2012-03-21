@@ -75,7 +75,7 @@ public class Artemis extends Subsystem
     {
         clampMotorValues(speed);
         //System.out.println(speed + ". WHEAT");
-        turnTable.set(speed);
+        turnTable.set(-speed);
     }
 
     public void shootMiddle() // read distance from kinect/ultrasonic

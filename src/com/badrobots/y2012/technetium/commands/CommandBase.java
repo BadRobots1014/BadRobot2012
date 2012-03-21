@@ -1,5 +1,6 @@
 package com.badrobots.y2012.technetium.commands;
 
+import com.badrobots.y2012.technetium.ImageProcessing;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.badrobots.y2012.technetium.OI;
@@ -26,8 +27,9 @@ public abstract class CommandBase extends Command
     public static Helios sensors;
     public static Demeter ballGatherer;  
     public static PacketListener kinecter;
+    public static ImageProcessing imageProcessor;
 
-    public static void init(PacketListener listener)
+    public static void init(PacketListener listener, ImageProcessing processor)
     {
         // This MUST be here. If the OI creates Commands (which it very likely
         // will), constructing it during the construction of CommandBase (from
@@ -41,6 +43,7 @@ public abstract class CommandBase extends Command
         bridgeTool = Xerxes.getInstance();
         shooter = Artemis.getInstance();
         ballGatherer = Demeter.getInstance();
+        imageProcessor = processor;
         //bridgeTool.initDefaultCommand();//this is only for testing...  I hope
         //kinecter = listener;
         //Scheduler.getInstance().add(new ManualBridge());

@@ -73,7 +73,7 @@ public class Technetium extends IterativeRobot
             camera = AxisCamera.getInstance();
 
         //This is where all subsystems are actually initialized
-        CommandBase.init(kinecter);
+        CommandBase.init(kinecter, thread);
 
     }
 

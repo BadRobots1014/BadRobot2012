@@ -70,9 +70,16 @@ public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
     
     public void autoAlign()
     {
-        turretTurn = kinecter.getOffAxis()[0]*(kinecter.getDepth()[0]/3657); //TODO - callibrate
+        if (!OI.cameraOn)
+            return;
         
-        if (turretTurn == 0) //aligned with basket
+        if (imageProcessor.getCoords() == null)
+            return;
+        
+        double offAxis = 80 - imageProcessor.getCoords()[0];
+        turretTurn = offAxis*(offAxis/3657); //TODO - callibrate
+        
+        if (Math.abs(turretTurn) < 10)
         {            
             aligned = true;
             System.out.println("lined up! -- Artemis execute()");

@@ -5,6 +5,7 @@
 package com.badrobots.y2012.technetium.subsystems;
 
 import com.badrobots.y2012.technetium.RobotMap;
+import com.badrobots.y2012.technetium.commands.GatherBallsAndAutoShoot;
 import com.badrobots.y2012.technetium.commands.GatherBallsAndManualShoot;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.AnalogChannel;
@@ -131,6 +132,6 @@ public class Demeter extends Subsystem
     public void initDefaultCommand()
     {
         System.out.println("DefaultCommandDemeter");
-        super.setDefaultCommand(new GatherBallsAndManualShoot());
+        super.setDefaultCommand(new GatherBallsAndAutoShoot());
     }
 }

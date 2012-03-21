@@ -8,10 +8,7 @@ import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
 import edu.wpi.first.wpilibj.camera.AxisCameraException;
-import edu.wpi.first.wpilibj.image.BinaryImage;
-import edu.wpi.first.wpilibj.image.ColorImage;
-import edu.wpi.first.wpilibj.image.NIVisionException;
-import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
+import edu.wpi.first.wpilibj.image.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -26,6 +23,7 @@ public class ImageProcessing extends Thread
     protected ParticleAnalysisReport[] toReturn;
     protected int sleepTimer = 1000;
     protected boolean running;
+    protected int[] coords;
 
     public ImageProcessing(AxisCamera c)
     {
@@ -43,6 +41,7 @@ public class ImageProcessing extends Thread
         System.out.println("Image is unavailable");
         }  */
         camera.writeResolution(AxisCamera.ResolutionT.k160x120);
+        coords = new int[2];
 
     }
 
@@ -54,8 +53,7 @@ public class ImageProcessing extends Thread
             {
                 ParticleAnalysisReport[] particleAnalysisReports = getRectangleParticles();
                 setParticleAnalysisReport(particleAnalysisReports);
-                println("running...");
-
+                
                 try
                 {
                     Thread.sleep(sleepTimer);
@@ -90,13 +88,44 @@ public class ImageProcessing extends Thread
             //gets and stores the current camera image
 
             img = camera.getImage();
+            
+            BinaryImage binary = img.thresholdHSL(100, 175, 30, 255, 60, 255);
+            
+            //Convex Hull
+            binary.convexHull(true);
+            
+            //Remove small objects (parameters are connectivity and number of erosions)
+            binary = binary.removeSmallObjects(true, 1);
+            ParticleAnalysisReport[] report = binary.getOrderedParticleAnalysisReports();
+            
+            
+            int size = report.length;
+            if (size > 0)
+            {
+                double biggest = report[0].particleArea;
+                int biggestIndex = 0;
 
-            //Created a binary image where pixels meeting threshold
-            //BinaryImage binary = img.thresholdHSL(0, (int) (OI.getAnalogIn(1) * 100), 0, (int) (OI.getAnalogIn(2) * 100), (int) (OI.getAnalogIn(3) * 100), (int) (OI.getAnalogIn(4) * 100));
-            //println(" " + (int) (OI.getAnalogIn(1) * 100));
-            BinaryImage binary = img.thresholdHSL(0, 180, 40, 60, 60, 100);
+                for (int i = 0; i < report.length; i++)
+                {
+                    if (report[i].particleArea > biggest)
+                    {
+                        biggest = report[i].particleArea;
+                        biggestIndex = i;
+                    }
+                }
+            
+                coords[0] = report[biggestIndex].center_mass_x;
+                coords[1] = report[biggestIndex].center_mass_y;
+                this.println(report[biggestIndex] + " size of analysis: " + report.length);
+            }
+            
+            else
+                this.println(" no particles detected");
+            
 
-            //binary = binary.convexHull(true);
+            toReturn = report;
+            
+            /*//binary = binary.convexHull(true);
             //Array of all detected rectangles, right?
             ParticleAnalysisReport[] particles = binary.getOrderedParticleAnalysisReports();
 
@@ -141,8 +170,13 @@ public class ImageProcessing extends Thread
         } catch (AxisCameraException ace)
         {
             ace.printStackTrace();
-        }
+        }*/
+            
+        img.free();
+        binary.free();
 
+        }
+        catch(Exception e){e.printStackTrace();}
         //return the rectangles that meet the requirements
         return toReturn;
     }
@@ -154,6 +188,11 @@ public class ImageProcessing extends Thread
             println("getting value");
             return toReturn;
         }
+    }
+    
+    public int[] getCoords()
+    {
+        return coords;
     }
 
     public void setParticleAnalysisReport(ParticleAnalysisReport[] particleAnalysisReports)
