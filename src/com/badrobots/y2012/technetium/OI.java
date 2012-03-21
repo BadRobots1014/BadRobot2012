@@ -19,6 +19,7 @@ public class OI
     //This is where we will put the on/off functionality booleans
     public static final boolean kinnectOn = false;
     public static final boolean PIDOn = false;
+    public static final boolean cameraOn = false;
 
     /*
      * initializes all input methods (eg. joysticks)

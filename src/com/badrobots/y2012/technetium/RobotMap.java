@@ -31,8 +31,8 @@ public class RobotMap
     public static final int camera = 4;
     public static final int horizontalGyro = 1;
     public static final int verticalGyro = 10;
-    public static final int conveyor = 1;
-    public static final int bottomRoller = 2;
+    public static final int conveyor = 2;//1 on mike
+    public static final int bottomRoller = 1;//2 on mike
     public static final int leftShooter = 6;
     public static final int rightShooter = 7;
     public static final int bridgingTool = 8;

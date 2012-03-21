@@ -65,8 +65,9 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
 
         ballGatherer.runBottomRoller(rollerIn, rollerOut);
         ballGatherer.runConveyor(conveyorUp, conveyorDown);
-        //shooter.run(shooterSpeed);
-        //shooter.turn(turretTurn);
+        System.out.println("Shooting at: " + shooterSpeed);
+        shooter.run(shooterSpeed);
+        shooter.turn(-turretTurn);
     }
 
     public void runBallGathererOperations()

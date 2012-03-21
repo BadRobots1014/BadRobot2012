@@ -20,6 +20,8 @@ import edu.wpi.first.wpilibj.image.BinaryImage;
 import edu.wpi.first.wpilibj.image.ColorImage;
 import edu.wpi.first.wpilibj.image.NIVisionException;
 import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
+import edu.wpi.first.wpilibj.PWM;
+
 
 /*
  * @author 1014 Programming Team
@@ -28,7 +30,7 @@ public class Artemis extends Subsystem
 {
     private static Artemis instance;
     private static Victor right, left;
-    private static Jaguar turnTable; //TODO Change to correct type of speed controller
+    private static Victor turnTable; //TODO Change to correct speed controller
     private static Encoder turnTableEncoder;
     private static Ultrasonic ranger;
     private static AxisCamera camera;
@@ -48,6 +50,7 @@ public class Artemis extends Subsystem
         super();
         right = new Victor (RobotMap.rightShooter); // initialize the motor
         left = new Victor (RobotMap.leftShooter);
+        turnTable = new Victor(RobotMap.turnTable);
         
         //turnTable = new Jaguar(RobotMap.turnTable);
 
@@ -71,6 +74,7 @@ public class Artemis extends Subsystem
     public void turn(double speed)
     {
         clampMotorValues(speed);
+        //System.out.println(speed + ". WHEAT");
         turnTable.set(speed);
     }
 
@@ -104,9 +108,9 @@ public class Artemis extends Subsystem
     public void run(double speed)
     {
         clampMotorValues(speed);
-        System.out.println("Shooting:"  + speed);
-        right.set(speed);
-        left.set(-speed);
+        //System.out.println("Shooting:"  + speed);
+        right.set(-speed);
+        left.set(speed);
     }
 
     private double clampMotorValues(double scaledStrafe)
