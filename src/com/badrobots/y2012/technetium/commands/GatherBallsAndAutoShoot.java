@@ -56,7 +56,6 @@ public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
                 //ball is no longer blocking the topSensor, decrease ball count and sets shooting to false
                 else if (shooting)
                 {
-                    Helios.getInstance().setNumBalls(Helios.getInstance().getNumBalls()-1);
                     conveyorUp = false;
                     shooting = false;
                 }
@@ -125,8 +124,6 @@ public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
         {
             shooterSpeed = 1;
         }
-
-        
     }
 
     // Make this return true when this Command no longer needs to run execute()

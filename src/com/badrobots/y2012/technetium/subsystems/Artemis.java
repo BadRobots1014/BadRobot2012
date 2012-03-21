@@ -28,7 +28,7 @@ public class Artemis extends Subsystem
 {
     private static Artemis instance;
     private static Victor right, left;
-    private static Jaguar turnTable; //TODO Change to correct speed controller
+    private static Jaguar turnTable; //TODO Change to correct type of speed controller
     private static Encoder turnTableEncoder;
     private static Ultrasonic ranger;
     private static AxisCamera camera;

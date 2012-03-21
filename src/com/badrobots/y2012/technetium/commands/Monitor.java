@@ -35,10 +35,8 @@ public class Monitor extends CommandBase {
         //System.out.println("Meters: " + sensors.getUtraFrontRange()/1000);
 
         if(sensors.bottomChannelBlocked())
-        {
-            
+        {            
             bottomWasBlocked = true;
-            //System.out.println("Blocked");
         }
         else if(bottomWasBlocked)
         {
@@ -50,7 +48,6 @@ public class Monitor extends CommandBase {
         if(sensors.topChannelBlocked())
         {
             topWasBlocked = true;
-            //System.out.println("TopBlocked");
         }
         else if(topWasBlocked)
         {
@@ -63,7 +60,11 @@ public class Monitor extends CommandBase {
             
         }
 
-        
+        updateDriverstationBallCount();
+    }
+    
+    public void updateDriverstationBallCount()
+    {
         //update ballcount
         int balls = sensors.getNumBalls();
         if(balls >= 4)
@@ -84,7 +85,6 @@ public class Monitor extends CommandBase {
             DriverStation.getInstance().setDigitalOut(1, true);
         else
             DriverStation.getInstance().setDigitalOut(1, false);
-
     }
 
     // Make this return true when this Command no longer needs to run execute()

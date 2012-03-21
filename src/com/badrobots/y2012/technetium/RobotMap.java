@@ -26,8 +26,8 @@ public class RobotMap
     public static final int shooterJoystick = 4;
     public static final int ultrasonicOut = 2; // TODO
     public static final int ultrasonicIn = 3; // TODO
-    public static final int topSensor = 5;
-    public static final int bottomSensor = 7;
+    public static final int topSensor = 5; //5 Scotty
+    public static final int bottomSensor = 7; //7
     public static final int camera = 4;
     public static final int horizontalGyro = 1;
     public static final int verticalGyro = 10;
