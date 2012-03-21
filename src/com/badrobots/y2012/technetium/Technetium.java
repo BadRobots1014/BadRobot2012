@@ -70,7 +70,11 @@ public class Technetium extends IterativeRobot
             }
         }
         if(OI.cameraOn)
+        {
             camera = AxisCamera.getInstance();
+            thread = new ImageProcessing(camera);
+            thread.start();
+        }
 
         //This is where all subsystems are actually initialized
         CommandBase.init(kinecter, thread);
@@ -111,14 +115,10 @@ public class Technetium extends IterativeRobot
         */
         //kinecter.start();
 
-        if(camera != null)
-            System.out.println("SKYNET ACTIVE. BEGIN SELECTING TARGETS FOR EXTERMINATION");
-        else
-            System.out.println("SKYNET IS BLIND");
         if(OI.cameraOn)
         {
-            thread = new ImageProcessing(camera);
-            thread.start();
+            System.out.println("ThreadStarted");
+            
             thread.setRunning(true);
         }
 

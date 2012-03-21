@@ -21,7 +21,7 @@ public class ImageProcessing extends Thread
     protected static final boolean LOGGING = true;
     protected AxisCamera camera;
     protected ParticleAnalysisReport[] toReturn;
-    protected int sleepTimer = 1000;
+    protected int sleepTimer = 500;
     protected boolean running;
     protected int[] coords;
 
@@ -42,6 +42,9 @@ public class ImageProcessing extends Thread
         }  */
         camera.writeResolution(AxisCamera.ResolutionT.k160x120);
         coords = new int[2];
+        coords[0] = -1;
+        coords[1] = -1;
+
 
     }
 
@@ -51,6 +54,7 @@ public class ImageProcessing extends Thread
         {
             if (running)
             {
+                //println("running");
                 ParticleAnalysisReport[] particleAnalysisReports = getRectangleParticles();
                 setParticleAnalysisReport(particleAnalysisReports);
                 
@@ -89,7 +93,7 @@ public class ImageProcessing extends Thread
 
             img = camera.getImage();
             
-            BinaryImage binary = img.thresholdHSL(100, 175, 30, 255, 60, 255);
+            BinaryImage binary = img.thresholdHSL(100, 175, 40, 255, 60, 255);
             
             //Convex Hull
             binary.convexHull(true);
@@ -120,7 +124,11 @@ public class ImageProcessing extends Thread
             }
             
             else
+            {
                 this.println(" no particles detected");
+                coords[0] = -1;
+                coords[1] = -1;
+            }
             
 
             toReturn = report;
@@ -174,6 +182,8 @@ public class ImageProcessing extends Thread
             
         img.free();
         binary.free();
+        img = null;
+        binary = null;
 
         }
         catch(Exception e){e.printStackTrace();}

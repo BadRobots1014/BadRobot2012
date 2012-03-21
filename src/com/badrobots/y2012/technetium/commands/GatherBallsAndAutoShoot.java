@@ -61,31 +61,60 @@ public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
                 }
             }        
         }
+        else
+        {
+            shooterSpeed = 0;
+        }
     }
     
     public void runTurretingOperations()
     {
+        //System.out.println("turretting");
         autoAlign();
     }
+    
+   /* protected void execute()
+    {
+        System.out.println("Executing");
+        runBallGathererOperations();
+        runTurretingOperations();
+        runShootingOperations();
+    }*/
     
     public void autoAlign()
     {
         if (!OI.cameraOn)
             return;
         
-        if (imageProcessor.getCoords() == null)
+        if (imageProcessor.getCoords() == null || imageProcessor.getCoords()[0] < 0)
+        {
+            aligned = false;
+            turretTurn = 0;
             return;
+        }
+        
+        System.out.println("coords: " + imageProcessor.getCoords()[0]);
         
         double offAxis = 80 - imageProcessor.getCoords()[0];
-        turretTurn = offAxis*(offAxis/3657); //TODO - callibrate
+        turretTurn = offAxis; //TODO - callibrate
         
         if (Math.abs(turretTurn) < 10)
         {            
             aligned = true;
             System.out.println("lined up! -- Artemis execute()");
         }
+        else
+        {
+            aligned = false;
+        }
         
-        turretTurn/=50;
+        
+        turretTurn/=160;
+        System.out.println("TurretTurn: " + turretTurn);
+        if(turretTurn > 1)
+            turretTurn = 1;
+        else if(turretTurn < -1)
+            turretTurn = -1;
     }
     
     public void runBallGathererOperations()
@@ -103,7 +132,7 @@ public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
          //Ball Spacing
         if(Helios.getInstance().getNumBalls() < 3)
         {
-            System.out.println("Spacing");
+            //System.out.println("Spacing");
             conveyorUp = false;
             conveyorDown = false;
             rollerIn = false;
