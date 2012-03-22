@@ -24,12 +24,15 @@ public class ImageProcessing extends Thread
     protected int sleepTimer = 500;
     protected boolean running;
     protected int[] coords;
+    protected CriteriaCollection criteria;
 
     public ImageProcessing(AxisCamera c)
     {
         camera = c;
         this.setPriority(MIN_PRIORITY);
         running = true;
+        criteria = new CriteriaCollection();
+        criteria.addCriteria(NIVision.MeasurementType.IMAQ_MT_CENTER_OF_MASS_Y, 0, 50, true);
 
         /* while (!camera.freshImage())
         {
@@ -102,7 +105,7 @@ public class ImageProcessing extends Thread
             binary = binary.removeSmallObjects(true, 1);
             ParticleAnalysisReport[] report = binary.getOrderedParticleAnalysisReports();
             
-            
+            binary.particleFilter(criteria);
             int size = report.length;
             if (size > 0)
             {
