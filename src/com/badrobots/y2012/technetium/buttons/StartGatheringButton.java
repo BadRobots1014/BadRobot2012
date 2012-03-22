@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
  *
  * @author Jon Buckley
  */
-public class StartGatheringButton extends Button 
+public class StartGatheringButton extends Button
 {
     
     public StartGatheringButton()

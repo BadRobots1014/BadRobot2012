@@ -176,20 +176,6 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             else 
                 manualShooterSpeed = 1;
         }
-        
-        if(OI.secondXboxBButton())
-        {
-            switchSpeedDown = true;
-        }
-        else if(switchSpeedDown)
-        {
-            switchSpeedDown = false;
-            autoSpeed = false;
-            if(manualShooterSpeed > .2)
-                manualShooterSpeed -= .2;
-            else
-                manualShooterSpeed = 0;
-        }
 
         if(OI.secondXboxLeftTrigger())//run with the manual control
         {

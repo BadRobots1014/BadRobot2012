@@ -93,13 +93,13 @@ public class ImageProcessing extends Thread
 
             img = camera.getImage();
             
-            BinaryImage binary = img.thresholdHSL(100, 175, 40, 255, 60, 255);
+            BinaryImage binary = img.thresholdHSL(141, 208, 65, 255, 0, 255);
             
             //Convex Hull
             binary.convexHull(true);
             
             //Remove small objects (parameters are connectivity and number of erosions)
-            binary = binary.removeSmallObjects(true, 1);
+            binary = binary.removeSmallObjects(true, 3);
             ParticleAnalysisReport[] report = binary.getOrderedParticleAnalysisReports();
             
             
