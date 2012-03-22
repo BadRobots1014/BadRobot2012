@@ -32,7 +32,7 @@ public class ImageProcessing extends Thread
         this.setPriority(MIN_PRIORITY);
         running = true;
         criteria = new CriteriaCollection();
-        criteria.addCriteria(NIVision.MeasurementType.IMAQ_MT_CENTER_OF_MASS_Y, 0, 50, true);
+        criteria.addCriteria(NIVision.MeasurementType.IMAQ_MT_CENTER_OF_MASS_Y, 0, 50, true);//wrong
 
         /* while (!camera.freshImage())
         {
@@ -96,16 +96,15 @@ public class ImageProcessing extends Thread
 
             img = camera.getImage();
             
-            BinaryImage binary = img.thresholdHSL(141, 208, 65, 255, 0, 255);
+            BinaryImage binary = img.thresholdHSL(141, 208, 50, 255, 0, 255);
             
             //Convex Hull
             binary.convexHull(true);
             
             //Remove small objects (parameters are connectivity and number of erosions)
-            binary = binary.removeSmallObjects(true, 3);
-            ParticleAnalysisReport[] report = binary.getOrderedParticleAnalysisReports();
-            
+            binary = binary.removeSmallObjects(true, 1);
             binary.particleFilter(criteria);
+            ParticleAnalysisReport[] report = binary.getOrderedParticleAnalysisReports();
             int size = report.length;
             if (size > 0)
             {
@@ -123,7 +122,7 @@ public class ImageProcessing extends Thread
             
                 coords[0] = report[biggestIndex].center_mass_x;
                 coords[1] = report[biggestIndex].center_mass_y;
-                this.println(report[biggestIndex] + " size of analysis: " + report.length);
+                this.println(report[biggestIndex].boundingRectHeight + " size of analysis: " + report.length);
             }
             
             else
@@ -136,57 +135,10 @@ public class ImageProcessing extends Thread
 
             toReturn = report;
             
-            /*//binary = binary.convexHull(true);
-            //Array of all detected rectangles, right?
-            ParticleAnalysisReport[] particles = binary.getOrderedParticleAnalysisReports();
-
-            ParticleAnalysisReport test;
-
-            //Makes checks to see if the rectangle meets size and ratio requirements
-            for (int i = 0; i < particles.length; i++)
-            {
-                test = particles[i];
-                if (Math.abs(test.boundingRectWidth / test.boundingRectHeight - 1.33) < .2) //(test.particleToImagePercent > .1 && test.particleToImagePercent < .4)
-                {
-
-                    double ratio = test.boundingRectWidth / test.boundingRectHeight;
-                    if (test.particleArea / (test.boundingRectHeight * test.boundingRectWidth) > .8) //(ratio > ((4/3) - .2) && ratio < ((4/3) + .2))
-                    {
-                        if (toReturn.length - 1 < current)
-                        {
-                            ParticleAnalysisReport[] temp = new ParticleAnalysisReport[current + 5];
-                            for (int x = 0; x < toReturn.length; x++)
-                            {
-                                temp[x] = toReturn[x];
-                            }
-
-                            toReturn = temp;
-                        }
-                        toReturn[current] = test;
-                        current++;
-                    }
-                }
-            }
-
-            println("got through the analysis hell " + "   Rects: " + (current) + " Raw: " + particles.length);
-            DriverStationLCD.getInstance().println(DriverStationLCD.Line.kMain6, 1, i + "  Rect: " + current + "area ");
-            DriverStationLCD.getInstance().updateLCD();
-
-            //release memory allocated to the images
             img.free();
             binary.free();
-        } catch (NIVisionException ex)
-        {
-            ex.printStackTrace();
-        } catch (AxisCameraException ace)
-        {
-            ace.printStackTrace();
-        }*/
-            
-        img.free();
-        binary.free();
-        img = null;
-        binary = null;
+            img = null;
+            binary = null;
 
         }
         catch(Exception e){e.printStackTrace();}

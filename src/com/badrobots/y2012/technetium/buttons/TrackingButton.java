@@ -9,6 +9,7 @@ import com.badrobots.y2012.technetium.commands.Balance;
 import com.badrobots.y2012.technetium.commands.GatherBallsAndAutoShoot;
 import com.badrobots.y2012.technetium.commands.GatherBallsAndManualShoot;
 import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.command.Scheduler;
 
 /**
  *
@@ -28,12 +29,16 @@ public class TrackingButton extends Button
     {
         if (OI.secondXboxBButton())
         {
+            System.out.println("B button hit-----");
+
             once = true;
             return true;
         }
-        if(once)
+        else if(once)
         {
-            new GatherBallsAndManualShoot();
+            System.out.println("B button released-----");
+
+            Scheduler.getInstance().add(new GatherBallsAndManualShoot());
             once = false;
         }
         return false;

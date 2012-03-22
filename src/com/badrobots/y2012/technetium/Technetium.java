@@ -103,6 +103,8 @@ public class Technetium extends IterativeRobot
     {
         new TankDriveTrigger();
         new MechanumDriveTrigger();
+        new TrackingButton();
+
 
         /*try
         {

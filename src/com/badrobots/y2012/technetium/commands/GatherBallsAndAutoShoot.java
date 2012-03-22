@@ -80,7 +80,7 @@ public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
         runTurretingOperations();
         runShootingOperations();
     }*/
-    
+    int count = 0;
     public void autoAlign()
     {
         if (!OI.cameraOn)
@@ -96,25 +96,34 @@ public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
         System.out.println("coords: " + imageProcessor.getCoords()[0]);
         
         double offAxis = 80 - imageProcessor.getCoords()[0];
-        turretTurn = offAxis; //TODO - callibrate
+        turretTurn = -offAxis; //TODO - callibrate
         
-        if (Math.abs(turretTurn) < 10)
+        if (Math.abs(turretTurn) < 5)
         {            
-            aligned = true;
+            count++;
             System.out.println("lined up! -- Artemis execute()");
+            turretTurn = 0;
+            aligned = false;
+            if(count > 3)
+                aligned = true;
         }
         else
         {
+            count = 0;
             aligned = false;
         }
         
         
-        turretTurn/=160;
+        turretTurn/=80;
         System.out.println("TurretTurn: " + turretTurn);
-        if(turretTurn > 1)
-            turretTurn = 1;
-        else if(turretTurn < -1)
-            turretTurn = -1;
+        if(turretTurn > .3)
+            turretTurn = .3;
+        else if(turretTurn < -.3)
+            turretTurn = -.3;
+        if(turretTurn < .05 && turretTurn > 0 && !aligned)
+            turretTurn = .05;
+        if(turretTurn > -.05 && turretTurn < 0 && !aligned)
+            turretTurn = -.05;
     }
     
     public void runBallGathererOperations()

@@ -132,6 +132,6 @@ public class Demeter extends Subsystem
     public void initDefaultCommand()
     {
         System.out.println("DefaultCommandDemeter");
-        super.setDefaultCommand(new GatherBallsAndAutoShoot());
+        super.setDefaultCommand(new GatherBallsAndManualShoot());
     }
 }
