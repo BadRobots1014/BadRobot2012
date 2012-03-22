@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
  */
 public class TrackingButton extends Button
 {
+    boolean once = false;
 //NEEDS TESTING
     public TrackingButton()
     {
@@ -26,8 +27,15 @@ public class TrackingButton extends Button
     public boolean get()
     {
         if (OI.secondXboxBButton())
+        {
+            once = true;
             return true;
-        new GatherBallsAndManualShoot();
+        }
+        if(once)
+        {
+            new GatherBallsAndManualShoot();
+            once = false;
+        }
         return false;
     }
 
