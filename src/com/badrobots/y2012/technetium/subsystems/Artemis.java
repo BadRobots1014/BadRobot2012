@@ -54,9 +54,9 @@ public class Artemis extends Subsystem
         
         //turnTable = new Jaguar(RobotMap.turnTable);
 
-        //turnTableEncoder = new Encoder(RobotMap.turnTableEncoderAChannel, RobotMap.turnTableEncoderBChannel);
-        //turnTableEncoder.start();
-        //ranger = new Ultrasonic (RobotMap.ultrasonicOut, RobotMap.ultrasonicIn); //init
+        turnTableEncoder = new Encoder(RobotMap.turnTableEncoderAChannel, RobotMap.turnTableEncoderBChannel);
+        turnTableEncoder.start();
+        //ranger = new Ultrasonic(1, RobotMap.ultrasonicOut, 1, RobotMap.ultrasonicOut);
         //ranger.setEnabled(true);
         //ranger.setAutomaticMode(true);
 
@@ -155,6 +155,14 @@ public class Artemis extends Subsystem
         else
             turn(-1);
         return false;
+    }
+    
+    public double distanceToWall()
+    {
+        if (ranger != null)
+            return ranger.getRangeMM();
+        
+        return -1;
     }
     
 

@@ -4,6 +4,7 @@
  */
 package com.badrobots.y2012.technetium.commands;
 
+import com.badrobots.y2012.technetium.subsystems.Artemis;
 import com.badrobots.y2012.technetium.subsystems.Helios;
 import com.badrobots.y2012.technetium.subsystems.Demeter;
 import edu.wpi.first.wpilibj.DriverStation;

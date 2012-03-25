@@ -31,7 +31,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
     public GatherBallsAndManualShoot() 
     {
         requires(ballGatherer);
-        //requires(shooter);
+        requires(shooter);
     }
 
     protected void initialize() 
@@ -67,7 +67,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         ballGatherer.runConveyor(conveyorUp, conveyorDown);
         //System.out.println("Shooting at: " + shooterSpeed);
         shooter.run(shooterSpeed);
-        shooter.turn(-turretTurn);
+        shooter.turn(-turretTurn);        
     }
 
     public void runBallGathererOperations()
@@ -171,10 +171,10 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         {
             switchSpeedUp = false;
             autoSpeed = false;
-            if(manualShooterSpeed < .8)
-                manualShooterSpeed += .2;
+            if(manualShooterSpeed == 1)
+                manualShooterSpeed += .1;
             else 
-                manualShooterSpeed = 1;
+                manualShooterSpeed = 0;
         }
 
         if(OI.secondXboxLeftTrigger())//run with the manual control
@@ -189,6 +189,8 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             manualOveride = true;
         else if(OI.secondXboxStartButton())
             manualOveride = false;
+        
+        ballGatherer.setManualOverride(manualOveride);
     }
 
     public void runShootingOperations()

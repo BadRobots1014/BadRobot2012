@@ -13,15 +13,13 @@ import com.badrobots.y2012.technetium.commands.MechanumDrive;
 import com.badrobots.y2012.technetium.commands.CommandBase;
 //import com.badrobots.y2012.technetium.commands.DriveToWall;
 import com.badrobots.y2012.technetium.commands.DriveToWall;
-import com.badrobots.y2012.technetium.subsystems.Hermes;
+import com.badrobots.y2012.technetium.subsystems.*;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Watchdog;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import com.badrobots.y2012.technetium.subsystems.Helios;
-import com.badrobots.y2012.technetium.subsystems.Xerxes;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
@@ -44,7 +42,7 @@ public class Technetium extends IterativeRobot
 {
 
     Command firstCommand;
-    Button mecanumDriveTrigger, tankDriveTrigger, switchScaling;
+    Button mecanumDriveTrigger, tankDriveTrigger, switchScaling, trackingButton;
     protected ImageProcessing thread;
     protected PacketListener kinecter;
     protected AxisCamera camera;
@@ -103,8 +101,8 @@ public class Technetium extends IterativeRobot
     {
         new TankDriveTrigger();
         new MechanumDriveTrigger();
-        new TrackingButton();
-
+        
+        
 
         /*try
         {
@@ -120,7 +118,8 @@ public class Technetium extends IterativeRobot
         if(OI.cameraOn)
         {
             System.out.println("ThreadStarted");
-            
+            new TrackingButton();
+
             thread.setRunning(true);
         }
 
@@ -134,10 +133,14 @@ public class Technetium extends IterativeRobot
         //Feed it or it dies. And then stops the robot. From the grave. Really it is a poor metaphor.
         Watchdog.getInstance().feed();
         
-        //System.out.println(Hermes.getInstance().getGyro().getAngle() + "  -- angle");
-        
         //Runs the correct commands with their subsytems
-        Scheduler.getInstance().run();
+        Scheduler.getInstance().run();     
+        
+        //System.out.println("Encoder : "  + Artemis.getInstance().encoderValue());
+        //System.out.println("Range: " + Helios.getInstance().getUltraFrontRange());//  + " ranger: " + Artemis.getInstance().distanceToWall());
+        
+        if (trackingButton == null)
+            trackingButton = new TrackingButton();
     }
 
     public void disabledInit()

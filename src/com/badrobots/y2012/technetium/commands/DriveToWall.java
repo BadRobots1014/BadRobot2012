@@ -26,11 +26,11 @@ public class DriveToWall extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        if(sensors.getUtraFrontRange() < 1000 && sensors.getUtraFrontRange() > 750)
+        if(sensors.getUltraFrontRange() < 1000 && sensors.getUltraFrontRange() > 750)
         {
             driveTrain.autoMechanumDrive(0, 0, 0);
         }
-        else if(sensors.getUtraFrontRange() <= 750)
+        else if(sensors.getUltraFrontRange() <= 750)
         {
             driveTrain.autoMechanumDrive(0,.16,0);
         }

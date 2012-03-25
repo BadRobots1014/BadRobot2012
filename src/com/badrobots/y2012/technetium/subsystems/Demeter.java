@@ -19,11 +19,11 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class Demeter extends Subsystem 
 {
     protected static Demeter instance;
-    AnalogChannel garageSensor;
     public Relay conveyor, bottomRoller;
     double threshold = 2; // voltage readout from the analog channel
     private int balls = 0;
     protected boolean conveyorDown;
+    protected boolean manualOverride = false;
 
     
     /**
@@ -133,5 +133,15 @@ public class Demeter extends Subsystem
     {
         System.out.println("DefaultCommandDemeter");
         super.setDefaultCommand(new GatherBallsAndManualShoot());
+    }
+    
+    public boolean manualOverride()
+    {
+        return manualOverride;
+    }
+    
+    public void setManualOverride(boolean b)
+    {
+        manualOverride = b;
     }
 }

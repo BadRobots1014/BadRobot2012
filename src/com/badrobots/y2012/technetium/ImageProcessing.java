@@ -17,14 +17,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class ImageProcessing extends Thread
 {
-
     protected static final boolean LOGGING = true;
     protected AxisCamera camera;
     protected ParticleAnalysisReport[] toReturn;
-    protected int sleepTimer = 500;
+    protected int sleepTimer = 100;
     protected boolean running;
     protected int[] coords;
     protected CriteriaCollection criteria;
+
 
     public ImageProcessing(AxisCamera c)
     {
@@ -48,7 +48,6 @@ public class ImageProcessing extends Thread
         coords[0] = -1;
         coords[1] = -1;
 
-
     }
 
     public void run()
@@ -58,8 +57,7 @@ public class ImageProcessing extends Thread
             if (running)
             {
                 //println("running");
-                ParticleAnalysisReport[] particleAnalysisReports = getRectangleParticles();
-                setParticleAnalysisReport(particleAnalysisReports);
+                setHoopCoords();
                 
                 try
                 {
@@ -83,28 +81,26 @@ public class ImageProcessing extends Thread
     }
     int i = 0;
 
-    public ParticleAnalysisReport[] getRectangleParticles()
+    public void setHoopCoords()
     {
-        toReturn = new ParticleAnalysisReport[1];
-
-        ColorImage img;
         int current = 0;
-
         try
         {
             //gets and stores the current camera image
-
-            img = camera.getImage();
+            ColorImage img = camera.getImage();
             
-            BinaryImage binary = img.thresholdHSL(141, 208, 50, 255, 0, 255);
+            BinaryImage binary = img.thresholdHSL(130, 200, 60, 253, 40, 255);//141, 208, 50, 255, 0, 255);
             
             //Convex Hull
             binary.convexHull(true);
             
             //Remove small objects (parameters are connectivity and number of erosions)
-            binary = binary.removeSmallObjects(true, 1);
-            binary.particleFilter(criteria);
-            ParticleAnalysisReport[] report = binary.getOrderedParticleAnalysisReports();
+            BinaryImage noSmall = binary.removeSmallObjects(true, 1);
+            noSmall.particleFilter(criteria);
+            ParticleAnalysisReport[] report = noSmall.getOrderedParticleAnalysisReports();
+            
+            // binary.free();
+
             int size = report.length;
             if (size > 0)
             {
@@ -122,7 +118,7 @@ public class ImageProcessing extends Thread
             
                 coords[0] = report[biggestIndex].center_mass_x;
                 coords[1] = report[biggestIndex].center_mass_y;
-                this.println(report[biggestIndex].boundingRectHeight + " size of analysis: " + report.length);
+                this.println("size of analysis: " + report.length + "center of mass x: " + report[0].center_mass_x);
             }
             
             else
@@ -131,41 +127,27 @@ public class ImageProcessing extends Thread
                 coords[0] = -1;
                 coords[1] = -1;
             }
-            
-
-            toReturn = report;
-            
+                        
             img.free();
             binary.free();
-            img = null;
-            binary = null;
-
+            noSmall.free();
+            
+            System.out.println("images have been freed");
         }
-        catch(Exception e){e.printStackTrace();}
-        //return the rectangles that meet the requirements
-        return toReturn;
-    }
-
-    public ParticleAnalysisReport[] getParticleAnalysisReport()
-    {
-        synchronized (toReturn)
+        catch(Exception e)
         {
-            println("getting value");
-            return toReturn;
+            e.printStackTrace();
         }
     }
-    
+
+   
     public int[] getCoords()
     {
-        return coords;
-    }
-
-    public void setParticleAnalysisReport(ParticleAnalysisReport[] particleAnalysisReports)
-    {
-        synchronized (toReturn)
+        synchronized (coords)
         {
-            toReturn = particleAnalysisReports;
+            return coords;
         }
+                
     }
 
     public boolean getRunning()

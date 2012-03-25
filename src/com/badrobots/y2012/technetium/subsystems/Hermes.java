@@ -21,7 +21,6 @@ public class Hermes extends Subsystem
     private static RobotDrive drive;
     public Jaguar lFront, lBack, rFront, rBack;
     private Gyro horizontalGyro;
-    private Accelerometer accel;
     protected static double strafeCorrectionFactor = .165;
     protected static double oneForOneDepth = 5000; // millimeters
     private SoftPID rotationPID;
@@ -332,14 +331,6 @@ public class Hermes extends Subsystem
         rBack.set(right);
     }
 
-    /*
-     * This method may or may not be used depending on whether we use an
-     * accelerometer @return the accelerometer's value
-     */
-    public double getMovement()
-    {
-        return accel.getAcceleration();
-    }
 
     /*
      * Right now, this will not be called because we don't have a gyro hooked

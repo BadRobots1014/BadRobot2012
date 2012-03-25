@@ -17,8 +17,7 @@ import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
 import com.badrobots.y2012.technetium.RobotMap;
 import com.badrobots.y2012.technetium.commands.AutoAim;
 import com.badrobots.y2012.technetium.commands.Monitor;
-import edu.wpi.first.wpilibj.AnalogChannel;
-import edu.wpi.first.wpilibj.Gyro;
+import edu.wpi.first.wpilibj.*;
 
 /*
  * @author 1014 Programming Team
@@ -31,7 +30,7 @@ public class Helios extends Subsystem
     private static Helios sensors;
     private static AxisCamera camera;
     private static Ultrasonic lFront, lBack, back;
-    public static AnalogChannel bottomSensor, topSensor;
+    public static AnalogChannel bottomSensor, topSensor, ultra;
     private static final double threshold = .7;
     private static final double spacing = 25;
     protected static int numBalls;
@@ -64,9 +63,10 @@ public class Helios extends Subsystem
         //gyro = new Gyro(RobotMap.verticalGyro);
         bottomSensor = new AnalogChannel(RobotMap.bottomSensor);
         topSensor = new AnalogChannel(RobotMap.topSensor);
-        back = new Ultrasonic(RobotMap.ultrasonicIn, RobotMap.ultrasonicOut, Ultrasonic.Unit.kMillimeter);
-        back.setEnabled(true);
-        back.setAutomaticMode(true);
+        //back = new Ultrasonic(new DigitalOutput(1,3), new DigitalInput(1,2));
+        ultra = new AnalogChannel(3);
+        //back.setAutomaticMode(true);
+        //back.setEnabled(true);
         lastRange = 0;
 
         //TODO
@@ -81,9 +81,9 @@ public class Helios extends Subsystem
         return (lFront.getRangeMM() - lBack.getRangeMM());
     }
 
-    public double getUtraFrontRange()
+    public double getUltraFrontRange()
     {
-        return back.getRangeMM();
+        return ultra.getVoltage();
     }
 
     /**

@@ -31,7 +31,7 @@ public class AutoAim extends CommandBase
     protected void execute() 
     {
         //TODO: add autoaim code
-        double motion = Hermes.getInstance().getMovement();
+        double motion = 0;//Hermes.getInstance().getMovement();
         
         double work = 400 - ((power * power) + (motion * motion));
         work /= (-2 * power * work);

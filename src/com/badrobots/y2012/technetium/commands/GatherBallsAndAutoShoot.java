@@ -116,10 +116,10 @@ public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
         
         turretTurn/=80;
         System.out.println("TurretTurn: " + turretTurn);
-        if(turretTurn > .3)
-            turretTurn = .3;
-        else if(turretTurn < -.3)
-            turretTurn = -.3;
+        if(turretTurn > .2)
+            turretTurn = .2;
+        else if(turretTurn < -.2)
+            turretTurn = -.2;
         if(turretTurn < .05 && turretTurn > 0 && !aligned)
             turretTurn = .05;
         if(turretTurn > -.05 && turretTurn < 0 && !aligned)
