@@ -37,7 +37,6 @@ public abstract class CommandBase extends Command
         // yet. Thus, their requires() statements may grab null pointers. Bad
         // news. Don't move it.
         OI.init();
-        sensors = Helios.getInstance();
         driveTrain = Hermes.getInstance();
         sensors = Helios.getInstance();
         bridgeTool = Xerxes.getInstance();

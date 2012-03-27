@@ -56,6 +56,7 @@ public class Artemis extends Subsystem
 
         turnTableEncoder = new Encoder(RobotMap.turnTableEncoderAChannel, RobotMap.turnTableEncoderBChannel);
         turnTableEncoder.start();
+        turnTableEncoder.reset();
         //ranger = new Ultrasonic(1, RobotMap.ultrasonicOut, 1, RobotMap.ultrasonicOut);
         //ranger.setEnabled(true);
         //ranger.setAutomaticMode(true);

@@ -63,10 +63,10 @@ public class Helios extends Subsystem
         //gyro = new Gyro(RobotMap.verticalGyro);
         bottomSensor = new AnalogChannel(RobotMap.bottomSensor);
         topSensor = new AnalogChannel(RobotMap.topSensor);
-        //back = new Ultrasonic(new DigitalOutput(1,3), new DigitalInput(1,2));
+        back = new Ultrasonic(2, 3);
         ultra = new AnalogChannel(3);
-        //back.setAutomaticMode(true);
-        //back.setEnabled(true);
+        back.setAutomaticMode(true);
+        back.setEnabled(true);
         lastRange = 0;
 
         //TODO
@@ -81,6 +81,7 @@ public class Helios extends Subsystem
         return (lFront.getRangeMM() - lBack.getRangeMM());
     }
 
+    //what it this?
     public double getUltraFrontRange()
     {
         return ultra.getVoltage();
@@ -186,7 +187,8 @@ public class Helios extends Subsystem
     public boolean closerThan(int millimeters)
     {
         //System.out.println(lastRange + "  " + front.isRangeValid());
-        //System.out.println("Mili" + millimeters);
+        //System.out.println("Mili" + millimeters);\
+        //System.out.println("back " + back.getRangeMM());
         if (back.isRangeValid() && back.getRangeMM() < millimeters)
         {
             if (lastRange > 10) // 10 checks to stop
@@ -217,6 +219,6 @@ public class Helios extends Subsystem
     public void initDefaultCommand()
     {
         System.out.println("DefaultCommandHelios");
-        //setDefaultCommand(new Monitor());
+        setDefaultCommand(new Monitor());
     }
 }

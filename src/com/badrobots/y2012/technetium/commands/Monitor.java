@@ -35,7 +35,7 @@ public class Monitor extends CommandBase {
 
         //System.out.println("Meters: " + sensors.getUtraFrontRange()/1000);
 
-        if(sensors.bottomChannelBlocked())
+        /*if(sensors.bottomChannelBlocked())
         {            
             bottomWasBlocked = true;
         }
@@ -61,7 +61,11 @@ public class Monitor extends CommandBase {
             
         }
 
+
         updateDriverstationBallCount();
+         */
+        System.out.println("HERERERERER  !@ @");
+        sensors.closerThan(1);
     }
     
     public void updateDriverstationBallCount()
