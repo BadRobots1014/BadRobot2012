@@ -69,7 +69,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         //System.out.println("Shooting at: " + shooterSpeed);
         shooter.run(shooterSpeed);
         shooter.turn(-turretTurn);
-        System.out.println("Encoder: " + shooter.encoderValue());
+        //System.out.println("Encoder: " + shooter.encoderValue());
     }
 
     public void runBallGathererOperations()

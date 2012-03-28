@@ -81,10 +81,9 @@ public class Helios extends Subsystem
         return (lFront.getRangeMM() - lBack.getRangeMM());
     }
 
-    //what it this?
-    public double getUltraFrontRange()
+    public double getUltraBackRange()
     {
-        return ultra.getVoltage();
+        return back.getRangeMM();
     }
 
     /**
