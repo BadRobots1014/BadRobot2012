@@ -146,7 +146,7 @@ public class Artemis extends Subsystem
     {
         int currentAngle = turnTableEncoder.get();
 
-        if(Math.abs(currentAngle - value) <= 5 )//TODO: Tune
+        if(Math.abs(currentAngle - value) <= 1 )//TODO: Tune
         {
             turn(0);
             return true;

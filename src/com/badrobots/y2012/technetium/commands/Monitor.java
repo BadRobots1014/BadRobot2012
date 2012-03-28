@@ -64,7 +64,6 @@ public class Monitor extends CommandBase {
 
         updateDriverstationBallCount();
          */
-        System.out.println("HERERERERER  !@ @");
         sensors.closerThan(1);
     }
     

@@ -63,6 +63,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         //turrets
         runTurretingOperations();
 
+
         ballGatherer.runBottomRoller(rollerIn, rollerOut);
         ballGatherer.runConveyor(conveyorUp, conveyorDown);
         //System.out.println("Shooting at: " + shooterSpeed);
@@ -166,7 +167,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         
         if(OI.secondXboxYButton())
         {
-            switchSpeedUp = true;
+            shooter.turnByEncoderTo((int)OI.getAnalogIn(1));
         }
         else if(switchSpeedUp)
         {
