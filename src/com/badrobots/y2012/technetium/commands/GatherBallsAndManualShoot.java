@@ -53,7 +53,8 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
      */
 
     protected void execute() 
-    {   
+    {
+        System.out.println("This should not be running during autonomous");
         //sets booleans for running Gatherer
         runBallGathererOperations();
 

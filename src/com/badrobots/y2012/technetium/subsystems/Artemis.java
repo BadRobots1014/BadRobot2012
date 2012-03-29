@@ -83,24 +83,24 @@ public class Artemis extends Subsystem
     {
         //determine shooter speed through regression equation determined through testing
         int speed = 0;
-        right.set(speed);
-        left.set(-speed);
+        right.set(-speed);
+        left.set(speed);
     }
 
     public void shootHigh() // read distance from kinect/ultrasonic
     {
         //determine shooter speed through regression equation determined through testing
-        int speed = 0;
-        right.set(speed);
-        left.set(-speed);
+        int speed = 1;
+        right.set(-speed);
+        left.set(speed);
     }
 
     public void shootLow() // read distance from kinect/ultrasonic
     {
         //determine shooter speed through regression equation determined through testing
         int speed = 0;
-        right.set(speed);
-        left.set(-speed);
+        right.set(-speed);
+        left.set(speed);
     }
     
     /*
@@ -108,6 +108,7 @@ public class Artemis extends Subsystem
      */
     public void run(double speed)
     {
+        //System.out.println("Running shooter");
         clampMotorValues(speed);
         //System.out.println("Shooting:"  + speed);
         right.set(-speed);

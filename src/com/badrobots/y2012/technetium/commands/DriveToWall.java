@@ -17,6 +17,8 @@ public class DriveToWall extends CommandBase {
     public DriveToWall() {
         requires(driveTrain);
         requires(sensors);
+        requires(shooter);
+        requires(ballGatherer);
 
     }
 
@@ -37,7 +39,11 @@ public class DriveToWall extends CommandBase {
         }
         else
             driveTrain.autoMechanumDrive(0,.16,0);
-
+        if(sensors.getUltraBackRange() < 1015 && sensors.getUltraBackRange() > 735)
+        {
+            driveTrain.autoMechanumDrive(0, 0, 0);
+            shooter.shootHigh();
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
