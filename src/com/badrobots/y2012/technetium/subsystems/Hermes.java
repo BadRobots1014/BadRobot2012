@@ -130,6 +130,7 @@ public class Hermes extends Subsystem
         //apply PID if it should
         scaledTurn = checkAndRunPIDOperations(strafeX, scaledTurn);
 
+        //System.out.println(strafeY * orientation);
         drive.mecanumDrive_Cartesian(-strafeX * orientation, strafeY * orientation, scaledTurn, 0);
     }
 
@@ -283,7 +284,7 @@ public class Hermes extends Subsystem
      */
     public void autoMechanumDrive(double x, double y, double rotation)
     {
-        System.out.println("I'm trying to drive");
+        System.out.println("I'm trying to drive: " + x + " " + y);
         drive.mecanumDrive_Cartesian(x, y, rotation, 0);
         if (rotation > 0)
         {

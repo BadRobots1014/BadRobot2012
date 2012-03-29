@@ -33,10 +33,10 @@ public class DriveToWall extends CommandBase {
         }
         else if(sensors.getUltraBackRange() <= 750)
         {
-            driveTrain.autoMechanumDrive(0,.16,0);
+            driveTrain.autoMechanumDrive(0,-.16,0);
         }
         else
-            driveTrain.autoMechanumDrive(0,-.16,0);
+            driveTrain.autoMechanumDrive(0,.16,0);
 
     }
 

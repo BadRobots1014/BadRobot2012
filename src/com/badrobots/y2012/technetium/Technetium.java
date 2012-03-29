@@ -89,7 +89,7 @@ public class Technetium extends IterativeRobot
      */
     public void autonomousPeriodic()
     {
-        Scheduler.getInstance().add(new DriveToWall());//We need to test to see if this is stopped after autonomous is over
+        //Scheduler.getInstance().add(new DriveToWall());//We need to test to see if this is stopped after autonomous is over
         Scheduler.getInstance().run();
     }
 
@@ -100,6 +100,8 @@ public class Technetium extends IterativeRobot
     {
         new TankDriveTrigger();
         new MechanumDriveTrigger();
+
+        Scheduler.getInstance().add(new MechanumDrive());
         
         
 
