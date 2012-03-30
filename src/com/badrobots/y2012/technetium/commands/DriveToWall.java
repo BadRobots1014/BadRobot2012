@@ -14,11 +14,16 @@ import edu.wpi.first.wpilibj.Timer;
  */
 public class DriveToWall extends CommandBase {
 
+    Timer timer;
+    boolean finished;
+
     public DriveToWall() {
         requires(driveTrain);
         requires(sensors);
         requires(shooter);
         requires(ballGatherer);
+        Timer timer = new Timer();
+        finished = false;
 
     }
 
@@ -39,16 +44,22 @@ public class DriveToWall extends CommandBase {
         }
         else
             driveTrain.autoMechanumDrive(0,.16,0);
-        if(sensors.getUltraBackRange() < 1015 && sensors.getUltraBackRange() > 735)
+        if(sensors.getUltraBackRange() < 1020 && sensors.getUltraBackRange() > 730)
         {
             driveTrain.autoMechanumDrive(0, 0, 0);
+            shooter.turn(1);
+            timer.delay(.75);
+            shooter.turn(0);
             shooter.shootHigh();
+            timer.delay(2);
+            shooter.run(0);
+            finished = true;
         }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false; //sensors.closerThan(900);
+        return finished; //sensors.closerThan(900);
     }
 
     // Called once after isFinished returns true
