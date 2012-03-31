@@ -75,7 +75,7 @@ public class Artemis extends Subsystem
     public void turn(double speed)
     {
         clampMotorValues(speed);
-        //System.out.println(speed + ". WHEAT");
+        System.out.println(speed + ". WHEAT");
         turnTable.set(-speed);
     }
 
@@ -147,15 +147,15 @@ public class Artemis extends Subsystem
     {
         int currentAngle = turnTableEncoder.get();
 
-        if(Math.abs(currentAngle - value) <= 1 )//TODO: Tune
+        if(Math.abs(currentAngle - value) <= 8 )//TODO: Tune
         {
             turn(0);
             return true;
         }
-        else if(currentAngle - value < 0)
-            turn(1);
+        else if(currentAngle - value > 0)
+            turn(.20);
         else
-            turn(-1);
+            turn(-.20);
         return false;
     }
     

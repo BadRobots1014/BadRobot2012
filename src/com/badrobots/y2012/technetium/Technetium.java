@@ -119,9 +119,8 @@ public class Technetium extends IterativeRobot
         if(OI.cameraOn)
         {
             System.out.println("ThreadStarted");
-            new TrackingButton();
-
-            thread.setRunning(true);
+            new TrackingButton(thread);
+            thread.setRunning(false);
         }
 
     }
@@ -141,7 +140,7 @@ public class Technetium extends IterativeRobot
         //System.out.println("Range: " + Helios.getInstance().getUltraFrontRange());//  + " ranger: " + Artemis.getInstance().distanceToWall());
         
         if (trackingButton == null)
-            trackingButton = new TrackingButton();
+            trackingButton = new TrackingButton(thread);
     }
 
     public void disabledInit()

@@ -43,28 +43,22 @@ public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
         //if lined up 
         if (aligned)
         {
-            // if aligned and there is more than zero balls available
-            if (Helios.getInstance().getNumBalls() > 0)
-            {
-                shooterSpeed = 1;//TODO change speed to scale with depth
-                conveyorUp = true;
-                
-                //if a ball is ready to be shot
-                if (Helios.getInstance().topChannelBlocked())
-                    shooting = true;
-                
-                //ball is no longer blocking the topSensor, decrease ball count and sets shooting to false
-                else if (shooting)
-                {
-                    conveyorUp = false;
-                    shooting = false;
-                }
-            }        
+            System.out.println("Shooting");
+            shooterSpeed = OI.getAnalogIn(4);//TODO change speed to scale with depth
+            //conveyorUp = true;
         }
         else
         {
             shooterSpeed = 0;
         }
+        if (OI.getPrimaryTrigger()) // push balls into shooter
+        {
+            conveyorUp = true;
+            shooterSpeed = OI.getAnalogIn(4);
+        }
+        else
+            conveyorUp = false;
+
     }
     
     public void runTurretingOperations()
@@ -81,6 +75,8 @@ public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
         runShootingOperations();
     }*/
     int count = 0;
+    boolean turning = false;
+    int destination = 0;
     public void autoAlign()
     {
         if (!OI.cameraOn)
@@ -98,7 +94,7 @@ public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
         double offAxis = 80 - imageProcessor.getCoords()[0];
         turretTurn = -offAxis; //TODO - callibrate
         
-        if (Math.abs(turretTurn) < 5)
+        if (Math.abs(turretTurn) < 8)
         {            
             count++;
             System.out.println("lined up! -- Artemis execute()");
@@ -112,10 +108,31 @@ public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
             count = 0;
             aligned = false;
         }
+
+        if(aligned)
+            return;
         
-        
-        turretTurn/=80;
-        System.out.println("TurretTurn: " + turretTurn);
+        if(turretTurn < 0)
+            turretTurn = -1;
+        else if(turretTurn > 0)
+            turretTurn = 1;
+
+        if(!turning)
+        {
+            destination = shooter.encoderValue() + (int)turretTurn * 15 ;
+            shooter.turnByEncoderTo(destination);
+            turning = true;
+        }
+        else
+        {
+            if(shooter.turnByEncoderTo(destination))
+            {
+                System.out.println("Arrived");
+                turning = false;
+            }
+        }
+
+        /*System.out.println("TurretTurn: " + turretTurn);
         if(turretTurn > .2)
             turretTurn = .2;
         else if(turretTurn < -.2)
@@ -124,6 +141,8 @@ public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
             turretTurn = .05;
         if(turretTurn > -.05 && turretTurn < 0 && !aligned)
             turretTurn = -.05;
+         * */
+
     }
     
     public void runBallGathererOperations()
@@ -133,13 +152,13 @@ public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
     
     public void autoControl()
     {
-        conveyorUp = false;
-        conveyorDown = false;
-        rollerIn = false;
+        //conveyorUp = false;
+        //conveyorDown = false;
+        rollerIn = true;
         rollerOut = false;
 
          //Ball Spacing
-        if(Helios.getInstance().getNumBalls() < 3)
+        /*if(Helios.getInstance().getNumBalls() < 3)
         {
             //System.out.println("Spacing");
             conveyorUp = false;
@@ -149,13 +168,13 @@ public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
 
             rollerIn = true;
             conveyorUp = false;
-
+            */
             if(sensors.bottomChannelBlocked())
             {
                 spaceUp = 35;//was 20
                 conveyorUp = true;
             }
-        }
+        //}
 
         if(spaceUp > 0)//space the ball
         {
@@ -165,10 +184,6 @@ public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
 
         //change speed
 
-        if(aligned)//run with the manual control
-        {
-            shooterSpeed = 1;
-        }
     }
 
     // Make this return true when this Command no longer needs to run execute()

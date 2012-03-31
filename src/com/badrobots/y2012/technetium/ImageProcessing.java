@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class ImageProcessing extends Thread
 {
-    protected static final boolean LOGGING = true;
+    protected static final boolean LOGGING = false;
     protected AxisCamera camera;
     protected ParticleAnalysisReport[] toReturn;
     protected int sleepTimer = 100;
@@ -30,7 +30,7 @@ public class ImageProcessing extends Thread
     {
         camera = c;
         this.setPriority(MIN_PRIORITY);
-        running = true;
+        running = false;
         criteria = new CriteriaCollection();
         criteria.addCriteria(NIVision.MeasurementType.IMAQ_MT_CENTER_OF_MASS_Y, 0, 50, true);//wrong
 
@@ -52,17 +52,26 @@ public class ImageProcessing extends Thread
 
     public void run()
     {
+        ColorImage img = null;
+        BinaryImage binary = null;
+        BinaryImage noSmall = null;
         while (true)
         {
             if (running)
             {
                 //println("running");
-                setHoopCoords();
+                setHoopCoords(img, binary, noSmall);
                 
                 try
                 {
+                    if(img != null)
+                        img.free();
+                    if(binary != null)
+                        binary.free();
+                    if(noSmall != null)
+                        noSmall.free();
                     Thread.sleep(sleepTimer);
-                } catch (InterruptedException ex)
+                } catch (Exception ex)
                 {
                     ex.printStackTrace();
                 }
@@ -76,30 +85,29 @@ public class ImageProcessing extends Thread
     {
         if (LOGGING)
         {
-            System.out.println("ImageProcessing - " + string);
+            System.out.println("ImageProcessing - ".concat(string));
         }
     }
     int i = 0;
 
-    public void setHoopCoords()
+    public void setHoopCoords(ColorImage img, BinaryImage binary, BinaryImage noSmall)
     {
         int current = 0;
         try
         {
             //gets and stores the current camera image
-            ColorImage img = camera.getImage();
+            img = camera.getImage();
             
-            BinaryImage binary = img.thresholdHSL(130, 200, 60, 253, 40, 255);//141, 208, 50, 255, 0, 255);
+            binary = img.thresholdHSL(110, 170, 90, 250, 100, 255);//141, 208, 50, 255, 0, 255);
             
             //Convex Hull
             binary.convexHull(true);
             
             //Remove small objects (parameters are connectivity and number of erosions)
-            BinaryImage noSmall = binary.removeSmallObjects(true, 1);
-            noSmall.particleFilter(criteria);
+            noSmall = binary.removeSmallObjects(true, 1);
+            //noSmall.particleFilter(criteria);
             ParticleAnalysisReport[] report = noSmall.getOrderedParticleAnalysisReports();
-            
-            // binary.free();
+
 
             int size = report.length;
             if (size > 0)
@@ -127,7 +135,8 @@ public class ImageProcessing extends Thread
                 coords[0] = -1;
                 coords[1] = -1;
             }
-                        
+
+            
             img.free();
             binary.free();
             noSmall.free();
@@ -138,6 +147,7 @@ public class ImageProcessing extends Thread
         {
             e.printStackTrace();
         }
+
     }
 
    

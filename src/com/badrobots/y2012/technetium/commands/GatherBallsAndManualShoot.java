@@ -54,7 +54,6 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
 
     protected void execute() 
     {
-        System.out.println("This should not be running during autonomous");
         //sets booleans for running Gatherer
         runBallGathererOperations();
 
@@ -69,8 +68,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         ballGatherer.runConveyor(conveyorUp, conveyorDown);
         //System.out.println("Shooting at: " + shooterSpeed);
         shooter.run(shooterSpeed);
-        shooter.turn(-turretTurn);
-        //System.out.println("Encoder: " + shooter.encoderValue());
+        System.out.println("Encoder: " + shooter.encoderValue());
     }
 
     public void runBallGathererOperations()
@@ -149,7 +147,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
 
             if(sensors.bottomChannelBlocked())
             {
-                spaceUp = 35;//was 20
+                spaceUp = 42;//was 20
                 conveyorUp = true;
             }
         }
@@ -221,7 +219,8 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
     
     public void runTurretingOperations()
     {
-        turretTurn = OI.secondXboxLeftX();
+        turretTurn = .6 * OI.secondXboxLeftX();
+        shooter.turn(-turretTurn);
     }
 
     

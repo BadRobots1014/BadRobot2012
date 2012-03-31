@@ -4,6 +4,7 @@
  */
 package com.badrobots.y2012.technetium.buttons;
 
+import com.badrobots.y2012.technetium.ImageProcessing;
 import com.badrobots.y2012.technetium.OI;
 import com.badrobots.y2012.technetium.commands.Balance;
 import com.badrobots.y2012.technetium.commands.GatherBallsAndAutoShoot;
@@ -19,10 +20,12 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 public class TrackingButton extends Button
 {
     boolean once = false;
+    ImageProcessing imageProcessor;
 //NEEDS TESTING
-    public TrackingButton()
+    public TrackingButton(ImageProcessing image)
     {
-        super.whenPressed(new GatherBallsAndAutoShoot());
+        imageProcessor = image;
+        super.whenPressed(new GatherBallsAndAutoShoot());   
     }
 
     public boolean get()
@@ -30,19 +33,21 @@ public class TrackingButton extends Button
         if (Demeter.getInstance().manualOverride())
         {
             System.out.println("manual mode, no button");
+            imageProcessor.setRunning(false);
             return false;
         }
         
         if (OI.secondXboxBButton())
         {
-            System.out.println("button pressed - trackingbutton.java");
+            imageProcessor.setRunning(true);
+            //System.out.println("button pressed - trackingbutton.java");
             once = true;
             return true;
         }
         else if(once)
         {
             System.out.println("B button released-----");
-
+            imageProcessor.setRunning(false);
             Scheduler.getInstance().add(new GatherBallsAndManualShoot());
             once = false;
         }
