@@ -14,7 +14,7 @@ public class AutoShootHighKey extends CommandGroup {
 
     public AutoShootHighKey()//NEEDS TESTING
     {
-        addSequential(new AutoAim());
+        addSequential(new AutoTarget());
         addSequential(new AutoShootAndGather(.45, true));
     }
 }

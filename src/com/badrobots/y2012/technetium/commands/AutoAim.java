@@ -14,8 +14,22 @@ import com.sun.squawk.util.MathUtils;
 public class AutoAim extends CommandBase 
 {
     static double power = 23; //(mph)
-    
-    public AutoAim()
+
+    /*
+     *
+     *
+     *
+     *
+     *
+     * THIS SHOULD BE DELETED
+     *
+     *
+     *
+     *DO NOT USE
+     */
+
+
+    public AutoAim(double DONTUSEME)
     {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -30,7 +44,7 @@ public class AutoAim extends CommandBase
     // Called repeatedly when this Command is scheduled to run
     protected void execute() 
     {
-        //TODO: add autoaim code
+        /*//TODO: add autoaim code
         double motion = 0;//Hermes.getInstance().getMovement();
         
         double work = 400 - ((power * power) + (motion * motion));
@@ -40,7 +54,7 @@ public class AutoAim extends CommandBase
         theta *= (180/Math.PI); // convert to degreees!
         theta = 180 - theta;    // useful angle
         
-        System.out.println("This should not run");
+        System.out.println("This should not run");*/
     }
 
     // Make this return true when this Command no longer needs to run execute()
