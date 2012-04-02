@@ -34,7 +34,7 @@ public class Helios extends Subsystem
     private static final double threshold = .7;
     private static final double spacing = 25;
     protected static int numBalls;
-    protected static Gyro gyro;
+    protected static Gyro gyro, verticalGyro;
     protected static int topCount, bottomCount;
     protected double lastRange;
 
@@ -168,9 +168,14 @@ public class Helios extends Subsystem
     /*
      * @return the angle of the incline/decline the robot is at
      */
-    public double getVerticalGyro()
+    public double getGyro()
     {
         return gyro.getAngle();
+    }
+
+    public double getVerticalGyro()
+    {
+        return verticalGyro.getAngle();
     }
 
     public int getNumBalls()
@@ -210,9 +215,14 @@ public class Helios extends Subsystem
     /*
      * Resets the vertical gyro so that its current heading is 0
      */
-    public void resetVerticalGyro()
+    public void resetGyro()
     {
         gyro.reset();
+    }
+
+    public void resetVerticalGyro()
+    {
+        verticalGyro.reset();
     }
 
     public void initDefaultCommand()

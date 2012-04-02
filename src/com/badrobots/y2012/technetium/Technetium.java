@@ -81,7 +81,7 @@ public class Technetium extends IterativeRobot
     public void autonomousInit()
     {
         //System.out.println("Init");
-        Scheduler.getInstance().add(new DriveToWall());
+        Scheduler.getInstance().add(new DriveToWall(1000));
     }
 
     /**
