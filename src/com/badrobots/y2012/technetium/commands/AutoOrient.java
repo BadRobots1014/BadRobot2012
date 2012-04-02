@@ -23,14 +23,14 @@ public class AutoOrient extends CommandBase
     // Called just before this Command runs the first time
     protected void initialize() 
     {
-        currentAngle = sensors.getGyro();
+        currentAngle = sensors.getGyroAngle();
         wantedAngle += currentAngle;
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute()
     {
-        currentAngle = sensors.getGyro();
+        currentAngle = sensors.getGyroAngle();
         if (currentAngle > wantedAngle)
             driveTrain.autoMechanumDrive(0, 0, -.3);
         else if (currentAngle < wantedAngle)

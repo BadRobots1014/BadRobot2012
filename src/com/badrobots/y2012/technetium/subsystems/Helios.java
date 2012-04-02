@@ -29,7 +29,7 @@ public class Helios extends Subsystem
 
     private static Helios sensors;
     private static AxisCamera camera;
-    private static Ultrasonic lFront, lBack, back;
+    private static Ultrasonic back;
     public static AnalogChannel bottomSensor, topSensor, ultra;
     private static final double threshold = .7;
     private static final double spacing = 25;
@@ -72,49 +72,12 @@ public class Helios extends Subsystem
         //TODO
     }
 
-    /**
-     * @return the difference in distances (inches) that the two side sensors
-     * are reading, front minus left
-     */
-    public double getDifferenceInSensors()
-    {
-        return (lFront.getRangeMM() - lBack.getRangeMM());
-    }
-
     public double getUltraBackRange()
     {
         return back.getRangeMM();
     }
 
-    /**
-     * @return the average distanced sensed from the left side of the robot
-     */
-    public double getDistanceFromWall()
-    {
-        double front = lFront.getRangeMM();
-        double back = lBack.getRangeMM();
-
-        if (Math.abs(back - front) > 15)//needs to be calibrated
-        {
-            return -1; // not accurate enough to use, return a nonpossible value
-        }
-        return (front + back) / 2;
-    }
-
-    /*
-     * @return the angle at which the robot is oriented. 0 degrees is when the
-     * robot is parallel with the arena walls.
-     */
-    public double getAngleOfOrientation()
-    {
-        double difference = getDifferenceInSensors();
-
-        double theta = MathUtils.atan(difference / spacing);
-        theta *= (180 / Math.PI);
-
-        return theta;
-    }
-
+    
     public double getAngleToTarget()
     {
         return 3.14;//XXX:Really? Remeber to fix this
@@ -168,7 +131,7 @@ public class Helios extends Subsystem
     /*
      * @return the angle of the incline/decline the robot is at
      */
-    public double getGyro()
+    public double getGyroAngle()
     {
         return gyro.getAngle();
     }
