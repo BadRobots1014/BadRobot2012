@@ -60,7 +60,7 @@ public class Helios extends Subsystem
         topCount = 0;
         bottomCount = 0;
 
-        //gyro = new Gyro(RobotMap.verticalGyro);
+        gyro = new Gyro(RobotMap.horizontalGyro);
         bottomSensor = new AnalogChannel(RobotMap.bottomSensor);
         topSensor = new AnalogChannel(RobotMap.topSensor);
         back = new Ultrasonic(2, 3);

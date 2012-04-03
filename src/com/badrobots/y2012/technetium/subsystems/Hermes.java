@@ -286,10 +286,10 @@ public class Hermes extends Subsystem
     {
         System.out.println("I'm trying to drive: " + x + " " + y);
         drive.mecanumDrive_Cartesian(x, y, rotation, 0);
-        if (rotation > 0)
+        /*if (rotation > 0)
         {
             horizontalGyro.reset();
-        }
+        }*/
     }
 
     /*

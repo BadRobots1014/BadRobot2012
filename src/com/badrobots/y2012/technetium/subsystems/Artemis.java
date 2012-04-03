@@ -75,7 +75,7 @@ public class Artemis extends Subsystem
     public void turn(double speed)
     {
         clampMotorValues(speed);
-        System.out.println(speed + ". WHEAT");
+        //System.out.println(speed + ". WHEAT");
         turnTable.set(-speed);
     }
 

@@ -31,6 +31,7 @@ public class AutoOrient extends CommandBase
     protected void execute()
     {
         currentAngle = sensors.getGyroAngle();
+        System.out.println("Angle " + currentAngle);
         if (currentAngle > wantedAngle)
             driveTrain.autoMechanumDrive(0, 0, -.3);
         else if (currentAngle < wantedAngle)
