@@ -7,6 +7,7 @@
 package com.badrobots.y2012.technetium;
 
 import com.badrobots.y2012.technetium.buttons.*;
+import com.badrobots.y2012.technetium.commands.AutoDriveToWallGyroCorrection;
 import com.badrobots.y2012.technetium.commands.AutoOrient;
 import com.badrobots.y2012.technetium.commands.PolarMechanumDrive;
 import com.badrobots.y2012.technetium.commands.TankDrive;
@@ -82,7 +83,7 @@ public class Technetium extends IterativeRobot
     public void autonomousInit()
     {
         //System.out.println("Init");
-        Scheduler.getInstance().add(new AutoOrient(90));
+        Scheduler.getInstance().add(new AutoOrient(360));
     }
 
     /**

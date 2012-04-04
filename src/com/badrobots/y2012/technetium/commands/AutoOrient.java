@@ -10,7 +10,7 @@ package com.badrobots.y2012.technetium.commands;
  */
 public class AutoOrient extends CommandBase
 {
-    double distance = 0;
+    double count = 0;
     double wantedAngle, currentAngle;
 
     public AutoOrient(double a)
@@ -32,16 +32,27 @@ public class AutoOrient extends CommandBase
     {
         currentAngle = sensors.getGyroAngle();
         System.out.println("Angle " + currentAngle);
-        if (currentAngle > wantedAngle)
+        if(Math.abs(currentAngle - wantedAngle) < 3)
+        {
+            count++;
+            driveTrain.autoMechanumDrive(0, 0, 0);
+        }
+        else if(currentAngle > wantedAngle)
+        {
             driveTrain.autoMechanumDrive(0, 0, -.3);
+            count = 0;
+        }
         else if (currentAngle < wantedAngle)
+        {
             driveTrain.autoMechanumDrive(0, 0, .3);
+            count = 0;
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished()
     {
-       return Math.abs(currentAngle - wantedAngle) < 5;//TODO: THIS REALLY NEEDS TO BE CALIBRATED
+       return count > 50;//TODO: THIS REALLY NEEDS TO BE CALIBRATED
     }
 
     // Called once after isFinished returns true
