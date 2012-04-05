@@ -13,9 +13,9 @@ import com.badrobots.y2012.technetium.subsystems.Helios;
  */
 public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
 {
-    private boolean topBlocked = false;
     private boolean aligned = false;
     protected boolean shooting = false;
+    private double previousSpeed = .45;
     
     public GatherBallsAndAutoShoot() 
     {
@@ -29,13 +29,6 @@ public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
      */
     protected void initialize() 
     {
-        if (Helios.topSensor != null)
-        {
-            if (Helios.getInstance().topChannelBlocked())
-                topBlocked = true;
-        }   
-        
-        autoSpeed = true;
     }
     
     public void runShootingOperations()
@@ -43,8 +36,7 @@ public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
         //if lined up 
         if (aligned)
         {
-            System.out.println("Shooting");
-            shooterSpeed = OI.getAnalogIn(4);//TODO change speed to scale with depth
+            System.out.println("Shooting");//TODO change speed to scale with depth
             //conveyorUp = true;
         }
         else
@@ -54,7 +46,7 @@ public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
         if (OI.getPrimaryTrigger()) // push balls into shooter
         {
             conveyorUp = true;
-            shooterSpeed = OI.getAnalogIn(4);
+            shooterSpeed = previousSpeed;
         }
         else
             conveyorUp = false;

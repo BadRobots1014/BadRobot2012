@@ -31,7 +31,7 @@ public class AutoShootAndGather extends CommandBase {
     protected void initialize() 
     {
         shooter.run(speed);
-        timer.delay(3);
+        timer.delay(4);
 
         ballGatherer.runConveyor(true, false);//run conveyor up
         if(gather)

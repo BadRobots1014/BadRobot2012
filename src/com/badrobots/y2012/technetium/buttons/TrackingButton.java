@@ -30,6 +30,9 @@ public class TrackingButton extends Button
 
     public boolean get()
     {
+        if (!OI.cameraOn)
+            return false;
+        
         if (Demeter.getInstance().manualOverride())
         {
             System.out.println("manual mode, no button");
@@ -40,7 +43,7 @@ public class TrackingButton extends Button
         if (OI.secondXboxBButton())
         {
             imageProcessor.setRunning(true);
-            //System.out.println("button pressed - trackingbutton.java");
+            System.out.println("button pressed - trackingbutton.java");
             once = true;
             return true;
         }

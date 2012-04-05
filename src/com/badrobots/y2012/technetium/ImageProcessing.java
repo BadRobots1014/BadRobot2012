@@ -98,7 +98,7 @@ public class ImageProcessing extends Thread
             //gets and stores the current camera image
             img = camera.getImage();
             
-            binary = img.thresholdHSL(110, 170, 90, 250, 100, 255);//141, 208, 50, 255, 0, 255);
+            binary = img.thresholdHSL(98, 155, 45, 255, 137, 255);//141, 208, 50, 255, 0, 255);
             
             //Convex Hull
             binary.convexHull(true);

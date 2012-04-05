@@ -12,19 +12,20 @@ import edu.wpi.first.wpilibj.Relay;
 public class GatherBallsAndManualShoot extends CommandBase //We need to rename this. Just maybe
 {    
     protected static boolean done = true;
-    protected static int spaceUp = 0;//If delay is needed, make this >1
+    protected int spaceUp = 0;//If delay is needed, make this >1
+    protected int startingSpaceUp = 50;
     protected boolean conveyorUp = false;
     protected boolean conveyorDown = false;
     protected boolean rollerIn = false;
     protected boolean rollerOut = false;
     protected boolean manualOveride = false;
-    protected boolean autoSpeed = true;
-    protected double manualShooterSpeed = 0;
-    protected double autoShooterSpeed = 0;
+    protected double manualShooterSpeed = .45 ;
     protected double shooterSpeed = 0;
     protected boolean switchSpeedUp;
     protected boolean switchSpeedDown;
     protected double turretTurn = 0;
+    protected boolean shooterTriggerDown = false;
+    protected boolean shootingNow = false;
     
 
     
@@ -38,6 +39,8 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
     {
         //if (Helios.getInstance().topChannelBlocked())
             //topBlocked = true;
+
+        shooterSpeed = .45;
     }
 
     /*
@@ -67,7 +70,11 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         ballGatherer.runBottomRoller(rollerIn, rollerOut);
         ballGatherer.runConveyor(conveyorUp, conveyorDown);
         //System.out.println("Shooting at: " + shooterSpeed);
+
         shooter.run(shooterSpeed);
+
+        System.out.println("HEREAAAAA: s" + sensors.getGyroAngle());
+        
         System.out.println("Encoder: " + shooter.encoderValue());
     }
 
@@ -97,7 +104,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         rollerOut = false;
         spaceUp = 0;
 
-        if(OI.secondXboxXButton())//conveyor up
+        if(OI.secondXboxRBButton())//conveyor up
         {
             conveyorUp = true;
             conveyorDown = false;
@@ -121,8 +128,6 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             rollerIn = true;
             rollerOut = false;
         }
-
-        autoSpeed = true;//for testing
         
     }
     
@@ -147,7 +152,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
 
             if(sensors.bottomChannelBlocked())
             {
-                spaceUp = 42;//was 20
+                spaceUp = startingSpaceUp;//was 20
                 conveyorUp = true;
             }
         }
@@ -158,37 +163,35 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             conveyorUp = true;
         }
 
-        if(OI.secondXboxXButton())
-        {
-            autoShooterSpeed = 1;
-            autoSpeed = true;
-        }
+       
         
-        if(OI.secondXboxYButton())
+        if(OI.secondXboxYButton())//Run conveyor down
         {
-            shooter.turnByEncoderTo((int)OI.getAnalogIn(1));
-        }
-        else if(switchSpeedUp)
-        {
-            switchSpeedUp = false;
-            autoSpeed = false;
-            if(manualShooterSpeed == 1)
-                manualShooterSpeed += .1;
-            else 
-                manualShooterSpeed = 0;
+           conveyorUp = false;
+           conveyorDown = true;
         }
 
-        if(OI.secondXboxLeftTrigger())//run with the manual control
+        
+
+        if (OI.getPrimaryTrigger()) // push balls into shooter
         {
-            autoSpeed = false;
+            conveyorDown = false;
+            conveyorUp = true;
         }
+
+      
+    }
+
+    public double getShooterSpeed()
+    {
+        return shooterSpeed;
     }
     
     public void checkControlSetup()
     {
-        if(OI.secondXboxSelectButton())
+        if(OI.secondXboxLeftJoyClick())
             manualOveride = true;
-        else if(OI.secondXboxStartButton())
+        else if(OI.secondXboxRightJoyClick())
             manualOveride = false;
         
         ballGatherer.setManualOverride(manualOveride);
@@ -196,30 +199,73 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
 
     public void runShootingOperations()
     {
-        if (OI.getSecondaryTrigger())   //warm up the shooter -- think gatling gun
+
+        if(OI.secondXboxStartButton())
         {
-            if(autoSpeed)
+            switchSpeedUp = true;
+        }
+        else if(switchSpeedUp)
+        {
+            System.out.println("speed up");
+
+            switchSpeedUp = false;
+            if(manualShooterSpeed < 1)
+                manualShooterSpeed += .1;
+            else
+                manualShooterSpeed = 1;
+        }
+
+        if(OI.secondXboxSelectButton())
+        {
+            switchSpeedDown = true;
+        }
+        else if(switchSpeedDown)
+        {
+            System.out.println("speed down");
+            switchSpeedDown = false;
+            if(manualShooterSpeed > 0)
+                shooterSpeed -= .1;
+            else
+                shooterSpeed = .3;
+        }
+
+        if(OI.secondXboxXButton())//Reset to key speed
+        {
+            manualShooterSpeed = .45;
+        }
+
+       if (OI.getSecondaryTrigger())   //Toggle Shooter
+       {
+            shooterTriggerDown = true;
+       }
+       else if(shooterTriggerDown)
+       {
+           shootingNow = !shootingNow;
+           shooterTriggerDown = false;
+       }
+       if (shootingNow)
+       {
+           if(OI.secondXboxLeftTrigger())//run with the manual control
             {
-                if(OI.getAnalogIn(4) > 1) // Lucas, is this old code? Are we still using an analog input
-                    shooterSpeed = 1;     //Jon, yeah, it's older, but we still will need it for testing soon
-                else
-                    shooterSpeed = OI.getAnalogIn(4);
+                shooterSpeed = OI.getAnalogIn(4);
+                System.out.println("##########AnologIN##########");
             }
             else
             {
                 shooterSpeed = manualShooterSpeed;
             }
-
-            if (OI.getPrimaryTrigger()) // push balls into shooter
-                conveyorUp = true;
-        }
+       }
         else
-            shooterSpeed = 0;
+             shooterSpeed = 0;
+
+        OI.printToDS("Shooter " + shooterSpeed);
+        System.out.println("Manual COntrl: " + manualOveride);
     }
     
     public void runTurretingOperations()
     {
-        turretTurn = .6 * OI.secondXboxLeftX();
+        turretTurn = .7 * OI.secondXboxLeftX();
+        System.out.println("Turret Turn: " + turretTurn);
         shooter.turn(-turretTurn);
     }
 

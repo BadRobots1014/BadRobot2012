@@ -4,6 +4,7 @@
  */
 package com.badrobots.y2012.technetium.subsystems;
 
+import com.badrobots.y2012.technetium.OI;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import com.badrobots.y2012.technetium.RobotMap;
@@ -83,24 +84,21 @@ public class Artemis extends Subsystem
     {
         //determine shooter speed through regression equation determined through testing
         int speed = 0;
-        right.set(-speed);
-        left.set(speed);
+        run(speed);
     }
 
     public void shootHigh() // read distance from kinect/ultrasonic
     {
         //determine shooter speed through regression equation determined through testing
-        int speed = 1;
-        right.set(-speed);
-        left.set(speed);
+        double speed = .45;
+        run(speed);
     }
 
     public void shootLow() // read distance from kinect/ultrasonic
     {
         //determine shooter speed through regression equation determined through testing
         int speed = 0;
-        right.set(-speed);
-        left.set(speed);
+        run(speed);
     }
     
     /*

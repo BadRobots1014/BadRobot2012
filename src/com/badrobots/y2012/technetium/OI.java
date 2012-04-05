@@ -20,7 +20,6 @@ public class OI
     public static final boolean kinnectOn = false;
     public static final boolean PIDOn = false;
     public static final boolean cameraOn = true;
-
     /*
      * initializes all input methods (eg. joysticks)
      */
@@ -48,8 +47,10 @@ public class OI
      */
     public static void printToDS(String out)
     {
-        DriverStationLCD.getInstance().println(DriverStationLCD.Line.kMain6, 1, out);
-        DriverStationLCD.getInstance().updateLCD();
+        System.out.println("ShouldBeOnScreen: " + out);
+        screen.free();
+        screen.println(DriverStationLCD.Line.kMain6, 1, out);
+        screen.updateLCD();
     }
 
     /**

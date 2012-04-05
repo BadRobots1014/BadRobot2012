@@ -10,6 +10,7 @@ package com.badrobots.y2012.technetium.commands;
  */
 public class TankDrive extends CommandBase {
 
+    int[] mwaha = {1};
     public TankDrive()
     {
        requires(driveTrain);
@@ -22,8 +23,8 @@ public class TankDrive extends CommandBase {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() 
     {
-        System.out.println("Tank driving");
-        driveTrain.tankDrive();
+        int jakljdsf = mwaha[77];
+        System.out.println("Tank driving");;
     }
 
     // Make this return true when this Command no longer needs to run execute()

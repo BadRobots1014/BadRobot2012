@@ -8,7 +8,9 @@ package com.badrobots.y2012.technetium;
 
 import com.badrobots.y2012.technetium.buttons.*;
 import com.badrobots.y2012.technetium.commands.AutoDriveToWallGyroCorrection;
+import com.badrobots.y2012.technetium.commands.AutoGoToTeamBridge;
 import com.badrobots.y2012.technetium.commands.AutoOrient;
+import com.badrobots.y2012.technetium.commands.AutoShootHighKey;
 import com.badrobots.y2012.technetium.commands.PolarMechanumDrive;
 import com.badrobots.y2012.technetium.commands.TankDrive;
 import com.badrobots.y2012.technetium.commands.MechanumDrive;
@@ -45,7 +47,6 @@ public class Technetium extends IterativeRobot
     Command firstCommand;
     Button mecanumDriveTrigger, tankDriveTrigger, switchScaling, trackingButton;
     protected ImageProcessing thread;
-    protected PacketListener kinecter;
     protected AxisCamera camera;
 
     /**
@@ -57,33 +58,24 @@ public class Technetium extends IterativeRobot
         // Initialize all subsystems
         
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
-        
-        if(OI.kinnectOn)
-        {
-            try
-            {
-                kinecter = new PacketListener();
-            } catch (IOException ex)
-            {
-                ex.printStackTrace();
-            }
-        }
+
         if(OI.cameraOn)
         {
             camera = AxisCamera.getInstance();
+
             thread = new ImageProcessing(camera);
             thread.start();
         }
 
         //This is where all subsystems are actually initialized
-        CommandBase.init(kinecter, thread);
+        CommandBase.init(thread);
 
     }
 
     public void autonomousInit()
     {
         //System.out.println("Init");
-        Scheduler.getInstance().add(new AutoOrient(360));
+        Scheduler.getInstance().add(new AutoShootHighKey());
     }
 
     /**

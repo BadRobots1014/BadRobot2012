@@ -17,7 +17,7 @@ public class AutoGoToTeamBridge extends CommandGroup {
     public AutoGoToTeamBridge() {
         addSequential(new AutoOrient(90));
         addSequential(new AutoDriveToWallGyroCorrection(1000));
-        addSequential(new AutoOrient(-90));
+        addSequential(new AutoOrient(90));
         
     }
 }

@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.Victor;
 import com.badrobots.y2012.technetium.commands.MechanumDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import com.badrobots.y2012.technetium.OI;
-import com.badrobots.y2012.technetium.PacketListener;
 import com.badrobots.y2012.technetium.RobotMap;
 import com.badrobots.y2012.technetium.commands.TankDrive;
 import edu.wpi.first.wpilibj.*;
@@ -227,6 +226,7 @@ public class Hermes extends Subsystem
         return finalRotation;
     }
 
+    /*
     public void autoAimMechanum(PacketListener kinecter)
     {
         double scaledRightStrafe = OI.getUsedRightX() * 1.25 * OI.getSensitivity();
@@ -278,6 +278,7 @@ public class Hermes extends Subsystem
             drive.mecanumDrive_Cartesian(-scaledLeftStrafe, (OI.getUsedLeftY() * OI.getSensitivity()), scaledRightTurn, 0);
         }
     }
+    */
 
     /*
      * Used for cartesian control of a mechanum drive Status: Untested
