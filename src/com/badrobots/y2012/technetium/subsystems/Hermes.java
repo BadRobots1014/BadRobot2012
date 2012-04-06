@@ -285,7 +285,7 @@ public class Hermes extends Subsystem
      */
     public void autoMechanumDrive(double x, double y, double rotation)
     {
-        System.out.println("I'm trying to drive: " + x + " " + y);
+        //System.out.println("I'm trying to drive: " + x + " " + y);
         drive.mecanumDrive_Cartesian(x, y, rotation, 0);
         /*if (rotation > 0)
         {

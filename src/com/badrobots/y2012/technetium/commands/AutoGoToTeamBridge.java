@@ -15,9 +15,13 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class AutoGoToTeamBridge extends CommandGroup {
 
     public AutoGoToTeamBridge() {
+        System.out.println("Step 1");
         addSequential(new AutoOrient(90));
+        System.out.println("Step 2");
         addSequential(new AutoDriveToWallGyroCorrection(1000));
+        System.out.println("Step 3");
         addSequential(new AutoOrient(90));
+        System.out.println("Step 4");
         
     }
 }

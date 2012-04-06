@@ -151,9 +151,9 @@ public class Artemis extends Subsystem
             return true;
         }
         else if(currentAngle - value > 0)
-            turn(.20);
+            turn(.50);
         else
-            turn(-.20);
+            turn(-.50);
         return false;
     }
     

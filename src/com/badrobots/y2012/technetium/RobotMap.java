@@ -24,8 +24,8 @@ public class RobotMap
     public static final int controller = 1;
     public static final int controller2 = 2;
     public static final int shooterJoystick = 4;
-    public static final int ultrasonicOut = 2; 
-    public static final int ultrasonicIn = 3; 
+    public static final int ultrasonicOut = 3; //2 scotty
+    public static final int ultrasonicIn = 2; //3
     public static final int topSensor = 5; //5 Scotty
     public static final int bottomSensor = 7; //7
     public static final int camera = 4;

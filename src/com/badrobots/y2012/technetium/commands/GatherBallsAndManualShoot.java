@@ -25,7 +25,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
     protected boolean switchSpeedDown;
     protected double turretTurn = 0;
     protected boolean shooterTriggerDown = false;
-    protected boolean shootingNow = false;
+    public static boolean shootingNow = false;
     
 
     
@@ -73,9 +73,9 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
 
         shooter.run(shooterSpeed);
 
-        System.out.println("HEREAAAAA: s" + sensors.getGyroAngle());
+        //System.out.println("HEREAAAAA: s" + sensors.getGyroAngle());
         
-        System.out.println("Encoder: " + shooter.encoderValue());
+        //System.out.println("Encoder: " + shooter.encoderValue());
     }
 
     public void runBallGathererOperations()
@@ -141,7 +141,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
          //Ball Spacing
         if(OI.secondXboxAButton())
         {
-            System.out.println("Spacing");
+            //System.out.println("Spacing");
             conveyorUp = false;
             conveyorDown = false;
             rollerIn = false;
@@ -223,10 +223,10 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         {
             System.out.println("speed down");
             switchSpeedDown = false;
-            if(manualShooterSpeed > 0)
-                shooterSpeed -= .1;
+            if(manualShooterSpeed > .2)
+                manualShooterSpeed -= .1;
             else
-                shooterSpeed = .3;
+                manualShooterSpeed = .2;
         }
 
         if(OI.secondXboxXButton())//Reset to key speed
@@ -258,14 +258,15 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         else
              shooterSpeed = 0;
 
-        OI.printToDS("Shooter " + shooterSpeed);
-        System.out.println("Manual COntrl: " + manualOveride);
+        //OI.printToDS("ultra " + sensors.getUltraBackRange());
+        //System.out.println("Manual COntrl: " + manualOveride);
     }
     
     public void runTurretingOperations()
     {
+        OI.setDigitalOutput(1, false);
         turretTurn = .7 * OI.secondXboxLeftX();
-        System.out.println("Turret Turn: " + turretTurn);
+        //System.out.println("Turret Turn: " + turretTurn);
         shooter.turn(-turretTurn);
     }
 
@@ -279,13 +280,14 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
     // Called once after isFinished returns true
     protected void end() 
     {
-        //ballGatherer.runBottomRoller(false, false);
-        //ballGatherer.runConveyor(false, false);
-        //shooter.run(0);
+        shootingNow = false;
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
-    protected void interrupted() {
+    protected void interrupted() 
+    {
+        shootingNow = false;
+        shooter.run(0);
     }
 }

@@ -75,7 +75,7 @@ public class Technetium extends IterativeRobot
     public void autonomousInit()
     {
         //System.out.println("Init");
-        Scheduler.getInstance().add(new AutoShootHighKey());
+        Scheduler.getInstance().add(new AutoGoToTeamBridge());
     }
 
     /**
@@ -92,10 +92,6 @@ public class Technetium extends IterativeRobot
      */
     public void teleopInit()
     {
-        new TankDriveTrigger();
-        new MechanumDriveTrigger();
-
-        Scheduler.getInstance().add(new MechanumDrive());
         
         
 

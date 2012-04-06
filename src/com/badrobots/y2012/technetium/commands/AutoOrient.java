@@ -31,7 +31,7 @@ public class AutoOrient extends CommandBase
     protected void execute()
     {
         currentAngle = sensors.getGyroAngle();
-        System.out.println("Angle " + currentAngle);
+        //System.out.println("Angle " + currentAngle);
         if(Math.abs(currentAngle - wantedAngle) < 3)
         {
             count++;

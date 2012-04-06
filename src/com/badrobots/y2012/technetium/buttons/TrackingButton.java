@@ -35,7 +35,7 @@ public class TrackingButton extends Button
         
         if (Demeter.getInstance().manualOverride())
         {
-            System.out.println("manual mode, no button");
+            //System.out.println("manual mode, no button");
             imageProcessor.setRunning(false);
             return false;
         }
@@ -43,13 +43,13 @@ public class TrackingButton extends Button
         if (OI.secondXboxBButton())
         {
             imageProcessor.setRunning(true);
-            System.out.println("button pressed - trackingbutton.java");
+            //System.out.println("button pressed - trackingbutton.java");
             once = true;
             return true;
         }
         else if(once)
         {
-            System.out.println("B button released-----");
+            //System.out.println("B button released-----");
             imageProcessor.setRunning(false);
             Scheduler.getInstance().add(new GatherBallsAndManualShoot());
             once = false;

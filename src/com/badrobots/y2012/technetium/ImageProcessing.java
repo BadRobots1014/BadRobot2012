@@ -30,7 +30,7 @@ public class ImageProcessing extends Thread
     {
         camera = c;
         this.setPriority(MIN_PRIORITY);
-        running = false;
+        running = true;
         criteria = new CriteriaCollection();
         criteria.addCriteria(NIVision.MeasurementType.IMAQ_MT_CENTER_OF_MASS_Y, 0, 50, true);//wrong
 
@@ -98,7 +98,8 @@ public class ImageProcessing extends Thread
             //gets and stores the current camera image
             img = camera.getImage();
             
-            binary = img.thresholdHSL(98, 155, 45, 255, 137, 255);//141, 208, 50, 255, 0, 255);
+            //binary = img.thresholdHSL(98, 155, 45, 255, 137, 255);//Works great at low angles.
+            binary = img.thresholdHSL(10, 155, 20, 255, 55, 255);
             
             //Convex Hull
             binary.convexHull(true);
@@ -110,16 +111,17 @@ public class ImageProcessing extends Thread
 
 
             int size = report.length;
+            System.out.println("Size: " + size);
             if (size > 0)
             {
-                double biggest = report[0].particleArea;
+                double lowest = report[0].center_mass_y;
                 int biggestIndex = 0;
 
                 for (int i = 0; i < report.length; i++)
                 {
-                    if (report[i].particleArea > biggest)
+                    if (report[i].center_mass_y < lowest)
                     {
-                        biggest = report[i].particleArea;
+                        lowest = report[i].center_mass_y;
                         biggestIndex = i;
                     }
                 }

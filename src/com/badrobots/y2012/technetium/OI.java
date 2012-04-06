@@ -47,10 +47,15 @@ public class OI
      */
     public static void printToDS(String out)
     {
-        System.out.println("ShouldBeOnScreen: " + out);
+        //System.out.println("ShouldBeOnScreen: " + out);
         screen.free();
         screen.println(DriverStationLCD.Line.kMain6, 1, out);
         screen.updateLCD();
+    }
+
+    public static void setDigitalOutput(int i, boolean logic)
+    {
+        ds.setDigitalOut(i, logic);
     }
 
     /**

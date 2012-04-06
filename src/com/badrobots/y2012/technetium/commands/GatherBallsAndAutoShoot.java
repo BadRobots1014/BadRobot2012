@@ -77,6 +77,7 @@ public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
         if (imageProcessor.getCoords() == null || imageProcessor.getCoords()[0] < 0)
         {
             aligned = false;
+            System.out.println("No Target!!!!!!!!!!!!!!!!!!");
             turretTurn = 0;
             return;
         }
@@ -100,6 +101,8 @@ public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
             count = 0;
             aligned = false;
         }
+
+        OI.setDigitalOutput(1, aligned);
 
         if(aligned)
             return;
@@ -190,5 +193,6 @@ public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
+        shooter.run(0);
     }
 }

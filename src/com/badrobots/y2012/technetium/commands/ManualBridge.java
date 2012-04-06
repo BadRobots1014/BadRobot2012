@@ -30,9 +30,9 @@ public class ManualBridge extends CommandBase
     {
         double speed = 0;
         
-        if (OI.primaryXboxLeftJoyClick())
+        if (OI.primaryXboxAButton())
             speed = 1;
-        else if (OI.primaryXboxRightJoyClick())
+        else if (OI.primaryXboxBButton())
             speed = -1;   
         bridgeTool.setMotor(speed);
     }
