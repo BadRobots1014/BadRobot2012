@@ -31,8 +31,8 @@ public class ImageProcessing extends Thread
         camera = c;
         this.setPriority(MIN_PRIORITY);
         running = true;
-        criteria = new CriteriaCollection();
-        criteria.addCriteria(NIVision.MeasurementType.IMAQ_MT_CENTER_OF_MASS_Y, 0, 50, true);//wrong
+        //criteria = new CriteriaCollection();
+        //criteria.addCriteria(NIVision.MeasurementType.IMAQ_MT_CENTER_OF_MASS_Y, 0, 50, true);//wrong
 
         /* while (!camera.freshImage())
         {
@@ -44,6 +44,7 @@ public class ImageProcessing extends Thread
         System.out.println("Image is unavailable");
         }  */
         camera.writeResolution(AxisCamera.ResolutionT.k160x120);
+        
         coords = new int[2];
         coords[0] = -1;
         coords[1] = -1;
@@ -97,15 +98,16 @@ public class ImageProcessing extends Thread
         {
             //gets and stores the current camera image
             img = camera.getImage();
-            
-            //binary = img.thresholdHSL(98, 155, 45, 255, 137, 255);//Works great at low angles.
-            binary = img.thresholdHSL(10, 155, 20, 255, 55, 255);
+
+            binary = img.thresholdHSL(100, 156, 15, 255, 145, 255);
+            //binary = img.thresholdHSL(98, 155, 45, 255, 137, 255);//Works great on scottie for some reason. Whatever, sure.
+            //binary = img.thresholdHSL(10, 155, 20, 255, 55, 255);
             
             //Convex Hull
             binary.convexHull(true);
             
             //Remove small objects (parameters are connectivity and number of erosions)
-            noSmall = binary.removeSmallObjects(true, 1);
+            noSmall = binary.removeSmallObjects(true, 3);
             //noSmall.particleFilter(criteria);
             ParticleAnalysisReport[] report = noSmall.getOrderedParticleAnalysisReports();
 
