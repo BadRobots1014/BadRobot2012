@@ -19,13 +19,14 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
     protected boolean rollerIn = false;
     protected boolean rollerOut = false;
     protected boolean manualOveride = false;
-    protected double manualShooterSpeed = .45 ;
+    protected double manualShooterSpeed = .35 ;
     protected double shooterSpeed = 0;
     protected boolean switchSpeedUp;
     protected boolean switchSpeedDown;
     protected double turretTurn = 0;
     protected boolean shooterTriggerDown = false;
     public static boolean shootingNow = false;
+    private static boolean collectingNow = false;
     
 
     
@@ -40,7 +41,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         //if (Helios.getInstance().topChannelBlocked())
             //topBlocked = true;
 
-        shooterSpeed = .45;
+        shooterSpeed = .35;
     }
 
     /*
@@ -72,6 +73,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         //System.out.println("Shooting at: " + shooterSpeed);
 
         shooter.run(shooterSpeed);
+
 
         //System.out.println("HEREAAAAA: s" + sensors.getGyroAngle());
         
@@ -130,7 +132,8 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         }
         
     }
-    
+
+    private boolean switchGather = false;
     private void semiAutoControl()
     {
         conveyorUp = false;
@@ -138,10 +141,10 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         rollerIn = false;
         rollerOut = false;
 
-         //Ball Spacing
+
         if(OI.secondXboxAButton())
         {
-            //System.out.println("Spacing");
+        //System.out.println("Spacing");
             conveyorUp = false;
             conveyorDown = false;
             rollerIn = false;
@@ -156,11 +159,15 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
                 conveyorUp = true;
             }
         }
-
         if(spaceUp > 0)//space the ball
         {
+            OI.setDigitalOutput(6, true);
             spaceUp--;
             conveyorUp = true;
+        }
+        else
+        {
+            OI.setDigitalOutput(6, false);
         }
 
        
@@ -210,7 +217,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
 
             switchSpeedUp = false;
             if(manualShooterSpeed < 1)
-                manualShooterSpeed += .1;
+                manualShooterSpeed += .05;
             else
                 manualShooterSpeed = 1;
         }
@@ -223,16 +230,20 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         {
             System.out.println("speed down");
             switchSpeedDown = false;
-            if(manualShooterSpeed > .2)
-                manualShooterSpeed -= .1;
+            if(manualShooterSpeed > .25)
+                manualShooterSpeed -= .05;
             else
-                manualShooterSpeed = .2;
+                manualShooterSpeed = .25;
         }
+        
+        
 
         if(OI.secondXboxXButton())//Reset to key speed
         {
-            manualShooterSpeed = .45;
+            manualShooterSpeed = .35;
         }
+
+        
 
        if (OI.getSecondaryTrigger())   //Toggle Shooter
        {
@@ -257,6 +268,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
        }
         else
              shooterSpeed = 0;
+        UpdateDS(manualShooterSpeed , shootingNow);
 
         //OI.printToDS("ultra " + sensors.getUltraBackRange());
         //System.out.println("Manual COntrl: " + manualOveride);
@@ -281,6 +293,133 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
     protected void end() 
     {
         shootingNow = false;
+    }
+    
+    protected void UpdateDS(double speed, boolean shooting)
+    {
+        boolean one, two, three, four;
+
+        if(speed < .26)
+        {
+            one = false;
+            two = false;
+            three = false;
+            four = false;
+        }
+        else if(speed < .31)
+        {
+            one = false;
+            two = false;
+            three = false;
+            four = true;
+        }
+        else if(speed < .36)
+        {
+            one = false;
+            two = false;
+            three = true;
+            four = false;
+        }
+        else if(speed < .41)
+        {
+            one = false;
+            two = false;
+            three = true;
+            four = true;
+        }
+        else if(speed < .46)
+        {
+            one = false;
+            two = true;
+            three = false;
+            four = false;
+        }
+        else if(speed < .51)
+        {
+            one = false;
+            two = true;
+            three = false;
+            four = true;
+        }
+        else if(speed < .56)
+        {
+            one = false;
+            two = true;
+            three = true;
+            four = false;
+        }
+        else if(speed < .61)
+        {
+            one = false;
+            two = true;
+            three = true;
+            four = true;
+        }
+        else if(speed < .66)
+        {
+            one = true;
+            two = false;
+            three = false;
+            four = false;
+        }
+        else if(speed < .71)
+        {
+            one = true;
+            two = false;
+            three = false;
+            four = true;
+        }
+        else if(speed < .76)
+        {
+            one = true;
+            two = false;
+            three = true;
+            four = false;
+        }
+        else if(speed < .81)
+        {
+            one = true;
+            two = false;
+            three = true;
+            four = true;
+        }
+        else if(speed < .86)
+        {
+            one = true;
+            two = true;
+            three = false;
+            four = false;
+        }
+        else if(speed < .91)
+        {
+            one = true;
+            two = true;
+            three = false;
+            four = true;
+        }
+        else if(speed < .96)
+        {
+            one = true;
+            two = true;
+            three = true;
+            four = false;
+        }
+        else
+        {
+            one = true;
+            two = true;
+            three = true;
+            four = true;
+        }
+
+        OI.setDigitalOutput(5, four);
+        OI.setDigitalOutput(4, three);
+        OI.setDigitalOutput(3, two);
+        OI.setDigitalOutput(2, one);
+        OI.setDigitalOutput(6, shooting);
+
+        return;
+
     }
 
     // Called when another command which requires one or more of the same

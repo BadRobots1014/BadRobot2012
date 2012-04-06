@@ -7,6 +7,7 @@
 package com.badrobots.y2012.technetium;
 
 import com.badrobots.y2012.technetium.buttons.*;
+import com.badrobots.y2012.technetium.commands.AutoDriveToAndDumpMedBasket;
 import com.badrobots.y2012.technetium.commands.AutoDriveToWallGyroCorrection;
 import com.badrobots.y2012.technetium.commands.AutoGoToTeamBridge;
 import com.badrobots.y2012.technetium.commands.AutoOrient;
@@ -16,6 +17,9 @@ import com.badrobots.y2012.technetium.commands.TankDrive;
 import com.badrobots.y2012.technetium.commands.MechanumDrive;
 import com.badrobots.y2012.technetium.commands.CommandBase;
 import com.badrobots.y2012.technetium.commands.DriveToWall;
+import com.badrobots.y2012.technetium.commands.GatherBallsAndManualShoot;
+import com.badrobots.y2012.technetium.commands.ManualBridge;
+import com.badrobots.y2012.technetium.commands.Monitor;
 import com.badrobots.y2012.technetium.subsystems.*;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Watchdog;
@@ -75,7 +79,7 @@ public class Technetium extends IterativeRobot
     public void autonomousInit()
     {
         //System.out.println("Init");
-        Scheduler.getInstance().add(new AutoGoToTeamBridge());
+        Scheduler.getInstance().add(new AutoShootHighKey());
     }
 
     /**
@@ -93,7 +97,10 @@ public class Technetium extends IterativeRobot
     public void teleopInit()
     {
         
-        
+        Scheduler.getInstance().add(new GatherBallsAndManualShoot());
+        Scheduler.getInstance().add(new Monitor());
+        Scheduler.getInstance().add(new MechanumDrive());
+        Scheduler.getInstance().add(new ManualBridge());
 
         /*try
         {

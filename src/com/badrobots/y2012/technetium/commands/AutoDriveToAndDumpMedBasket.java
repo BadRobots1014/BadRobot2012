@@ -14,9 +14,10 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class AutoDriveToAndDumpMedBasket extends CommandGroup {
 
+
     public AutoDriveToAndDumpMedBasket()
     {
-        addSequential(new AutoDriveToWallGyroCorrection(1000));
-        addSequential(new AutoShootAndGather(.3, true));//test shooting value
+        addSequential(new AutoDriveToWallGyroCorrection(523));
+        addSequential(new AutoShootAndGather(.16, true, 1000000000));
     }
-}
+    }

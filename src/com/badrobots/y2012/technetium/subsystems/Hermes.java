@@ -73,7 +73,7 @@ public class Hermes extends Subsystem
         //drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true); //
         if (OI.PIDOn)
         {
-            horizontalGyro = Helios.getInstance().getGyro(); //that's wrong
+            horizontalGyro = Helios.getInstance().getGyro();
         }
 
         drive.setSafetyEnabled(false);
@@ -105,9 +105,9 @@ public class Hermes extends Subsystem
         double leftY = OI.getUsedLeftY();
         double rightX = OI.getUsedRightX();
         //TODO delete
-        //System.out.println(rightX + " right X");
+        System.out.println(rightX + " right X");
         double rightY = OI.getUsedRightY();
-        double sensitivity = .75;//OI.getSensitivity();
+        double sensitivity = 1;//OI.getSensitivity();
         boolean useRightJoystickForStrafe = OI.rightStrafe();
 
         //correct for strafing code
@@ -129,7 +129,7 @@ public class Hermes extends Subsystem
         }
 
         checkForOrientationChange();
-
+//System.out.println("Turn: " + scaledTurn);
         //apply PID if it should
         scaledTurn = checkAndRunPIDOperations(scaledTurn);
 
@@ -164,6 +164,7 @@ public class Hermes extends Subsystem
             
             if(buttonTogglePIDOff)
             {
+                //System.out.println("PID Reinitialized");
                 //Initialize PID
                 horizontalGyro.reset();
                 requestedAngle = 0;
@@ -211,11 +212,11 @@ public class Hermes extends Subsystem
             pidController.enable();
         }
 
+        
+
+        requestedAngle += rotation * 3;
+
         //Checks if the toggle button is pressed, and if it is, it toggles PID enabled
-
-        requestedAngle += rotation * 5;
-
-
         //disables PID if the toggle is on
         if (!checkForPIDButton())
         {
@@ -228,7 +229,7 @@ public class Hermes extends Subsystem
         }
 
         pidController.setSetpoint(requestedAngle);
-
+        System.out.println("requested Angle: " + requestedAngle + " currentAngle: " + horizontalGyro.getAngle() + " PIDControl:" + PIDControl);
         if (PIDControl)
         {
             finalRotation = rotationPID.getValue();

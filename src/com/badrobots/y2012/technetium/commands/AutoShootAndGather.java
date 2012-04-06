@@ -4,6 +4,7 @@
  */
 package com.badrobots.y2012.technetium.commands;
 
+import com.badrobots.y2012.technetium.OI;
 import edu.wpi.first.wpilibj.Timer;
 
 
@@ -16,8 +17,9 @@ public class AutoShootAndGather extends CommandBase {
     double speed;
     boolean gather;
     Timer timer = new Timer();//Timer
-
-    public AutoShootAndGather(double s, boolean gathering)
+    double timeLength;
+    double start;
+    public AutoShootAndGather(double s, boolean gathering, double time)
     {
         requires(shooter);
         requires(driveTrain);
@@ -25,13 +27,15 @@ public class AutoShootAndGather extends CommandBase {
         requires(sensors);
         speed = s;
         gather = gathering;
+        timeLength = time;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() 
     {
         shooter.run(speed);
-        timer.delay(4);
+        timer.delay(OI.getAnalogIn(1));
+        start = timer.getFPGATimestamp();
 
         ballGatherer.runConveyor(true, false);//run conveyor up
         if(gather)
@@ -49,12 +53,14 @@ public class AutoShootAndGather extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+        System.out.println(timer.get() - start);
+        return (timer.getFPGATimestamp() - start) > timeLength;// calibrate
     }
 
     // Called once after isFinished returns true
     protected void end() 
     {
+        //System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         shooter.run(0);
         ballGatherer.runBottomRoller(false, false);
         ballGatherer.runConveyor(false, false);
@@ -64,6 +70,7 @@ public class AutoShootAndGather extends CommandBase {
     // subsystems is scheduled to run
     protected void interrupted() 
     {
+        //System.out.println("!@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@!");
         shooter.run(0);
         ballGatherer.runBottomRoller(false, false);
         ballGatherer.runConveyor(false, false);

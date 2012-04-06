@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
- * @author Jon Buckley
+ * @author 1014 Team
  */
 public class ImageProcessing extends Thread
 {
@@ -31,18 +31,7 @@ public class ImageProcessing extends Thread
         camera = c;
         this.setPriority(MIN_PRIORITY);
         running = true;
-        //criteria = new CriteriaCollection();
-        //criteria.addCriteria(NIVision.MeasurementType.IMAQ_MT_CENTER_OF_MASS_Y, 0, 50, true);//wrong
-
-        /* while (!camera.freshImage())
-        {
-        try {
-        Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-        ex.printStackTrace();
-        }
-        System.out.println("Image is unavailable");
-        }  */
+        
         camera.writeResolution(AxisCamera.ResolutionT.k160x120);
         
         coords = new int[2];
@@ -99,7 +88,7 @@ public class ImageProcessing extends Thread
             //gets and stores the current camera image
             img = camera.getImage();
 
-            binary = img.thresholdHSL(100, 156, 15, 255, 145, 255);
+            binary = img.thresholdHSL(100, 156, 30, 255, 145, 255);
             //binary = img.thresholdHSL(98, 155, 45, 255, 137, 255);//Works great on scottie for some reason. Whatever, sure.
             //binary = img.thresholdHSL(10, 155, 20, 255, 55, 255);
             
