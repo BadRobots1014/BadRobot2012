@@ -69,6 +69,11 @@ public class Helios extends Subsystem
         lastRange = 0;
 
     }
+    
+    public Gyro getGyro()
+    {
+        return gyro;
+    }
 
     public double getUltraBackRange()
     {
