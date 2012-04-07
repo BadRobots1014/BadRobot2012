@@ -67,6 +67,10 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         //turrets
         runTurretingOperations();
 
+         if(sensors.bottomChannelBlocked())
+            OI.setDigitalOutput(7, true);
+         else
+            OI.setDigitalOutput(7, false);
 
         ballGatherer.runBottomRoller(rollerIn, rollerOut);
         ballGatherer.runConveyor(conveyorUp, conveyorDown);
@@ -161,14 +165,10 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         }
         if(spaceUp > 0)//space the ball
         {
-            OI.setDigitalOutput(6, true);
             spaceUp--;
             conveyorUp = true;
         }
-        else
-        {
-            OI.setDigitalOutput(6, false);
-        }
+        
 
        
         
