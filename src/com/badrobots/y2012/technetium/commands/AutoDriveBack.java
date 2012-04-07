@@ -33,11 +33,11 @@ public class AutoDriveBack extends CommandBase {
 
         double currentAngle = sensors.getGyroAngle();
         if(Math.abs(currentAngle - startingAngle) < 5)
-            driveTrain.autoMechanumDrive(0, .2, 0);
+            driveTrain.autoMechanumDrive(0, -.2, 0);
         else if(currentAngle - startingAngle > 0)
-            driveTrain.autoMechanumDrive(0, .2, -.16);
+            driveTrain.autoMechanumDrive(0, -.2, -.16);
          else if(currentAngle - startingAngle < 0)
-            driveTrain.autoMechanumDrive(0, .2, .16);
+            driveTrain.autoMechanumDrive(0, -.2, .16);
         done = true;
 
     }
