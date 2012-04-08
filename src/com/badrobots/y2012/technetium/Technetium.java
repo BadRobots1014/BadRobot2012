@@ -12,6 +12,8 @@ import com.badrobots.y2012.technetium.commands.AutoDriveToWallGyroCorrection;
 import com.badrobots.y2012.technetium.commands.AutoGoToTeamBridge;
 import com.badrobots.y2012.technetium.commands.AutoOrient;
 import com.badrobots.y2012.technetium.commands.AutoShootHighKey;
+import com.badrobots.y2012.technetium.commands.AutoShootHighKeyDriveBack;
+import com.badrobots.y2012.technetium.commands.AutoShootHighKeyNoBridge;
 import com.badrobots.y2012.technetium.commands.PolarMechanumDrive;
 import com.badrobots.y2012.technetium.commands.TankDrive;
 import com.badrobots.y2012.technetium.commands.MechanumDrive;
@@ -79,7 +81,16 @@ public class Technetium extends IterativeRobot
     public void autonomousInit()
     {
         //System.out.println("Init");
-        Scheduler.getInstance().add(new AutoShootHighKey());
+        if(OI.getDigitalIn(6))
+            Scheduler.getInstance().add(new AutoShootHighKeyNoBridge());
+        else if(OI.getDigitalIn(5))
+            Scheduler.getInstance().add(new AutoDriveToAndDumpMedBasket());
+        else if(OI.getDigitalIn(7))
+            Scheduler.getInstance().add(new AutoShootHighKey());
+        else if(OI.getDigitalIn(8))
+            Scheduler.getInstance().add(new AutoShootHighKeyDriveBack());
+        else
+            Scheduler.getInstance().add(new AutoShootHighKeyNoBridge());
     }
 
     /**

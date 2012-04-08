@@ -53,8 +53,8 @@ public class AutoShootAndGather extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        System.out.println(timer.get() - start);
-        return (timer.getFPGATimestamp() - start) > timeLength;// calibrate
+        
+        return false;
     }
 
     // Called once after isFinished returns true

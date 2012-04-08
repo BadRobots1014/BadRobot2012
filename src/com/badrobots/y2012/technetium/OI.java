@@ -406,4 +406,10 @@ public class OI
     {
         return ds.getAnalogIn(channel);
     }
+
+
+    public static boolean  getDigitalIn(int channel)
+    {
+        return ds.getDigitalIn(channel);
+    }
 }

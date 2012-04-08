@@ -4,6 +4,7 @@
  */
 package com.badrobots.y2012.technetium.commands;
 
+import com.badrobots.y2012.technetium.OI;
 import com.badrobots.y2012.technetium.commands.AutoShootAndGather;
 import com.badrobots.y2012.technetium.commands.AutoDriveToWallGyroCorrection;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -17,7 +18,7 @@ public class AutoDriveToAndDumpMedBasket extends CommandGroup {
 
     public AutoDriveToAndDumpMedBasket()
     {
-        addSequential(new AutoDriveToWallGyroCorrection(523));
-        addSequential(new AutoShootAndGather(.16, true, 1000000000));
+        addSequential(new AutoDriveToWallGyroCorrection(535));
+        addSequential(new AutoShootAndGather(OI.getAnalogIn(2), true, 1000000000));
     }
     }

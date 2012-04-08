@@ -11,13 +11,11 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  *
  * @author 1014
  */
-public class AutoShootHighKey extends CommandGroup {
+public class AutoShootHighKeyNoBridge extends CommandGroup {
 
-    public AutoShootHighKey()//NEEDS TESTING
+    public AutoShootHighKeyNoBridge()//NEEDS TESTING
     {
         //addSequential(new AutoTarget()); TODO
         addSequential(new AutoShootAndGather(OI.getAnalogIn(2), true, 6));
-        addSequential(new AutoDriveBack());
-        addSequential(new AutoBridgeDown());
     }
 }

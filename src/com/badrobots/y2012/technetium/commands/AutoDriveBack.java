@@ -38,13 +38,14 @@ public class AutoDriveBack extends CommandBase {
             driveTrain.autoMechanumDrive(0, -.2, -.16);
          else if(currentAngle - startingAngle < 0)
             driveTrain.autoMechanumDrive(0, -.2, .16);
+
         done = true;
 
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return  (timer.getFPGATimestamp() - startTime) > 5;
+        return  (timer.getFPGATimestamp() - startTime) > 6;
     }
 
     // Called once after isFinished returns true

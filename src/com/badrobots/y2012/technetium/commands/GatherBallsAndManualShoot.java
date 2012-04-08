@@ -13,7 +13,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
 {    
     protected static boolean done = true;
     protected int spaceUp = 0;//If delay is needed, make this >1
-    protected int startingSpaceUp = 50;
+    protected int startingSpaceUp = 35;
     protected boolean conveyorUp = false;
     protected boolean conveyorDown = false;
     protected boolean rollerIn = false;
@@ -58,6 +58,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
 
     protected void execute() 
     {
+        
         //sets booleans for running Gatherer
         runBallGathererOperations();
 
