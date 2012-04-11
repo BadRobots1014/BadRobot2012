@@ -107,22 +107,12 @@ public class Technetium extends IterativeRobot
      */
     public void teleopInit()
     {
-        
         Scheduler.getInstance().add(new GatherBallsAndManualShoot());
         Scheduler.getInstance().add(new Monitor());
         Scheduler.getInstance().add(new MechanumDrive());
         Scheduler.getInstance().add(new ManualBridge());
-
-        /*try
-        {
-            kinecter = new PacketListener();
-        } catch (IOException ex)
-        {
-            ex.printStackTrace();
-        }
-        *
-        */
-        //kinecter.start();
+        
+        new InitiateRampButton();
 
         if(OI.cameraOn)
         {

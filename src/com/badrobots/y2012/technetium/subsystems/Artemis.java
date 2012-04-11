@@ -41,7 +41,7 @@ public class Artemis extends Subsystem
     protected PIDController shooterController;
     protected PIDController turnTableController; 
    
-    public static final int MAX_SPEED = 300;
+    public static final int MAX_SPEED = 3600;
 
     public static final double SHOOTER_P = .01;
     public static final double SHOOTER_I = 0;
@@ -127,7 +127,7 @@ public class Artemis extends Subsystem
      */
     public void PIDRun(double speed)
     {
-        shooterController.setSetpoint(speed*MAX_SPEED);
+        shooterController.setSetpoint(speed*MAX_SPEED*6); //the setpoint is set to the max RPMs times 6 (number of bolts in gearbox)
         
         right.set(-shooterController.get());
         left.set(shooterController.get());
