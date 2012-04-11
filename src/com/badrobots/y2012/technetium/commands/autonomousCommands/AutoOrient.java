@@ -2,7 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.badrobots.y2012.technetium.commands;
+package com.badrobots.y2012.technetium.commands.autonomousCommands;
+
+import com.badrobots.y2012.technetium.commands.CommandBase;
 
 
 /*

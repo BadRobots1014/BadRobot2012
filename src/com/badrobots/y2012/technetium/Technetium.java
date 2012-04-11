@@ -7,13 +7,13 @@
 package com.badrobots.y2012.technetium;
 
 import com.badrobots.y2012.technetium.buttons.*;
-import com.badrobots.y2012.technetium.commands.AutoDriveToAndDumpMedBasket;
-import com.badrobots.y2012.technetium.commands.AutoDriveToWallGyroCorrection;
-import com.badrobots.y2012.technetium.commands.AutoGoToTeamBridge;
-import com.badrobots.y2012.technetium.commands.AutoOrient;
-import com.badrobots.y2012.technetium.commands.AutoShootHighKey;
-import com.badrobots.y2012.technetium.commands.AutoShootHighKeyDriveBack;
-import com.badrobots.y2012.technetium.commands.AutoShootHighKeyNoBridge;
+import com.badrobots.y2012.technetium.commands.autonomousCommands.AutoDriveToAndDumpMedBasket;
+import com.badrobots.y2012.technetium.commands.autonomousCommands.AutoDriveToWallGyroCorrection;
+import com.badrobots.y2012.technetium.commands.autonomousCommands.AutoGoToTeamBridge;
+import com.badrobots.y2012.technetium.commands.autonomousCommands.AutoOrient;
+import com.badrobots.y2012.technetium.commands.autonomousCommands.AutoShootHighKey;
+import com.badrobots.y2012.technetium.commands.autonomousCommands.AutoShootHighKeyDriveBack;
+import com.badrobots.y2012.technetium.commands.autonomousCommands.AutoShootHighKeyNoBridge;
 import com.badrobots.y2012.technetium.commands.PolarMechanumDrive;
 import com.badrobots.y2012.technetium.commands.TankDrive;
 import com.badrobots.y2012.technetium.commands.MechanumDrive;

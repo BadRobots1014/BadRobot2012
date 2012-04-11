@@ -70,7 +70,11 @@ public class InitiateRamp extends CommandBase
             
             //if the robot driving time has expired
             else
+            {
                 phase = COMPLETED_PHASE;
+                startTime = currentTime;
+            }
+                
             break;   
         } 
         
