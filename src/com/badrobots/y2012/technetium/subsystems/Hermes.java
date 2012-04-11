@@ -77,10 +77,7 @@ public class Hermes extends Subsystem
         }
 
         drive.setSafetyEnabled(false);
-        //because why not. Jon: because it will kill us all. 
-        // Haven't you seen iRobot? They left their robots on
-        // safety enable = false
-
+        
         //Rotation and angle requesting stuff for PID
         rotation = 0;
         if (horizontalGyro != null)
@@ -196,77 +193,33 @@ public class Hermes extends Subsystem
     public double checkAndRunPIDOperations(double rotation)
     {
         double finalRotation = rotation;
-        //P:.01
-        //I:.001
-        //D:0
         if (pidController == null)
-        {
-            //System.out.println("no PID, turn = " + rotation);
             return rotation;
-        }
-
-        //pidController.setPID(P, I, D);
 
         if (!pidController.isEnable())//Enables PID
-        {
             pidController.enable();
+
+        //When the robot is being told to turn, tell the pidController to focus on
+        //the current angle the robot is facing
+        if (rotation != 0)
+        {
+            pidController.setSetpoint(horizontalGyro.getAngle());
         }
-
-        
-
-        requestedAngle += rotation * 3;
-
         //Checks if the toggle button is pressed, and if it is, it toggles PID enabled
         //disables PID if the toggle is on
-        if (!checkForPIDButton())
-        {
+        if (!checkForPIDButton())   
             PIDControl = false;
-            
-        }
         else
-        {
             PIDControl = true;
-        }
 
-        pidController.setSetpoint(requestedAngle);
-        System.out.println("requested Angle: " + requestedAngle + " currentAngle: " + horizontalGyro.getAngle() + " PIDControl:" + PIDControl);
-        if (PIDControl)
+        //if pid is enabled and the robot is not being told to turn, activate the 
+        //PID control
+        if (PIDControl && rotation == 0)
         {
             finalRotation = rotationPID.getValue();
         }
         return finalRotation;
     }
-
-    /*
-     * public void autoAimMechanum(PacketListener kinecter) { double
-     * scaledRightStrafe = OI.getUsedRightX() * 1.25 * OI.getSensitivity();
-     * double scaledLeftStrafe = OI.getUsedLeftX() * 1.25 * OI.getSensitivity();
-     *
-     * if (scaledRightStrafe > 1) { scaledRightStrafe = 1; }
-     *
-     * if (scaledLeftStrafe > 1) { scaledLeftStrafe = 1; }
-     *
-     * double scaledLeftTurn = 0; double scaledRightTurn = 0; //correct for
-     * strafing code if (Math.abs(kinecter.getOffAxis()[0]) > 5) {
-     * scaledLeftTurn = ((1 / 320) * (kinecter.getDepth()[0] / oneForOneDepth) *
-     * kinecter.getOffAxis()[0] / 320 * (strafeCorrectionFactor *
-     * scaledRightStrafe)); // forces slight turn scaledRightTurn = ((1 / 320) *
-     * (kinecter.getDepth()[0] / oneForOneDepth) * kinecter.getOffAxis()[0] /
-     * 320 * (strafeCorrectionFactor * scaledLeftStrafe)); }
-     *
-     * if (scaledLeftTurn > 1) { scaledLeftTurn = 1; } else if (scaledLeftTurn <
-     * -1) { scaledLeftTurn = -1; }
-     *
-     * if (scaledRightTurn > 1) { scaledRightTurn = 1; } else if
-     * (scaledRightTurn < -1) { scaledRightTurn = -1; }
-     *
-     * if (OI.rightStrafe()) { drive.mecanumDrive_Cartesian(-scaledRightStrafe,
-     * (OI.getUsedRightY() * OI.getSensitivity()), scaledLeftTurn, 0); //if
-     * right hand stick is being used for strafing left, right, up and down }
-     * else // if left hand stick is being used for strafing {
-     * drive.mecanumDrive_Cartesian(-scaledLeftStrafe, (OI.getUsedLeftY() *
-     * OI.getSensitivity()), scaledRightTurn, 0); } }
-     */
 
     /*
      * Used for cartesian control of a mechanum drive Status: Untested
@@ -349,25 +302,5 @@ public class Hermes extends Subsystem
     {
         System.out.println("DefaultCommandHermes");
         setDefaultCommand(new MechanumDrive());
-    }
-
-    public class SoftPID implements PIDOutput
-    {
-
-        double output = 0;
-
-        public SoftPID()
-        {
-        }
-
-        public double getValue()
-        {
-            return this.output;
-        }
-
-        public void pidWrite(double output)
-        {
-            this.output = output;
-        }
     }
 }

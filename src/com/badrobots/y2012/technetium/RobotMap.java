@@ -39,4 +39,5 @@ public class RobotMap
     public static final int turnTable = 9;
     public static final int turnTableEncoderAChannel = 9;
     public static final int turnTableEncoderBChannel = 8;
+    public static final int shooterGearTooth = 6; //TODO
 }

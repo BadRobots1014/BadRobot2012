@@ -10,10 +10,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import com.badrobots.y2012.technetium.RobotMap;
 import com.badrobots.y2012.technetium.buttons.ShootBallTrigger;
 import com.badrobots.y2012.technetium.commands.AutoAim;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Ultrasonic;
-import edu.wpi.first.wpilibj.Victor;
-import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
 import edu.wpi.first.wpilibj.camera.AxisCameraException;
@@ -21,7 +18,6 @@ import edu.wpi.first.wpilibj.image.BinaryImage;
 import edu.wpi.first.wpilibj.image.ColorImage;
 import edu.wpi.first.wpilibj.image.NIVisionException;
 import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
-import edu.wpi.first.wpilibj.PWM;
 
 
 /*
@@ -32,10 +28,29 @@ public class Artemis extends Subsystem
     private static Artemis instance;
     private static Victor right, left;
     private static Victor turnTable; //TODO Change to correct speed controller
-    private static Encoder turnTableEncoder;
     private static Ultrasonic ranger;
-    private static AxisCamera camera;
+    
+    private static GearToothPID shooterGearTooth;
+    private static Encoder turnTableEncoder;
+    
+    protected SoftPID shooterPIDOutput;
+    protected SoftPID turnTablePIDOutput;
+    
+    protected double speedOfShooter = 0; 
+    
+    protected PIDController shooterController;
+    protected PIDController turnTableController; 
+   
+    public static final int MAX_SPEED = 300;
 
+    public static final double SHOOTER_P = .01;
+    public static final double SHOOTER_I = 0;
+    public static final double SHOOTER_D = 0;
+    
+    public static final double TURNTABLE_P = .01;
+    public static final double TURNTABLE_I = 0;
+    public static final double TURNTABLE_D = 0;
+    
     public static Artemis getInstance()
     {
         if (instance == null)
@@ -51,19 +66,26 @@ public class Artemis extends Subsystem
         super();
         right = new Victor (RobotMap.rightShooter); // initialize the motor
         left = new Victor (RobotMap.leftShooter);
-        turnTable = new Victor(RobotMap.turnTable);
         
-        //turnTable = new Jaguar(RobotMap.turnTable);
-
+        if (OI.shooterPIDOn)
+        {
+            shooterGearTooth = new GearToothPID(RobotMap.shooterGearTooth);
+            shooterPIDOutput = new SoftPID();
+            shooterController = new PIDController(SHOOTER_P, SHOOTER_I, SHOOTER_D, shooterGearTooth, shooterPIDOutput);    
+        }
+        
         turnTableEncoder = new Encoder(RobotMap.turnTableEncoderAChannel, RobotMap.turnTableEncoderBChannel);
         turnTableEncoder.start();
-        turnTableEncoder.reset();
-        //ranger = new Ultrasonic(1, RobotMap.ultrasonicOut, 1, RobotMap.ultrasonicOut);
-        //ranger.setEnabled(true);
-        //ranger.setAutomaticMode(true);
-
-       // camera.getInstance(); //init
-
+        turnTableEncoder.reset();  
+        
+        if (OI.turnTablePIDOn)
+        {
+            turnTablePIDOutput = new SoftPID();
+            turnTableController = new PIDController(TURNTABLE_P, TURNTABLE_I, TURNTABLE_D, turnTableEncoder, turnTablePIDOutput);
+            turnTableController.setTolerance(5);
+        }
+        
+        turnTable = new Victor(RobotMap.turnTable);
     }
 
     
@@ -76,7 +98,6 @@ public class Artemis extends Subsystem
     public void turn(double speed)
     {
         clampMotorValues(speed);
-        //System.out.println(speed + ". WHEAT");
         turnTable.set(-speed);
     }
 
@@ -102,15 +123,34 @@ public class Artemis extends Subsystem
     }
     
     /*
+     * Uses the PIDGearTooth to run the shooter more efficiently
+     */
+    public void PIDRun(double speed)
+    {
+        shooterController.setSetpoint(speed*MAX_SPEED);
+        
+        right.set(-shooterController.get());
+        left.set(shooterController.get());
+    }
+    
+    /*
      * Runs both motors at 'speed' speed
      */
     public void run(double speed)
     {
-        //System.out.println("Running shooter");
         clampMotorValues(speed);
-        //System.out.println("Shooting:"  + speed);
-        right.set(-speed);
-        left.set(speed);
+        
+        if (OI.shooterPIDOn)
+        {
+            PIDRun(speed);
+        }
+        
+        else
+        {
+            right.set(-speed);
+            left.set(speed);
+        }
+        
     }
 
     private double clampMotorValues(double scaledStrafe)
@@ -143,9 +183,14 @@ public class Artemis extends Subsystem
      */
     public boolean turnByEncoderTo(int value)
     {
+        if (OI.turnTablePIDOn)
+        {
+            return turnWithPID(value);
+        }
+        
         int currentAngle = turnTableEncoder.get();
 
-        if(Math.abs(currentAngle - value) <= 8 )//TODO: Tune
+        if(Math.abs(currentAngle - value) <= 8)
         {
             turn(0);
             return true;
@@ -154,6 +199,20 @@ public class Artemis extends Subsystem
             turn(.50);
         else
             turn(-.50);
+        return false;
+    }
+    
+    /*
+     * Uses PID to turn the turntable to a setpoint specified in the @parameter value
+     */
+    public boolean turnWithPID(int value)
+    {
+        turnTableController.setSetpoint(value);
+        turn(turnTableController.get());
+        
+        if (turnTableController.get() < .05)
+            return true;
+        
         return false;
     }
     
