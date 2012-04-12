@@ -126,11 +126,15 @@ public class Artemis extends Subsystem
      * Uses the PIDGearTooth to run the shooter more efficiently
      */
     public void PIDRun(double speed)
-    {
-        shooterController.setSetpoint(speed*MAX_SPEED*6); //the setpoint is set to the max RPMs times 6 (number of bolts in gearbox)
+    { 
+        //the setpoint is set to the max RPMs (which is 3600 RPM) times 6 (number of bolts in gearbox)
+        shooterController.setSetpoint(speed*MAX_SPEED*6);
         
-        right.set(-shooterController.get());
-        left.set(shooterController.get());
+        double speedToSet = shooterController.get();
+        speedToSet = clampMotorValues(speedToSet);
+        
+        right.set(-speedToSet);
+        left.set(speedToSet);
     }
     
     /*
@@ -155,8 +159,6 @@ public class Artemis extends Subsystem
 
     private double clampMotorValues(double scaledStrafe)
     {
-        //double scaledLeftStrafe = OI.getUsedLeftX() * 1.25 * OI.getSensitivity();
-
         if (scaledStrafe > 1)
         {
             scaledStrafe = 1;
@@ -210,6 +212,7 @@ public class Artemis extends Subsystem
         turnTableController.setSetpoint(value);
         turn(turnTableController.get());
         
+        //if the turnTable is within the point you tell it to go to, return true
         if (turnTableController.get() < .05)
             return true;
         

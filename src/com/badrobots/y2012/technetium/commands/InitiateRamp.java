@@ -20,10 +20,12 @@ public class InitiateRamp extends CommandBase
     protected boolean armDown = false;
     protected boolean driveForward = false;
     
-    protected int phase = 1;
     protected static final int DEPLOY_ARM_PHASE = 1;
     protected static final int DRIVE_FORWARD_PHASE = 2;
     protected static final int COMPLETED_PHASE = 3;
+    
+    protected int phase = DEPLOY_ARM_PHASE;
+
     
     public InitiateRamp()
     {
