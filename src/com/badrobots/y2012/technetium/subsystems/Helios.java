@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.image.ColorImage;
 import edu.wpi.first.wpilibj.image.NIVisionException;
 import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
 import com.badrobots.y2012.technetium.RobotMap;
-import com.badrobots.y2012.technetium.commands.AutoAim;
 import com.badrobots.y2012.technetium.commands.Monitor;
 import edu.wpi.first.wpilibj.*;
 
@@ -28,13 +27,12 @@ public class Helios extends Subsystem
 {
 
     private static Helios sensors;
-    private static AxisCamera camera;
-    private static Ultrasonic back;
+    private static Ultrasonic backUltrasonic;
     public static AnalogChannel bottomSensor, topSensor, ultra;
     private static final double threshold = .7;
     private static final double spacing = 25;
     protected static int numBalls;
-    protected static Gyro gyro, verticalGyro;
+    protected static Gyro gyro;
     protected static int topCount, bottomCount;
     protected double lastRange;
 
@@ -50,12 +48,6 @@ public class Helios extends Subsystem
 
     private Helios()
     {
-        //camera = AxisCamera.getInstance();
-
-        if (camera == null)
-        {
-            System.out.println("Unable to find camera");
-        }
         numBalls = 0;
         topCount = 0;
         bottomCount = 0;
@@ -63,11 +55,10 @@ public class Helios extends Subsystem
         gyro = new Gyro(RobotMap.horizontalGyro);
         bottomSensor = new AnalogChannel(RobotMap.bottomSensor);
         topSensor = new AnalogChannel(RobotMap.topSensor);
-        back = new Ultrasonic(RobotMap.ultrasonicOut, RobotMap.ultrasonicIn);
-        back.setAutomaticMode(true);
-        back.setEnabled(true);
+        backUltrasonic = new Ultrasonic(RobotMap.ultrasonicOut, RobotMap.ultrasonicIn);
+        backUltrasonic.setAutomaticMode(true);
+        backUltrasonic.setEnabled(true);
         lastRange = 0;
-
     }
     
     public Gyro getGyro()
@@ -77,13 +68,7 @@ public class Helios extends Subsystem
 
     public double getUltraBackRange()
     {
-        return back.getRangeMM();
-    }
-
-    
-    public double getAngleToTarget()
-    {
-        return 3.14;//XXX:Really? Remeber to fix this
+        return backUltrasonic.getRangeMM();
     }
 
     /*
@@ -139,11 +124,6 @@ public class Helios extends Subsystem
         return gyro.getAngle();
     }
 
-    public double getVerticalGyro()
-    {
-        return verticalGyro.getAngle();
-    }
-
     public int getNumBalls()
     {
         return numBalls;
@@ -159,7 +139,7 @@ public class Helios extends Subsystem
         //System.out.println(lastRange + "  " + front.isRangeValid());
         //System.out.println("Mili" + millimeters);\
         //System.out.println("back " + back.getRangeMM());
-        if (back.isRangeValid() && back.getRangeMM() < millimeters)
+        if (backUltrasonic.isRangeValid() && backUltrasonic.getRangeMM() < millimeters)
         {
             if (lastRange > 10) // 10 checks to stop
             {
@@ -186,14 +166,8 @@ public class Helios extends Subsystem
         gyro.reset();
     }
 
-    public void resetVerticalGyro()
-    {
-        verticalGyro.reset();
-    }
-
     public void initDefaultCommand()
     {
-        System.out.println("DefaultCommandHelios");
         setDefaultCommand(new Monitor());
     }
 }

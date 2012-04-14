@@ -9,6 +9,8 @@ import com.badrobots.y2012.technetium.OI;
 import com.badrobots.y2012.technetium.RobotMap;
 import com.badrobots.y2012.technetium.commands.TankDrive;
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.smartdashboard.SendablePIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /*
  * @author 1014 Programming Team
@@ -22,11 +24,11 @@ public class Hermes extends Subsystem
     private Gyro horizontalGyro;
     protected static double strafeCorrectionFactor = .165;
     protected static double oneForOneDepth = 5000; // millimeters
-    final double P = .01;
-    final double I = 0;
-    final double D = 0;
+    protected static final double P = .01;
+    protected static final double I = 0;
+    protected static final double D = 0;
     private SoftPID rotationPID;
-    private PIDController pidController;
+    private SendablePIDController pidController;
     private double requestedAngle = 0;
     private double orientation = 1;
     private boolean changeDirection = false;
@@ -71,22 +73,27 @@ public class Hermes extends Subsystem
         //drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true); 
         drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
         //drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true); //
+       
         if (OI.PIDOn)
         {
             horizontalGyro = Helios.getInstance().getGyro();
+            
+            if (horizontalGyro != null)
+            {
+                rotationPID = new SoftPID();
+                //TODO: Set these to constants
+                pidController = new SendablePIDController(P, I, D, horizontalGyro, rotationPID);
+                pidController.setTolerance(10);
+            }
+            
+            SmartDashboard.putData("HermesPIDController", pidController);
         }
 
         drive.setSafetyEnabled(false);
         
         //Rotation and angle requesting stuff for PID
         rotation = 0;
-        if (horizontalGyro != null)
-        {
-            rotationPID = new SoftPID();
-            //TODO: Set these to constants
-            pidController = new PIDController(P, I, D, horizontalGyro, rotationPID);
-            pidController.setTolerance(10);
-        }
+        
     }
 
     /*

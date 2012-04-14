@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import com.badrobots.y2012.technetium.RobotMap;
 import com.badrobots.y2012.technetium.buttons.ShootBallTrigger;
-import com.badrobots.y2012.technetium.commands.AutoAim;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
@@ -18,6 +17,8 @@ import edu.wpi.first.wpilibj.image.BinaryImage;
 import edu.wpi.first.wpilibj.image.ColorImage;
 import edu.wpi.first.wpilibj.image.NIVisionException;
 import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
+import edu.wpi.first.wpilibj.smartdashboard.SendablePIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 /*
@@ -38,8 +39,8 @@ public class Artemis extends Subsystem
     
     protected double speedOfShooter = 0; 
     
-    protected PIDController shooterController;
-    protected PIDController turnTableController; 
+    protected SendablePIDController shooterController;
+    protected SendablePIDController turnTableController; 
    
     public static final int MAX_SPEED = 3600;
 
@@ -71,7 +72,9 @@ public class Artemis extends Subsystem
         {
             shooterGearTooth = new GearToothPID(RobotMap.shooterGearTooth);
             shooterPIDOutput = new SoftPID();
-            shooterController = new PIDController(SHOOTER_P, SHOOTER_I, SHOOTER_D, shooterGearTooth, shooterPIDOutput);    
+            shooterController = new SendablePIDController(SHOOTER_P, SHOOTER_I, SHOOTER_D, shooterGearTooth, shooterPIDOutput);  
+            
+            SmartDashboard.putData("ShooterPID" ,shooterController);
         }
         
         turnTableEncoder = new Encoder(RobotMap.turnTableEncoderAChannel, RobotMap.turnTableEncoderBChannel);
@@ -81,8 +84,10 @@ public class Artemis extends Subsystem
         if (OI.turnTablePIDOn)
         {
             turnTablePIDOutput = new SoftPID();
-            turnTableController = new PIDController(TURNTABLE_P, TURNTABLE_I, TURNTABLE_D, turnTableEncoder, turnTablePIDOutput);
+            turnTableController = new SendablePIDController(TURNTABLE_P, TURNTABLE_I, TURNTABLE_D, turnTableEncoder, turnTablePIDOutput);
             turnTableController.setTolerance(5);
+            
+            SmartDashboard.putData("TurnTablePID", turnTableController);
         }
         
         turnTable = new Victor(RobotMap.turnTable);

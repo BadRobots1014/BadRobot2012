@@ -6,7 +6,6 @@ package com.badrobots.y2012.technetium.buttons;
 
 import com.badrobots.y2012.technetium.ImageProcessing;
 import com.badrobots.y2012.technetium.OI;
-import com.badrobots.y2012.technetium.commands.Balance;
 import com.badrobots.y2012.technetium.commands.GatherBallsAndAutoShoot;
 import com.badrobots.y2012.technetium.commands.GatherBallsAndManualShoot;
 import com.badrobots.y2012.technetium.subsystems.Demeter;

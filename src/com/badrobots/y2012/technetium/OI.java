@@ -3,6 +3,7 @@ package com.badrobots.y2012.technetium;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStationLCD;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /*
  * @author 1014 Programming Team
@@ -17,7 +18,6 @@ public class OI
     public static Joystick xboxController2;
 
     //This is where we will put the on/off functionality booleans
-    public static final boolean kinnectOn = false;
     public static final boolean PIDOn = true;
     public static final boolean shooterPIDOn = true;
     public static final boolean turnTablePIDOn = true;
@@ -42,6 +42,10 @@ public class OI
             System.out.println(e);
         }
 
+        SmartDashboard.putBoolean("CameraOn", cameraOn);
+        SmartDashboard.putBoolean("HermesPIDOn", PIDOn);
+        SmartDashboard.putBoolean("TurnTablePID", turnTablePIDOn);
+        SmartDashboard.putBoolean("ShooterPIDOn", shooterPIDOn);
     }
 
     /*

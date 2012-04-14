@@ -49,10 +49,9 @@ import java.io.IOException;
  */
 public class Technetium extends IterativeRobot
 {
-
-    Command firstCommand;
-    Button mecanumDriveTrigger, tankDriveTrigger, switchScaling, trackingButton;
-    protected ImageProcessing thread;
+    protected Command firstCommand;
+    protected Button switchScaling, trackingButton;
+    protected ImageProcessing imageProcessingThread;
     protected AxisCamera camera;
 
     /**
@@ -61,26 +60,25 @@ public class Technetium extends IterativeRobot
      */
     public void robotInit()
     {
-        // Initialize all subsystems
-        
         Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 
         if(OI.cameraOn)
         {
             camera = AxisCamera.getInstance();
 
-            thread = new ImageProcessing(camera);
-            thread.start();
+            imageProcessingThread = new ImageProcessing(camera);
+            imageProcessingThread.start();
         }
 
         //This is where all subsystems are actually initialized
-        CommandBase.init(thread);
-
+        CommandBase.init(imageProcessingThread);
+        
+        //puts all the commands into the SmartDashboard
+        SmartDashboard.putData(Scheduler.getInstance());
     }
 
     public void autonomousInit()
     {
-        //System.out.println("Init");
         if(OI.getDigitalIn(6))
             Scheduler.getInstance().add(new AutoShootHighKeyNoBridge());
         else if(OI.getDigitalIn(5))
@@ -98,7 +96,6 @@ public class Technetium extends IterativeRobot
      */
     public void autonomousPeriodic()
     {
-        //Scheduler.getInstance().add(new DriveToWall());//We need to test to see if this is stopped after autonomous is over
         Scheduler.getInstance().run();
     }
 
@@ -117,10 +114,9 @@ public class Technetium extends IterativeRobot
         if(OI.cameraOn)
         {
             System.out.println("ThreadStarted");
-            new TrackingButton(thread);
-            thread.setRunning(false);
+            new TrackingButton(imageProcessingThread);
+            imageProcessingThread.setRunning(false);
         }
-
     }
 
     /**
@@ -129,27 +125,22 @@ public class Technetium extends IterativeRobot
     public void teleopPeriodic()
     {
         //Feed it or it dies. And then stops the robot. From the grave. Really it is a poor metaphor.
+        //Yes quite a poor metaphor.
         Watchdog.getInstance().feed();
         
         //Runs the correct commands with their subsytems
         Scheduler.getInstance().run();     
         
-        //System.out.println("Encoder : "  + Artemis.getInstance().encoderValue());
-        //System.out.println("Range: " + Helios.getInstance().getUltraFrontRange());//  + " ranger: " + Artemis.getInstance().distanceToWall());
-        
         if (trackingButton == null)
-            trackingButton = new TrackingButton(thread);
+            trackingButton = new TrackingButton(imageProcessingThread);
     }
 
     public void disabledInit()
     {
-        System.out.println("Default IterativeRobot.disabledInit() method... Overload you!");
-        //Helios.getInstance().setNumBalls(0); //TODO
-        if (thread != null)
+        System.out.println("Default IterativeRobot.disabledInit() method... Overload yo momma!");
+        if (imageProcessingThread != null)
         {
-            thread.setRunning(false);
+            imageProcessingThread.setRunning(false);
         }
-        //else
-            //kinecter.setRunning(false);
     }
 }
