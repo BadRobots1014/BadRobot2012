@@ -70,11 +70,12 @@ public class Artemis extends Subsystem
         
         if (OI.shooterPIDOn)
         {
-            shooterGearTooth = new GearToothPID(RobotMap.shooterGearTooth);
+            //LUCAS- for some reason, the GearToothPID thread is not running its run method.
+            shooterGearTooth = new GearToothPID(RobotMap.shooterGearTooth);//GearToothPID(RobotMap.shooterGearTooth);
             shooterPIDOutput = new SoftPID();
             shooterController = new SendablePIDController(SHOOTER_P, SHOOTER_I, SHOOTER_D, shooterGearTooth, shooterPIDOutput);  
             
-            SmartDashboard.putData("ShooterPID" ,shooterController);
+            SmartDashboard.putData("ShooterPID", shooterController);
         }
         
         turnTableEncoder = new Encoder(RobotMap.turnTableEncoderAChannel, RobotMap.turnTableEncoderBChannel);
@@ -135,7 +136,7 @@ public class Artemis extends Subsystem
         //the setpoint is set to the max RPMs (which is 3600 RPM) times 6 (number of bolts in gearbox)
         shooterController.setSetpoint(speed*MAX_SPEED*6);
         
-        double speedToSet = shooterController.get();
+        double speedToSet = shooterPIDOutput.getValue();
         speedToSet = clampMotorValues(speedToSet);
         
         right.set(-speedToSet);
@@ -149,7 +150,7 @@ public class Artemis extends Subsystem
     {
         clampMotorValues(speed);
         
-        if (OI.shooterPIDOn)
+        if (false)//OI.shooterPIDOn)
         {
             PIDRun(speed);
         }
@@ -159,6 +160,8 @@ public class Artemis extends Subsystem
             right.set(-speed);
             left.set(speed);
         }
+        
+        SmartDashboard.putDouble("ShooterRate", shooterGearTooth.pidGet());
         
     }
 

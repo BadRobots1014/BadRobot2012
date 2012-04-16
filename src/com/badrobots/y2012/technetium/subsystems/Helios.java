@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
 import com.badrobots.y2012.technetium.RobotMap;
 import com.badrobots.y2012.technetium.commands.Monitor;
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /*
  * @author 1014 Programming Team
@@ -28,7 +29,8 @@ public class Helios extends Subsystem
 
     private static Helios sensors;
     private static Ultrasonic backUltrasonic;
-    public static AnalogChannel bottomSensor, topSensor, ultra;
+    public static DigitalInput bottomSensor;  
+    protected static AnalogChannel ultra;
     private static final double threshold = .7;
     private static final double spacing = 25;
     protected static int numBalls;
@@ -53,8 +55,7 @@ public class Helios extends Subsystem
         bottomCount = 0;
 
         gyro = new Gyro(RobotMap.horizontalGyro);
-        bottomSensor = new AnalogChannel(RobotMap.bottomSensor);
-        topSensor = new AnalogChannel(RobotMap.topSensor);
+        bottomSensor = new DigitalInput(RobotMap.bottomSensor);
         backUltrasonic = new Ultrasonic(RobotMap.ultrasonicOut, RobotMap.ultrasonicIn);
         backUltrasonic.setAutomaticMode(true);
         backUltrasonic.setEnabled(true);
@@ -72,35 +73,14 @@ public class Helios extends Subsystem
     }
 
     /*
-     * @return whether the top garage door sensor is obscured. This method uses
-     * analog threshold to detect this
-     */
-    public boolean topChannelBlocked()
-    {
-        //System.out.println(topSensor.getAverageVoltage());
-        if (topSensor.getAverageVoltage() < threshold)
-        {
-            topCount++;
-            if (topCount > 8)
-            {
-                return true;
-            }
-        }
-        else
-        {
-            topCount = 0;
-        }
-
-        return false;
-    }
-
-    /*
      * @return whether the bottom garage door sensor is obscured. This method
      * uses analog threshold to detect this
      */
     public boolean bottomChannelBlocked()
     {
-        if (bottomSensor.getAverageVoltage() < threshold)
+        System.out.println(bottomSensor.get());
+        SmartDashboard.putBoolean("TopChannelBlocked", bottomSensor.get());
+        if (!bottomSensor.get())
         {
             bottomCount++;
             if (bottomCount > 8)
@@ -123,6 +103,7 @@ public class Helios extends Subsystem
     {
         return gyro.getAngle();
     }
+
 
     public int getNumBalls()
     {

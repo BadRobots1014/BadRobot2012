@@ -63,12 +63,14 @@ public class Demeter extends Subsystem
         if(up)
         {
             conveyorDown = false;
-            conveyor.set(Relay.Value.kForward);//The actual direction is in fact backwards
+            conveyor.set(Relay.Value.kReverse);//The actual direction is in fact backwards
         }
         else if(down)
         {
             conveyorDown = true;
-            conveyor.set(Relay.Value.kReverse);
+            conveyor.set(Relay.Value.kForward
+                    
+                    ); //MIKE IS OTHER WAY. FORWARD IS REVERSE, VICE VERSA
         }
         else
         {

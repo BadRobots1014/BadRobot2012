@@ -33,6 +33,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
 import edu.wpi.first.wpilibj.camera.AxisCameraException;
+import edu.wpi.first.wpilibj.networktables.NetworkTableKeyNotDefined;
 import java.io.IOException;
 
 //import com.badrobots.y2012.technetium.buttons.ResetGyro;
@@ -72,9 +73,6 @@ public class Technetium extends IterativeRobot
 
         //This is where all subsystems are actually initialized
         CommandBase.init(imageProcessingThread);
-        
-        //puts all the commands into the SmartDashboard
-        SmartDashboard.putData(Scheduler.getInstance());
     }
 
     public void autonomousInit()
@@ -116,6 +114,18 @@ public class Technetium extends IterativeRobot
             System.out.println("ThreadStarted");
             new TrackingButton(imageProcessingThread);
             imageProcessingThread.setRunning(false);
+        }
+        
+        //puts all the commands into the SmartDashboard
+        SmartDashboard.putData(Scheduler.getInstance());
+       
+        try
+        {
+            System.out.println("Dashboard boolean: " + SmartDashboard.getBoolean("TurnTablePIDOn"));
+        }
+        catch (NetworkTableKeyNotDefined ex)
+        {
+            ex.printStackTrace();
         }
     }
 

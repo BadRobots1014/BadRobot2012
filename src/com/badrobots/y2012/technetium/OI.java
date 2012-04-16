@@ -20,7 +20,7 @@ public class OI
     //This is where we will put the on/off functionality booleans
     public static final boolean PIDOn = true;
     public static final boolean shooterPIDOn = true;
-    public static final boolean turnTablePIDOn = true;
+    public static final boolean turnTablePIDOn = false;
     public static final boolean cameraOn = false;
     /*
      * initializes all input methods (eg. joysticks)
@@ -44,7 +44,7 @@ public class OI
 
         SmartDashboard.putBoolean("CameraOn", cameraOn);
         SmartDashboard.putBoolean("HermesPIDOn", PIDOn);
-        SmartDashboard.putBoolean("TurnTablePID", turnTablePIDOn);
+        SmartDashboard.putBoolean("TurnTablePIDOn", turnTablePIDOn);
         SmartDashboard.putBoolean("ShooterPIDOn", shooterPIDOn);
     }
 

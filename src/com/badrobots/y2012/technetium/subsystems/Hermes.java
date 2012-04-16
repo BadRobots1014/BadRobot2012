@@ -20,7 +20,8 @@ public class Hermes extends Subsystem
 
     private static Hermes instance;
     private static RobotDrive drive;
-    public Jaguar lFront, lBack, rFront, rBack;
+    public Jaguar lFront, lBack, rFront;
+    public Victor rBack;
     private Gyro horizontalGyro;
     protected static double strafeCorrectionFactor = .165;
     protected static double oneForOneDepth = 5000; // millimeters
@@ -65,7 +66,7 @@ public class Hermes extends Subsystem
         lFront = new Jaguar(RobotMap.lFront);   //initializes all victors
         lBack = new Jaguar(RobotMap.lBack);
         rFront = new Jaguar(RobotMap.rFront);
-        rBack = new Jaguar(RobotMap.rBack);
+        rBack = new Victor(RobotMap.rBack);
 
         drive = new RobotDrive(lFront, lBack, rFront, rBack);   // feeds jaguars to RobotDrive
 
@@ -137,7 +138,6 @@ public class Hermes extends Subsystem
         //apply PID if it should
         scaledTurn = checkAndRunPIDOperations(scaledTurn);
 
-        //System.out.println(strafeY * orientation);
         drive.mecanumDrive_Cartesian(-strafeX * orientation, strafeY * orientation, scaledTurn, 0);
     }
 
