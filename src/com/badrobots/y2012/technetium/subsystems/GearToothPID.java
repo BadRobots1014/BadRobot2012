@@ -45,7 +45,7 @@ public class GearToothPID extends Thread implements PIDSource
                 }
                 
                 gearToothSpeed = 1/gearTooth.getPeriod();
-                System.out.println("GearToothSpeed " +  gearToothSpeed);
+                System.out.println("GearToothSpeed " +  gearTooth.get() + " " + gearTooth.getPeriod());
                 SmartDashboard.putDouble("GearToothSpeed", gearToothSpeed);
             }
         }
