@@ -7,6 +7,7 @@ package com.badrobots.y2012.technetium.subsystems;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.GearTooth;
 import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -20,10 +21,12 @@ public class GearToothPID extends Thread implements PIDSource
     protected double gearToothSpeed = -1;
     protected double gearToothPeriod = 0;
     protected int sleepTime = 50;
+    protected DigitalInput in;
     
     public GearToothPID(int port)
     {
-        gearTooth = new GearTooth(port);
+        gearTooth = new GearTooth(port, false);
+        //in = new DigitalInput(port);
         running = true;
         SmartDashboard.putDouble("GearToothSpeed", gearToothSpeed);
         gearTooth.reset();
@@ -50,8 +53,8 @@ public class GearToothPID extends Thread implements PIDSource
                 
                 
                 //gearToothPeriod = gearTooth.getPeriod();
-                gearToothSpeed = gearTooth.get();
-                System.out.println("GearToothSpeed " +  gearTooth.get());//+ " Period: " + gearTooth.getPeriod());
+              //  gearToothSpeed = gearTooth.get();
+                System.out.println("GearToothSpeed ");
                 SmartDashboard.putDouble("GearToothSpeed", gearToothSpeed);
                 //SmartDashboard.putDouble("GearToothPeriod", gearToothPeriod);
             }
