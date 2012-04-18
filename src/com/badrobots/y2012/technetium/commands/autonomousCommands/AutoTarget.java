@@ -6,6 +6,8 @@ package com.badrobots.y2012.technetium.commands.autonomousCommands;
 
 import com.badrobots.y2012.technetium.OI;
 import com.badrobots.y2012.technetium.commands.CommandBase;
+import edu.wpi.first.wpilibj.networktables.NetworkTableKeyNotDefined;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 /**
@@ -62,6 +64,8 @@ public class AutoTarget extends CommandBase {
 
     public void autoAlign()
     {
+        double xCoord;
+
         if (!OI.cameraOn)
             return;
 
@@ -71,10 +75,25 @@ public class AutoTarget extends CommandBase {
             turretTurn = 0;
             return;
         }
+                
+        else       
+            xCoord = imageProcessor.getCoords()[0];
+        
+        try
+        {
+            if (OI.smartdashboardImageProcessingOn && SmartDashboard.getBoolean("rectangleFound"))
+            {
+                xCoord = SmartDashboard.getInt("rectangleXCoord");
+            }
+        }
+        catch (NetworkTableKeyNotDefined ex)
+        {
+            
+        }
 
-        System.out.println("coords: " + imageProcessor.getCoords()[0]);
+        System.out.println("coords: " + xCoord);
 
-        double offAxis = 80 - imageProcessor.getCoords()[0];
+        double offAxis = 80 - xCoord;
         turretTurn = -offAxis;
 
         if (Math.abs(turretTurn) < 8)

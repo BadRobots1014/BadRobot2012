@@ -22,6 +22,7 @@ public class OI
     public static final boolean shooterPIDOn = true;
     public static final boolean turnTablePIDOn = false;
     public static final boolean cameraOn = false;
+    public static final boolean smartdashboardImageProcessingOn = false;
     /*
      * initializes all input methods (eg. joysticks)
      */
@@ -312,6 +313,11 @@ public class OI
         return secondXboxRBButton();
     }
 
+    
+    public static double getBatteryVoltage()
+    {
+        return ds.getBatteryVoltage();
+    }
 
     /*
      * Creates a deadzone for joysticks Status:Untested, must test scaling
