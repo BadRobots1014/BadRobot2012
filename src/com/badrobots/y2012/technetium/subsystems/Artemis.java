@@ -73,6 +73,7 @@ public class Artemis extends Subsystem
             //LUCAS- for some reason, the GearToothPID thread is not running its run method.
             shooterGearTooth = new GearToothPID(RobotMap.shooterGearTooth);//GearToothPID(RobotMap.shooterGearTooth);
             shooterGearTooth.start();//Maybe start it Jon?
+            // :) my b.
             shooterPIDOutput = new SoftPID();
             shooterController = new SendablePIDController(SHOOTER_P, SHOOTER_I, SHOOTER_D, shooterGearTooth, shooterPIDOutput);  
             

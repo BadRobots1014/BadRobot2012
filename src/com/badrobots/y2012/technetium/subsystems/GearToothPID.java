@@ -18,6 +18,7 @@ public class GearToothPID extends Thread implements PIDSource
     protected GearTooth gearTooth;
     protected boolean running = true;
     protected double gearToothSpeed = -1;
+    protected double gearToothPeriod = 0;
     protected int sleepTime = 50;
     
     public GearToothPID(int port)
@@ -25,6 +26,9 @@ public class GearToothPID extends Thread implements PIDSource
         gearTooth = new GearTooth(port);
         running = true;
         SmartDashboard.putDouble("GearToothSpeed", gearToothSpeed);
+        gearTooth.reset();
+        gearTooth.setMaxPeriod(2);
+        gearTooth.start();
     }
     
     public void run()
@@ -44,9 +48,12 @@ public class GearToothPID extends Thread implements PIDSource
                     ex.printStackTrace();
                 }
                 
-                gearToothSpeed = 1/gearTooth.getPeriod();
-                System.out.println("GearToothSpeed " +  gearTooth.get() + " " + gearTooth.getPeriod());
+                
+                //gearToothPeriod = gearTooth.getPeriod();
+                gearToothSpeed = gearTooth.get();
+                System.out.println("GearToothSpeed " +  gearTooth.get());//+ " Period: " + gearTooth.getPeriod());
                 SmartDashboard.putDouble("GearToothSpeed", gearToothSpeed);
+                //SmartDashboard.putDouble("GearToothPeriod", gearToothPeriod);
             }
         }
     }

@@ -74,8 +74,7 @@ public class Technetium extends IterativeRobot
 
         //This is where all subsystems are actually initialized
         CommandBase.init(imageProcessingThread);
-        
-        SmartDashboard.putData("BatterIndicatorWidget", new SendableBatteryVoltage());
+        System.out.println("initializrd robot");
     }
 
     public void autonomousInit()
