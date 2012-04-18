@@ -78,7 +78,7 @@ public class Helios extends Subsystem
      */
     public boolean bottomChannelBlocked()
     {
-        System.out.println(bottomSensor.get());
+        //System.out.println(bottomSensor.get());
         SmartDashboard.putBoolean("TopChannelBlocked", bottomSensor.get());
         if (!bottomSensor.get())
         {

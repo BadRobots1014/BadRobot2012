@@ -110,7 +110,7 @@ public class Hermes extends Subsystem
         double leftY = OI.getUsedLeftY();
         double rightX = OI.getUsedRightX();
         //TODO delete
-        System.out.println(rightX + " right X");
+        //System.out.println(rightX + " right X");
         double rightY = OI.getUsedRightY();
         double sensitivity = 1;//OI.getSensitivity();
         boolean useRightJoystickForStrafe = OI.rightStrafe();

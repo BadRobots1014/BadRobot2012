@@ -72,11 +72,13 @@ public class Artemis extends Subsystem
         {
             //LUCAS- for some reason, the GearToothPID thread is not running its run method.
             shooterGearTooth = new GearToothPID(RobotMap.shooterGearTooth);//GearToothPID(RobotMap.shooterGearTooth);
+            shooterGearTooth.start();//Maybe start it Jon?
             shooterPIDOutput = new SoftPID();
             shooterController = new SendablePIDController(SHOOTER_P, SHOOTER_I, SHOOTER_D, shooterGearTooth, shooterPIDOutput);  
             
             SmartDashboard.putData("ShooterPID", shooterController);
         }
+       
         
         turnTableEncoder = new Encoder(RobotMap.turnTableEncoderAChannel, RobotMap.turnTableEncoderBChannel);
         turnTableEncoder.start();
@@ -105,6 +107,13 @@ public class Artemis extends Subsystem
     {
         clampMotorValues(speed);
         turnTable.set(-speed);
+    }
+
+    public void setGearPIDRunning(boolean b)
+    {
+        if(shooterGearTooth != null)
+            shooterGearTooth.setRunning(b);
+        //System.out.println("RunningPID: " + b);
     }
 
     public void shootMiddle() // read distance from kinect/ultrasonic
@@ -160,7 +169,7 @@ public class Artemis extends Subsystem
             right.set(-speed);
             left.set(speed);
         }
-        
+
         SmartDashboard.putDouble("ShooterRate", shooterGearTooth.pidGet());
         
     }

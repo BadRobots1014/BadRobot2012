@@ -118,6 +118,12 @@ public class Technetium extends IterativeRobot
             new TrackingButton(imageProcessingThread);
             imageProcessingThread.setRunning(false);
         }
+
+        if(OI.shooterPIDOn)
+        {
+            System.out.println("EnablingHERE");
+            Artemis.getInstance().setGearPIDRunning(true);
+        }
         
         //puts all the commands into the SmartDashboard
         SmartDashboard.putData(Scheduler.getInstance());
@@ -155,5 +161,7 @@ public class Technetium extends IterativeRobot
         {
             imageProcessingThread.setRunning(false);
         }
+
+        Artemis.getInstance().setGearPIDRunning(false);
     }
 }

@@ -4,6 +4,7 @@
  */
 package com.badrobots.y2012.technetium.subsystems;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.GearTooth;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -30,10 +31,10 @@ public class GearToothPID extends Thread implements PIDSource
     {
         while(true)
         {
-            System.out.println("running outside run method loop");
-            if (true)
+            //System.out.println("running outside run method loop");
+            if (true)//if this is "running", the code breaks. Why?
             {   
-                System.out.println("running run method in GearToothPID");
+               // System.out.println("running run method in GearToothPID");
                 try
                 {
                     Thread.sleep(sleepTime);
@@ -44,6 +45,7 @@ public class GearToothPID extends Thread implements PIDSource
                 }
                 
                 gearToothSpeed = 1/gearTooth.getPeriod();
+                System.out.println("GearToothSpeed " +  gearTooth.get() + " " + gearTooth.getPeriod());
                 SmartDashboard.putDouble("GearToothSpeed", gearToothSpeed);
             }
         }
@@ -52,6 +54,11 @@ public class GearToothPID extends Thread implements PIDSource
     public double pidGet()
     {
         return gearToothSpeed;   
+    }
+
+    public void setRunning(boolean b)
+    {
+        running = b;
     }
     
     
