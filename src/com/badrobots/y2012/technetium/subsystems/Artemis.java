@@ -31,7 +31,7 @@ public class Artemis extends Subsystem
     private static Victor turnTable; //TODO Change to correct speed controller
     private static Ultrasonic ranger;
     
-    private static GearToothPID shooterGearTooth;
+    private static OpticalSensorPID shooterGearTooth;
     private static Encoder turnTableEncoder;
     
     protected SoftPID shooterPIDOutput;
@@ -70,12 +70,14 @@ public class Artemis extends Subsystem
         
         if (OI.shooterPIDOn)
         {
-            //LUCAS- for some reason, the GearToothPID thread is not running its run method.
-            shooterGearTooth = new GearToothPID(RobotMap.shooterGearTooth);//GearToothPID(RobotMap.shooterGearTooth);
-            shooterGearTooth.start();//Maybe start it Jon?
-            // :) my b.
+            //we will need to change this variable name, but it's fine
+            shooterGearTooth = new OpticalSensorPID();//GearToothPID(RobotMap.shooterGearTooth);
+            shooterGearTooth.start();
             shooterPIDOutput = new SoftPID();
             shooterController = new SendablePIDController(SHOOTER_P, SHOOTER_I, SHOOTER_D, shooterGearTooth, shooterPIDOutput);  
+            shooterController.setInputRange(0, 1);
+            shooterController.setOutputRange(0, 1);
+            shooterController.enable();
             
             SmartDashboard.putData("ShooterPID", shooterController);
         }
@@ -144,11 +146,12 @@ public class Artemis extends Subsystem
     public void PIDRun(double speed)
     { 
         //the setpoint is set to the max RPMs (which is 3600 RPM) times 6 (number of bolts in gearbox)
-        shooterController.setSetpoint(speed*MAX_SPEED*6);
+        shooterController.setSetpoint((1/MAX_SPEED)/speed);
         
         double speedToSet = shooterPIDOutput.getValue();
         speedToSet = clampMotorValues(speedToSet);
         
+        System.out.println("speed to set  " + speedToSet);
         right.set(-speedToSet);
         left.set(speedToSet);
     }
@@ -160,7 +163,7 @@ public class Artemis extends Subsystem
     {
         clampMotorValues(speed);
         
-        if (false)//OI.shooterPIDOn)
+        if (OI.shooterPIDOn)
         {
             PIDRun(speed);
         }
