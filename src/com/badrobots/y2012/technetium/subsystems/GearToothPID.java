@@ -23,21 +23,21 @@ public class GearToothPID extends Thread implements PIDSource
     protected double gearToothPeriod = 0;
     protected int sleepTime = 50;
     protected boolean inChannel = false;
-    protected DigitalInput in;
+   // protected DigitalInput in;
 
     public GearToothPID(int port)
     {
-        //gearTooth = new GearTooth(port, false);
-        in = new DigitalInput(port);
+        gearTooth = new GearTooth(port, false);
+        //in = new DigitalInput(port);
         running = true;
-        /*gearTooth.reset();
+        gearTooth.reset();
         gearTooth.setMaxPeriod(2);
         gearTooth.start();
 
         gearToothSpeed = gearTooth.get();
-        stopped = gearTooth.getStopped();*/
+        stopped = gearTooth.getStopped();
         
-        inChannel = in.get();
+        //inChannel = in.get();
         
         SmartDashboard.putBoolean("DigitalInput", inChannel);
        /// SmartDashboard.putBoolean("GearToothStopped", stopped);
@@ -53,11 +53,11 @@ public class GearToothPID extends Thread implements PIDSource
                 // System.out.println("running run method in GearToothPID");
 
                 //gearToothPeriod = gearTooth.getPeriod();
-                /*gearToothSpeed = gearTooth.get();
+                gearToothSpeed = gearTooth.get();
                 stopped = gearTooth.getStopped();
-                System.out.println("GearToothCount " + gearToothSpeed);*/
+                System.out.println("GearToothCount " + gearToothSpeed);
                 
-                inChannel = in.get();
+               // inChannel = in.get();
                 SmartDashboard.putBoolean("DigitalInput", inChannel);
                 //SmartDashboard.putDouble("GearToothPeriod", gearToothPeriod);
             }
