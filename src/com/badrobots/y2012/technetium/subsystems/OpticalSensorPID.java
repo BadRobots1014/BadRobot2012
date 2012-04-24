@@ -45,6 +45,7 @@ public class OpticalSensorPID extends Thread implements PIDSource
                 //this is the variable we will use to PID. The smaller this value is,
                 //the faster the wheel is turning
                 rate = counter.getPeriod();
+                //System.out.println("Rate: " + rate);
             }
             try
             {
@@ -64,7 +65,9 @@ public class OpticalSensorPID extends Thread implements PIDSource
 
     public double pidGet()
     {
-        if (!(rate < 1 && rate > 0))
+        /*if (!(rate < 1 && rate > 0))
+            return 1;*/
+        if(rate > 1)
             return 1;
         
         return rate;

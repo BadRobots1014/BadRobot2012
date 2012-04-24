@@ -42,7 +42,7 @@ public class Artemis extends Subsystem
     protected SendablePIDController shooterController;
     protected SendablePIDController turnTableController; 
    
-    public static final int MAX_SPEED = 3600;
+    public static final double MAX_SPEED = 3600;
 
     public static final double SHOOTER_P = .01;
     public static final double SHOOTER_I = 0;
@@ -146,7 +146,15 @@ public class Artemis extends Subsystem
     public void PIDRun(double speed)
     { 
         //the setpoint is set to the max RPMs (which is 3600 RPM) times 6 (number of bolts in gearbox)
-        shooterController.setSetpoint((1/MAX_SPEED)/speed);
+        if(speed == 0)
+        {
+            right.set(0);
+            left.set(0);
+            return;
+        }
+        shooterController.setSetpoint((1/MAX_SPEED)*speed);
+        System.out.println("TestMath" + (1/MAX_SPEED)*speed);
+
         
         double speedToSet = shooterPIDOutput.getValue();
         speedToSet = clampMotorValues(speedToSet);
@@ -162,6 +170,9 @@ public class Artemis extends Subsystem
     public void run(double speed)
     {
         clampMotorValues(speed);
+
+        //System.out.println("Rate2: " + shooterGearTooth.pidGet());
+        
         
         if (OI.shooterPIDOn)
         {
