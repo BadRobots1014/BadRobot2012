@@ -42,7 +42,8 @@ public class Artemis extends Subsystem
     protected SendablePIDController shooterController;
     protected SendablePIDController turnTableController; 
    
-    public static final double MAX_SPEED = 3600;
+    //public static final double MAX_SPEED = 3600;
+    public static final double TOP_SPEED_PERIOD = .018;
 
     public static final double SHOOTER_P = .01;
     public static final double SHOOTER_I = 0;
@@ -75,7 +76,7 @@ public class Artemis extends Subsystem
             shooterGearTooth.start();
             shooterPIDOutput = new SoftPID();
             shooterController = new SendablePIDController(SHOOTER_P, SHOOTER_I, SHOOTER_D, shooterGearTooth, shooterPIDOutput);  
-            shooterController.setInputRange(0, 1);
+            shooterController.setInputRange(0, 1.1);
             shooterController.setOutputRange(0, 1);
             shooterController.enable();
             
@@ -152,11 +153,14 @@ public class Artemis extends Subsystem
             left.set(0);
             return;
         }
-        shooterController.setSetpoint((1/MAX_SPEED)*speed);
-        System.out.println("TestMath" + (1/MAX_SPEED)*speed);
+        double toSet = 1/TOP_SPEED_PERIOD;
+        toSet = toSet * speed;
+        shooterController.setSetpoint(toSet);
+        System.out.println("TestMath" + toSet);
 
         
-        double speedToSet = shooterPIDOutput.getValue();
+        double speedToSet = shooterController.get();
+        //System.out.println("speed to set before " + speedToSet);
         speedToSet = clampMotorValues(speedToSet);
         
         System.out.println("speed to set  " + speedToSet);
@@ -183,6 +187,7 @@ public class Artemis extends Subsystem
         {
             right.set(-speed);
             left.set(speed);
+            System.out.println("Period: " + shooterGearTooth.pidGet());
         }
 
         SmartDashboard.putDouble("ShooterRate", shooterGearTooth.pidGet());
