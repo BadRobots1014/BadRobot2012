@@ -20,8 +20,7 @@ public class Hermes extends Subsystem
 
     private static Hermes instance;
     private static RobotDrive drive;
-    public Jaguar lFront, lBack, rFront;
-    public Victor rBack;
+    public Jaguar lFront, lBack, rFront,rBack;
     private Gyro horizontalGyro;
     protected static double strafeCorrectionFactor = .165;
     protected static double oneForOneDepth = 5000; // millimeters
@@ -66,7 +65,7 @@ public class Hermes extends Subsystem
         lFront = new Jaguar(RobotMap.lFront);   //initializes all victors
         lBack = new Jaguar(RobotMap.lBack);
         rFront = new Jaguar(RobotMap.rFront);
-        rBack = new Victor(RobotMap.rBack);
+        rBack = new Jaguar(RobotMap.rBack);
 
         drive = new RobotDrive(lFront, lBack, rFront, rBack);   // feeds jaguars to RobotDrive
 

@@ -27,9 +27,9 @@ public class OpticalSensorPID extends Thread implements PIDSource
     {
         counter = new Counter(RobotMap.opticalSensor);
         running = true;
+        counter.setMaxPeriod(2);
         
         SmartDashboard.putDouble("Period", rate);
-        SmartDashboard.putDouble("CounterReadout", count);
     }
     
     public void run()
@@ -38,13 +38,13 @@ public class OpticalSensorPID extends Thread implements PIDSource
 
         while (true)
         {
-            if (running)
-            {
-                count = counter.get();
-                
+            if (true)
+            {                
                 //this is the variable we will use to PID. The smaller this value is,
                 //the faster the wheel is turning
                 rate = counter.getPeriod();
+                SmartDashboard.putDouble("Period", rate);
+                System.out.println(counter.get() + " : " + counter.getPeriod());
             }
             try
             {

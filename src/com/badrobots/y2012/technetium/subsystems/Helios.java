@@ -56,9 +56,9 @@ public class Helios extends Subsystem
 
         gyro = new Gyro(RobotMap.horizontalGyro);
         bottomSensor = new DigitalInput(RobotMap.bottomSensor);
-        backUltrasonic = new Ultrasonic(RobotMap.ultrasonicOut, RobotMap.ultrasonicIn);
-        backUltrasonic.setAutomaticMode(true);
-        backUltrasonic.setEnabled(true);
+        //backUltrasonic = new Ultrasonic(RobotMap.ultrasonicOut, RobotMap.ultrasonicIn);
+        //backUltrasonic.setAutomaticMode(true);
+        //backUltrasonic.setEnabled(true);
         lastRange = 0;
     }
     
@@ -69,7 +69,7 @@ public class Helios extends Subsystem
 
     public double getUltraBackRange()
     {
-        return backUltrasonic.getRangeMM();
+        return 0; //backUltrasonic.getRangeMM();
     }
 
     /*

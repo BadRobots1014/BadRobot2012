@@ -27,11 +27,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Artemis extends Subsystem
 {
     private static Artemis instance;
-    private static Victor right, left;
+    private static Victor right, left; //MIKE RIGHT MOTOR IS NEGATIZED, LEFT IS POSITIVE
     private static Victor turnTable; //TODO Change to correct speed controller
     private static Ultrasonic ranger;
     
-    private static OpticalSensorPID shooterGearTooth;
+    private static OpticalSensorPID shooterSensor;
     private static Encoder turnTableEncoder;
     
     protected SoftPID shooterPIDOutput;
@@ -42,11 +42,15 @@ public class Artemis extends Subsystem
     protected SendablePIDController shooterController;
     protected SendablePIDController turnTableController; 
    
-    public static final int MAX_SPEED = 3600;
+    public static final int MAX_SPEED = 60;
 
     public static final double SHOOTER_P = .01;
     public static final double SHOOTER_I = 0;
     public static final double SHOOTER_D = 0;
+    
+    public static final double SHOOTER_HIGH_PERIOD = .016;
+    public static final double SHOOTER_LOW_PERIOD = .024;
+    public static final double SHOOTER_DIFFERENCE_PERIOD = SHOOTER_LOW_PERIOD - SHOOTER_HIGH_PERIOD;
     
     public static final double TURNTABLE_P = .01;
     public static final double TURNTABLE_I = 0;
@@ -71,16 +75,19 @@ public class Artemis extends Subsystem
         if (OI.shooterPIDOn)
         {
             //we will need to change this variable name, but it's fine
-            shooterGearTooth = new OpticalSensorPID();//GearToothPID(RobotMap.shooterGearTooth);
-            shooterGearTooth.start();
+            shooterSensor = new OpticalSensorPID();//GearToothPID(RobotMap.shooterGearTooth);
+            shooterSensor.start();
             shooterPIDOutput = new SoftPID();
-            shooterController = new SendablePIDController(SHOOTER_P, SHOOTER_I, SHOOTER_D, shooterGearTooth, shooterPIDOutput);  
+            shooterController = new SendablePIDController(SHOOTER_P, SHOOTER_I, SHOOTER_D, shooterSensor, shooterPIDOutput);  
             shooterController.setInputRange(0, 1);
             shooterController.setOutputRange(0, 1);
             shooterController.enable();
             
             SmartDashboard.putData("ShooterPID", shooterController);
         }
+        
+        shooterSensor = new OpticalSensorPID();//GearToothPID(RobotMap.shooterGearTooth);
+        shooterSensor.start();
        
         
         turnTableEncoder = new Encoder(RobotMap.turnTableEncoderAChannel, RobotMap.turnTableEncoderBChannel);
@@ -114,8 +121,8 @@ public class Artemis extends Subsystem
 
     public void setGearPIDRunning(boolean b)
     {
-        if(shooterGearTooth != null)
-            shooterGearTooth.setRunning(b);
+        if(shooterSensor != null)
+            shooterSensor.setRunning(b);
         //System.out.println("RunningPID: " + b);
     }
 
@@ -145,16 +152,26 @@ public class Artemis extends Subsystem
      */
     public void PIDRun(double speed)
     { 
-        //the setpoint is set to the max RPMs (which is 3600 RPM) times 6 (number of bolts in gearbox)
+        if (speed == 0)
+        {
+            left.set(.15);
+            right.set(-.15);
+            return;
+        }
+        //the setpoint is set to the max RPSs (which is 60 RPS) times speed (number of bolts in gearbox)
         shooterController.setSetpoint((1/MAX_SPEED)/speed);
         
-        double speedToSet = shooterPIDOutput.getValue();
-        speedToSet = clampMotorValues(speedToSet);
+        System.out.println("ShooterSensor " + shooterSensor.pidGet());
+        System.out.println("Speed to set " + shooterController.get());
+        System.out.println("Speed given by output class " + shooterPIDOutput.getValue());
         
-        System.out.println("speed to set  " + speedToSet);
+        double speedToSet = shooterController.get();
+        SmartDashboard.putDouble("SpeedToSet", speedToSet);
+        
         right.set(-speedToSet);
         left.set(speedToSet);
     }
+    
     
     /*
      * Runs both motors at 'speed' speed
@@ -163,7 +180,13 @@ public class Artemis extends Subsystem
     {
         clampMotorValues(speed);
         
-        if (OI.shooterPIDOn)
+        if(OI.bangBangOn)
+        {
+            bangBangRun(speed);
+            
+        }
+        
+        else if (OI.shooterPIDOn)
         {
             PIDRun(speed);
         }
@@ -174,7 +197,40 @@ public class Artemis extends Subsystem
             left.set(speed);
         }
 
-        SmartDashboard.putDouble("ShooterRate", shooterGearTooth.pidGet());
+        SmartDashboard.putDouble("ShooterSpeed", speed);
+        
+    }
+    
+    public void bangBangRun(double speed)
+    {
+        if(speed < .1)
+        {
+            right.set(0);
+            left.set(0);
+            return;
+        }
+        
+        double scale = (1/SHOOTER_HIGH_PERIOD - 1/SHOOTER_LOW_PERIOD) * speed;
+        double wanted = scale + 1/SHOOTER_LOW_PERIOD;
+        wanted = 1/wanted;
+        
+        System.out.println("wanted: " + wanted);
+        
+        if(shooterSensor.pidGet() > wanted)
+        {
+            right.set(-1);
+            left.set(1);
+            System.out.println("wanted: (speeding up)" + wanted);
+
+        }
+        else
+        {
+            right.set(0);
+            left.set(0);
+            System.out.println("wanted: (speeding down)" + wanted);
+
+        }
+        
         
     }
 
@@ -246,6 +302,11 @@ public class Artemis extends Subsystem
             return ranger.getRangeMM();
         
         return -1;
+    }
+    
+    public double getShooterSpeed()
+    {
+        return left.get();
     }
     
 
