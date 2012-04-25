@@ -4,6 +4,7 @@
  */
 package com.badrobots.y2012.technetium.commands;
 
+import com.badrobots.y2012.technetium.OI;
 import com.badrobots.y2012.technetium.subsystems.Artemis;
 import com.badrobots.y2012.technetium.subsystems.Helios;
 import com.badrobots.y2012.technetium.subsystems.Demeter;
@@ -17,6 +18,8 @@ public class Monitor extends CommandBase {
 
     private boolean topWasBlocked;
     private boolean bottomWasBlocked;
+    boolean toggle = false;
+    boolean camera = false;
 
     public Monitor() {
         requires(sensors);
@@ -27,6 +30,7 @@ public class Monitor extends CommandBase {
     {
         topWasBlocked = false;
         bottomWasBlocked = false;
+        OI.setDigitalOutput(8, camera);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -64,7 +68,18 @@ public class Monitor extends CommandBase {
 
         updateDriverstationBallCount();
          */
-        sensors.closerThan(1);
+        //sensors.closerThan(1);
+        if(OI.secondXboxXButton())
+        {
+            toggle = true;
+        }
+        else if(toggle)
+        {
+            toggle = false;
+            camera = !camera;
+            OI.setDigitalOutput(9, camera);
+        }
+        
     }
     
     public void updateDriverstationBallCount()

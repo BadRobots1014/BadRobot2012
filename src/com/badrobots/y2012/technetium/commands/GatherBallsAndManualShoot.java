@@ -281,6 +281,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         turretTurn = .7 * OI.secondXboxLeftX();
         //System.out.println("Turret Turn: " + turretTurn);
         shooter.turn(-turretTurn);
+        //System.out.println("Turreting:" + turretTurn);
     }
 
     
