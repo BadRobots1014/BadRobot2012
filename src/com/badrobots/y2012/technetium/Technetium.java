@@ -151,6 +151,8 @@ public class Technetium extends IterativeRobot
         
         if (trackingButton == null)
             trackingButton = new TrackingButton(imageProcessingThread);
+
+        //SmartDashboard.putDouble("Testing", .5);
     }
 
     public void disabledInit()

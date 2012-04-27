@@ -199,6 +199,7 @@ public class Hermes extends Subsystem
     public double checkAndRunPIDOperations(double rotation)
     {
         double finalRotation = rotation;
+        //System.out.println("Gyro:" + horizontalGyro.getAngle());
         if (pidController == null)
             return rotation;
 

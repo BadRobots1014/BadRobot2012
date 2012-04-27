@@ -32,7 +32,7 @@ public class AutoBridgeDown extends CommandBase {
     {
         timer.delay(.3);
         bridgeTool.setMotor(1);
-        timer.delay(.6);
+        timer.delay(1.2);
         bridgeTool.setMotor(0);
 
         once = true;

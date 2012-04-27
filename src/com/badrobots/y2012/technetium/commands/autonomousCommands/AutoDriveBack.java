@@ -4,6 +4,7 @@
  */
 package com.badrobots.y2012.technetium.commands.autonomousCommands;
 
+import com.badrobots.y2012.technetium.OI;
 import com.badrobots.y2012.technetium.commands.CommandBase;
 import edu.wpi.first.wpilibj.Timer;
 
@@ -34,11 +35,11 @@ public class AutoDriveBack extends CommandBase {
 
         double currentAngle = sensors.getGyroAngle();
         if(Math.abs(currentAngle - startingAngle) < 5)
-            driveTrain.autoMechanumDrive(0, -.2, 0);
+            driveTrain.autoMechanumDrive(0, -.3, 0);
         else if(currentAngle - startingAngle > 0)
-            driveTrain.autoMechanumDrive(0, -.2, -.16);
+            driveTrain.autoMechanumDrive(0, -.3, -.16);
          else if(currentAngle - startingAngle < 0)
-            driveTrain.autoMechanumDrive(0, -.2, .16);
+            driveTrain.autoMechanumDrive(0, -.3, .16);
 
         done = true;
 
@@ -46,7 +47,7 @@ public class AutoDriveBack extends CommandBase {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return  (timer.getFPGATimestamp() - startTime) > 6;
+        return  (timer.getFPGATimestamp() - startTime) > OI.getAnalogIn(3);
     }
 
     // Called once after isFinished returns true

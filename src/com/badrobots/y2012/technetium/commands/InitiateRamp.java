@@ -14,15 +14,19 @@ public class InitiateRamp extends CommandBase
 {
     protected double startTime = 0;
     protected double currentTime = 0;
-    public static final double ARM_TIME = 10;
-    public static final double DRIVE_TIME = 5;
+    public static final double ARM_TIME = 2;
+    public static final double DRIVE_TIME = 4;
+    public static final double MOUNT_TIME = 3;
     
     protected boolean armDown = false;
     protected boolean driveForward = false;
+    protected boolean slowArmDown = false;
+    protected boolean slowDriveForward = false;
     
     protected static final int DEPLOY_ARM_PHASE = 1;
     protected static final int DRIVE_FORWARD_PHASE = 2;
     protected static final int COMPLETED_PHASE = 3;
+    protected static final int MOUNT_RAMP_PHASE = 3;
     
     protected int phase = DEPLOY_ARM_PHASE;
 
@@ -58,16 +62,33 @@ public class InitiateRamp extends CommandBase
             else
             {
                 startTime = currentTime;
-                phase = DRIVE_FORWARD_PHASE;
+                phase = MOUNT_RAMP_PHASE;
             }
             break;
-                
+
+            case MOUNT_RAMP_PHASE:
+            if(timeDifference < MOUNT_TIME)
+            {
+                armDown = false;
+                driveForward = false;
+                slowArmDown = true;
+                slowDriveForward = true;
+            }
+            else
+            {
+                startTime = currentTime;
+                phase = MOUNT_RAMP_PHASE;
+            }
+            break;
+
             case DRIVE_FORWARD_PHASE:
             //if it is now in the time period that the robot should be driving
             if (timeDifference < DRIVE_TIME)
             {
                 driveForward = true;
                 armDown = false;
+                slowArmDown = false;
+                slowDriveForward = false;
             }
             
             //if the robot driving time has expired
@@ -90,6 +111,18 @@ public class InitiateRamp extends CommandBase
             driveTrain.tankDrive(.3, .3);
         else
             driveTrain.tankDrive(0, 0);
+
+        if(slowDriveForward)
+            driveTrain.tankDrive(.2, .2);
+        else
+            driveTrain.tankDrive(0, 0);
+
+        if(slowArmDown)
+            bridgeTool.setMotor(.4);
+        else
+            bridgeTool.setMotor(-.4);
+
+
         
     }
 

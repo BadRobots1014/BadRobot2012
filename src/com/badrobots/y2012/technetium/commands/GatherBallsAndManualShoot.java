@@ -41,7 +41,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         //if (Helios.getInstance().topChannelBlocked())
             //topBlocked = true;
 
-        shooterSpeed = .35;
+        shooterSpeed = .45;
     }
 
     /*
@@ -241,7 +241,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
 
         if(OI.secondXboxXButton())//Reset to key speed
         {
-            manualShooterSpeed = .35;
+            manualShooterSpeed = .45;
         }
 
         
@@ -278,7 +278,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
     public void runTurretingOperations()
     {
         OI.setDigitalOutput(1, false);
-        turretTurn = .7 * OI.secondXboxLeftX();
+        turretTurn = .3 * OI.secondXboxLeftX();
         //System.out.println("Turret Turn: " + turretTurn);
         shooter.turn(-turretTurn);
         //System.out.println("Turreting:" + turretTurn);

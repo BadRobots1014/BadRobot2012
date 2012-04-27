@@ -16,7 +16,7 @@ public class AutoShootHighKeyDriveBack extends CommandGroup {
     public AutoShootHighKeyDriveBack()//NEEDS TESTING
     {
         //addSequential(new AutoTarget()); TODO
-        addSequential(new AutoShootAndGather(OI.getAnalogIn(2), true, 6));
+        addSequential(new AutoShootAndGather(OI.getAnalogIn(2), true, 5));
         addSequential(new AutoDriveBack());
         //addSequential(new AutoBridgeDown());
     }

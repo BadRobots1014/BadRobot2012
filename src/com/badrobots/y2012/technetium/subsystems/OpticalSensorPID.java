@@ -66,12 +66,15 @@ public class OpticalSensorPID extends Thread implements PIDSource
     {
         /*if (!(rate < 1 && rate > 0))
             return 1;*/
-        System.out.println("rate1:" + 1/rate);
-        if(1/rate < .1)
-            return .1;
+        
+        if(1/rate < 1)//1/rate for bb
+        {
+            System.out.println("rate1:" + 1);
+            return 1;
+        }
 
         //System.out.println("rate2:" + rate);
-        
-        return 1/rate;
+        //System.out.println("rate1:" + 1/rate);//1/rate for bb
+        return 1/rate;//1/rate for bb
     }
 }
