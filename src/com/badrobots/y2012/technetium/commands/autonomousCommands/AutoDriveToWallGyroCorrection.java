@@ -42,15 +42,18 @@ public class AutoDriveToWallGyroCorrection extends CommandBase {
     // Called repeatedly when this Command is scheduled to run
     protected void execute()
     {
-        double currentAngle = sensors.getGyroAngle();
+        driveTrain.mechanumWithGyro(0, .16, sensors.getGyro().getAngle());
+        /*double currentAngle = sensors.getGyroAngle();
         System.out.println("Ultra: " + sensors.getUltraBackRange() + " : " + currentAngle);
 
-        if(Math.abs(currentAngle - startingAngle) < 3)
+
+
+        if(Math.abs(currentAngle - startingAngle) < 2)
             driveTrain.autoMechanumDrive(0, .3, 0);
         else if(currentAngle - startingAngle > 0)
             driveTrain.autoMechanumDrive(0, .3, -.16);
          else if(currentAngle - startingAngle < 0)
-            driveTrain.autoMechanumDrive(0, .3, .16);
+            driveTrain.autoMechanumDrive(0, .3, .16);*/
 
 
     }

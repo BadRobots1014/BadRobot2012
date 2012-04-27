@@ -133,21 +133,21 @@ public class Artemis extends Subsystem
     {
         //determine shooter speed through regression equation determined through testing
         int speed = 0;
-        run(speed);
+        run(speed, false);
     }
 
     public void shootHigh() // read distance from kinect/ultrasonic
     {
         //determine shooter speed through regression equation determined through testing
         double speed = .45;
-        run(speed);
+        run(speed, false);
     }
 
     public void shootLow() // read distance from kinect/ultrasonic
     {
         //determine shooter speed through regression equation determined through testing
         int speed = 0;
-        run(speed);
+        run(speed, false);
     }
     
     /*
@@ -177,19 +177,28 @@ public class Artemis extends Subsystem
         right.set(-speedToSet);
         left.set(speedToSet);
     }
-    
+
+    public void run(double speed)
+    {
+        run(speed, false);
+    }
     
     /*
      * Runs both motors at 'speed' speed
      */
-    public void run(double speed)
+    public void run(double speed, boolean maxPower)
     {
         clampMotorValues(speed);
 
         //System.out.println("Rate2: " + shooterGearTooth.pidGet());
+
+        if(maxPower)
+        {
+            right.set(-.8);
+            left.set(.8);
+        }
         
-        
-        if(OI.bangBangOn)
+        else if(OI.bangBangOn)
         {
             bangBangRun(speed);
             

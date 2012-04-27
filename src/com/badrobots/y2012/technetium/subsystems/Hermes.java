@@ -156,9 +156,9 @@ public class Hermes extends Subsystem
             changeDirection = false;
         }
         if(orientation < 0)
-            LEDS.set(Relay.Value.kOn);
-        else
             LEDS.set(Relay.Value.kOff);
+        else
+            LEDS.set(Relay.Value.kOn);
     }
 
     public boolean checkForPIDButton()
@@ -288,6 +288,10 @@ public class Hermes extends Subsystem
         rBack.set(right);
     }
 
+    public void mechanumWithGyro(double x, double y, double angle)
+    {
+        drive.mecanumDrive_Cartesian(x, y, 0, angle);
+    }
 
     /*
      * Right now, this will not be called because we don't have a gyro hooked

@@ -29,6 +29,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
     protected boolean shooterTriggerDown = false;
     public static boolean shootingNow = false;
     private static boolean collectingNow = false;
+    private static boolean maxPower;
     
 
     
@@ -44,6 +45,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             //topBlocked = true;
 
         shooterSpeed = .45;
+        maxPower = false;
     }
 
     /*
@@ -79,7 +81,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         ballGatherer.runConveyor(conveyorUp, conveyorDown);
         //System.out.println("Shooting at: " + shooterSpeed);
 
-        shooter.run(shooterSpeed);
+        shooter.run(shooterSpeed, maxPower);
 
 
         //System.out.println("HEREAAAAA: s" + sensors.getGyroAngle());
@@ -210,6 +212,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
     public void runShootingOperations()
     {
 
+
         if(OI.secondXboxStartButton())
         {
             switchSpeedUp = true;
@@ -268,9 +271,17 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             {
                 shooterSpeed = manualShooterSpeed;
             }
+
+           if(!manualOveride && OI.secondXboxBButton())
+        {
+            maxPower = true;
+        }
+        else
+            maxPower = false;
        }
         else
              shooterSpeed = 0;
+
         UpdateDS(manualShooterSpeed , shootingNow);
 
         //OI.printToDS("ultra " + sensors.getUltraBackRange());
@@ -281,6 +292,8 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
     {
         OI.setDigitalOutput(1, false);
         turretTurn = .3 * OI.secondXboxLeftX();
+        if(turretTurn < 0)
+            turretTurn *= 1.6;
         //System.out.println("Turret Turn: " + turretTurn);
         shooter.turn(-turretTurn);
         //System.out.println("Turreting:" + turretTurn);
