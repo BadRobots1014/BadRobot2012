@@ -22,6 +22,7 @@ public class Hermes extends Subsystem
     private static RobotDrive drive;
     public Jaguar lFront, lBack, rFront,rBack;
     private Gyro horizontalGyro;
+    private Relay LEDS;
     protected static double strafeCorrectionFactor = .165;
     protected static double oneForOneDepth = 5000; // millimeters
     protected static final double P = .01;
@@ -68,6 +69,8 @@ public class Hermes extends Subsystem
         rBack = new Jaguar(RobotMap.rBack);
 
         drive = new RobotDrive(lFront, lBack, rFront, rBack);   // feeds jaguars to RobotDrive
+        LEDS = new Relay(RobotMap.LEDCircle);
+        LEDS.setDirection(Relay.Direction.kForward);
 
         drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
         //drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true); 
@@ -152,6 +155,10 @@ public class Hermes extends Subsystem
             orientation = orientation * -1;
             changeDirection = false;
         }
+        if(orientation < 0)
+            LEDS.set(Relay.Value.kOn);
+        else
+            LEDS.set(Relay.Value.kOff);
     }
 
     public boolean checkForPIDButton()

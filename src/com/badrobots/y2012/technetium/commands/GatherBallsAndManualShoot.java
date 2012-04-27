@@ -5,6 +5,8 @@ import com.badrobots.y2012.technetium.subsystems.Helios;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 /*
  * @author 1014 Programming Team
@@ -419,6 +421,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         OI.setDigitalOutput(3, two);
         OI.setDigitalOutput(2, one);
         OI.setDigitalOutput(6, shooting);
+        SmartDashboard.putBoolean(" ", shooting);
 
         return;
 

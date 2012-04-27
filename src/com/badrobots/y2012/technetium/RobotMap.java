@@ -41,4 +41,5 @@ public class RobotMap
     public static final int turnTableEncoderBChannel = 2;
     public static final int shooterGearTooth = 5;
     public static final int opticalSensor = 6;
+    public static final int LEDCircle = "This needs calibration";
 }
