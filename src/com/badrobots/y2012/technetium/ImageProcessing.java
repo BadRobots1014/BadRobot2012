@@ -1,6 +1,12 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * This is the image processing thread. It takes images from the webcam and uses 
+ * an analysis algorithm to separate out the backboard targets. It has a method to return
+ * an array of coordinates for the processed targets. The thread runs at the minimum priority
+ * as to reduce lag in the robot.
+ * 
+ * It was not used in competition, and it was still buggy near the end of testing. The problems
+ * are more likely to be in the tuning of the ranges and not in the logic itself.
+ *
  */
 package com.badrobots.y2012.technetium;
 
@@ -17,21 +23,32 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class ImageProcessing extends Thread
 {
-    protected static final boolean LOGGING = false;
+    //whether or not it is printing debugging lines to the terminal
+    protected static final boolean LOGGING = false; 
+    //The webcam on top of the shooter
     protected AxisCamera camera;
+    //The particle analysis report which is returned after processing an image
     protected ParticleAnalysisReport[] toReturn;
+    //How long to wait in between images. Increasing this value decreaces processing power used
     protected int sleepTimer = 100;
+    //Whether or not images are currently being processed
     protected boolean running;
+    //The coordinates of the detected targets
     protected int[] coords;
+    //Filter used for certain operations. Currently unused
     protected CriteriaCollection criteria;
 
-
+    /*
+     *
+     */
     public ImageProcessing(AxisCamera c)
     {
-        camera = c;
-        this.setPriority(MIN_PRIORITY);
+        //The thread starts with the images being processed, and the thread at minimum priority
         running = true;
-        
+        this.setPriority(MIN_PRIORITY);
+
+
+        camera = c;
         camera.writeResolution(AxisCamera.ResolutionT.k160x120);
         
         coords = new int[2];
