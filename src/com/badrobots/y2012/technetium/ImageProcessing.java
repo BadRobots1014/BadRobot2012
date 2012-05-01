@@ -39,7 +39,7 @@ public class ImageProcessing extends Thread
     protected CriteriaCollection criteria;
 
     /*
-     *
+     *  @Param c AxisCamera being used
      */
     public ImageProcessing(AxisCamera c)
     {
@@ -47,28 +47,37 @@ public class ImageProcessing extends Thread
         running = true;
         this.setPriority(MIN_PRIORITY);
 
-
+        //The camera is constructed here, and the resolution is set to the minimum
         camera = c;
         camera.writeResolution(AxisCamera.ResolutionT.k160x120);
-        
+
+        //The coordinates are filled with the null case, -1(invalid)
         coords = new int[2];
         coords[0] = -1;
         coords[1] = -1;
 
     }
 
+    /*
+     * This method is called to start the thread, and runs in an infinite loop
+     */
     public void run()
     {
+        //Initializes the images for the progression of the analysis
         ColorImage img = null;
         BinaryImage binary = null;
         BinaryImage noSmall = null;
+
+        //Infinite loop
         while (true)
         {
+            //Processes the image if running is true
             if (running)
             {
-                //println("running");
+                //Processes the image
                 setHoopCoords(img, binary, noSmall);
-                
+
+                //Frees the memory allocated to the images (redundant?)
                 try
                 {
                     if(img != null)
@@ -88,6 +97,11 @@ public class ImageProcessing extends Thread
         }
     }
 
+
+    /*
+     * If LOGGING, prints out the string arguement in the terminal with an ImageProcessing tag
+     * @param string the intended output.
+     */
     protected void println(String string)
     {
         if (LOGGING)
@@ -118,8 +132,8 @@ public class ImageProcessing extends Thread
             ParticleAnalysisReport[] report = noSmall.getOrderedParticleAnalysisReports();
 
 
+            //Finds the lowest image
             int size = report.length;
-            System.out.println("Size: " + size);
             if (size > 0)
             {
                 double lowest = report[0].center_mass_y;
@@ -133,25 +147,25 @@ public class ImageProcessing extends Thread
                         biggestIndex = i;
                     }
                 }
-            
+
+                //records the coordinates of the lowest image
                 coords[0] = report[biggestIndex].center_mass_x;
                 coords[1] = report[biggestIndex].center_mass_y;
-                this.println("size of analysis: " + report.length + "center of mass x: " + report[0].center_mass_x);
+                println("size of analysis: " + report.length + "center of mass x: " + report[0].center_mass_x);
             }
             
             else
             {
-                this.println(" no particles detected");
+                println(" no particles detected");
                 coords[0] = -1;
                 coords[1] = -1;
             }
 
-            
+            //frees the memory locations.
             img.free();
             binary.free();
             noSmall.free();
             
-            System.out.println("images have been freed");
         }
         catch(Exception e)
         {
@@ -160,7 +174,9 @@ public class ImageProcessing extends Thread
 
     }
 
-   
+    /*
+     * @return the coords of the current lowest image
+     */
     public int[] getCoords()
     {
         synchronized (coords)
@@ -170,11 +186,17 @@ public class ImageProcessing extends Thread
                 
     }
 
+    /*
+    * @return whether or not the thread is currently processing images.
+    */
     public boolean getRunning()
     {
         return running;
     }
 
+    /*
+     * @param b Whether or not the thread should be processing images
+     */
     public void setRunning(boolean b)
     {
         running = b;
