@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-/*
+/**
  * @author 1014 Programming Team
  */
 public class OI
@@ -24,7 +24,8 @@ public class OI
     public static final boolean cameraOn = false;
     public static final boolean smartdashboardImageProcessingOn = false;
     public static final boolean bangBangOn = false;
-    /*
+    
+    /**
      * initializes all input methods (eg. joysticks)
      */
     public static void init()
@@ -50,24 +51,29 @@ public class OI
         SmartDashboard.putBoolean("ShooterPIDOn", shooterPIDOn);
     }
 
-    /*
-     * Prints a string to the driverstation LCD Status: Untested //TODO: Test!
+    /**
+     * Prints a string to the DriverStation LCD Status
+     * @param out The string to be sent to the screen
      */
     public static void printToDS(String out)
     {
-        //System.out.println("ShouldBeOnScreen: " + out);
         screen.free();
         screen.println(DriverStationLCD.Line.kMain6, 1, out);
         screen.updateLCD();
     }
 
+    /**
+     * Sets the digital output on the DriverStation to a boolean value
+     * @param i The digital output number
+     * @param logic The boolean value to be set
+     */
     public static void setDigitalOutput(int i, boolean logic)
     {
         ds.setDigitalOut(i, logic);
     }
 
     /**
-     * @return whether the Xbox should be used to control the driveTrain
+     * @return  Whether the Xbox should be used to control the driveTrain (boolean on DriverStation)
      */
     public static boolean xboxControl()
     {
@@ -75,178 +81,260 @@ public class OI
     }
 
     /**
-     * @return whether the right joystick should be used for strafing commands
+     * @return Whether the right joystick should be used for strafing commands
      */
     public static boolean rightStrafe()
     {
         return ds.getDigitalIn(2);
     }
 
-
-
-    /*
-     * These are controls from the Logitech Joysticks
+    /**
+     * Used with the Logitech controllers
+     * @return The deadzone corrected left stick x value
      */
     public static double getLeftX()
     {
         return deadzone(leftJoystick.getX());
     }
 
+    /**
+     * Used with the Logitech controllers
+     * @return The deadzone corrected left stick y value
+     */
     public static double getLeftY()
     {
         return deadzone(leftJoystick.getY());
     }
 
+    /**
+     * Used with the Logitech controllers
+     * @return The deadzone corrected right stick x value
+     */
     public static double getRightX()
     {
         return deadzone(rightJoystick.getX());
     }
 
+    /**
+     * Used with the Logitech controllers
+     * @return The deadzone corrected right stick y value
+     */
     public static double getRightY()
     {
         return deadzone(rightJoystick.getY());
     }
 
 
-    /*
-     * The joystick values from the primary Xbox Controller
+    /**
+     * Used with the primary xbox controller
+     * @return The deadzone corrected left stick x value
      */
     public static double getPrimaryXboxLeftX()
     {
         return deadzone(-xboxController.getRawAxis(1));
     }
 
+    /**
+     * Used with the primary xbox controller
+     * @return The deadzone corrected left stick y value
+     */
     public static double getPrimaryXboxLeftY()
     {
         return deadzone(xboxController.getRawAxis(2));
     }
 
+    /**
+     * Used with the primary xbox controller
+     * @return The deadzone corrected right stick x value
+     */
     public static double getPrimaryXboxRightX()
     {
         return deadzone(-xboxController.getRawAxis(4));
     }
 
+    /**
+     * Used with the primary xbox controller
+     * @return The deadzone corrected right stick y value
+     */
     public static double getPrimaryXboxRightY()
     {
         return deadzone(xboxController.getRawAxis(5));
     }
 
-
-    /*
-     * The buttons from the Primary Xbox Controller
+    /**
+     * @return The primary xbox X button value
      */
     public static boolean primaryXboxXButton()
     {
         return xboxController.getRawButton(3);
     }
 
+    /**
+     * @return The primary xbox Y button value
+     */
     public static boolean primaryXboxYButton()
     {
         return xboxController.getRawButton(4);
     }
 
+    /**
+     * @return The primary xbox A button value
+     */
     public static boolean primaryXboxAButton()
     {
         return xboxController.getRawButton(1);
     }
 
+    /**
+     * @return The primary xbox B button value
+     */
     public static boolean primaryXboxBButton()
     {
         return xboxController.getRawButton(2);
     }
 
+    /**
+     * @return The primary xbox right bumper button value
+     */
     public static boolean primaryXboxRBButton()
     {
         return xboxController.getRawButton(6);
     }
 
+    /**
+     * @return The primary xbox left bumper button value
+     */
     public static boolean primaryXboxLBButton()
     {
         return xboxController.getRawButton(5);
     }
 
+    /**
+     * @return The primary xbox left joystick clicked in value
+     */
     public static boolean primaryXboxLeftJoyClick()
     {
         return xboxController.getRawButton(9);
     }
 
+    /**
+     * @return The primary xbox right joystick clicked in value
+     */
     public static boolean primaryXboxRightJoyClick()
     {
         return xboxController.getRawButton(10);
     }
 
+    /**
+     * Used with the secondary xbox controller
+     * @return The deadzone corrected left stick x value
+     */
+    public static double secondXboxLeftX()
+    {
+        return deadzone(xboxController2.getRawAxis(1));
+    }
 
-    /*
-     * Button values from the second Xbox controller
+    /**
+     * Used with the secondary xbox controller
+     * @return The deadzone corrected left stick y value
+     */
+    public static double secondXboxLeftY()
+    {
+        return deadzone(xboxController2.getRawAxis(2));
+    }
+
+    /**
+     * @return The secondary xbox X button value
      */
     public static boolean secondXboxXButton()
     {
         return xboxController2.getRawButton(3);
     }
 
+    /**
+     * @return The secondary xbox Y button value
+     */
     public static boolean secondXboxYButton()
     {
         return xboxController2.getRawButton(4);
     }
 
+    /**
+     * @return The secondary xbox A button value
+     */
     public static boolean secondXboxAButton()
     {
         return xboxController2.getRawButton(1);
     }
 
+    /**
+     * @return The secondary xbox B button value
+     */
     public static boolean secondXboxBButton()
     {
         return xboxController2.getRawButton(2);
     }
 
+    /**
+     * @return The secondary xbox right bumper value
+     */
     public static boolean secondXboxRBButton()//Right Bumper
     {
         return xboxController2.getRawButton(6);
     }
 
+    /**
+     * @return The secondary xbox left bumper value
+     */
     public static boolean secondXboxLBButton()
     {
         return xboxController2.getRawButton(5);
     }
 
+    /**
+     * @return The secondary xbox left joystick click in value
+     */
     public static boolean secondXboxLeftJoyClick()
     {
         return xboxController2.getRawButton(9);
     }
 
+    /**
+     * @return The secondary xbox right joystick click in value
+     */
     public static boolean secondXboxRightJoyClick()
     {
         return xboxController2.getRawButton(10);
     }
 
+    /**
+     * @return The secondary xbox select button value
+     */
     public static boolean secondXboxSelectButton()
     {
         return xboxController2.getRawButton(7);
     }
 
+    /**
+     * @return The secondary xbox start button value
+     */
     public static boolean secondXboxStartButton()
     {
         return xboxController2.getRawButton(8);
     }
 
+    /**
+     * @return Whether or not the left trigger is pressed in most of the way
+     */
     public static boolean secondXboxLeftTrigger()
     {
         return xboxController2.getRawAxis(3) > .7;
     }
     
-    public static double secondXboxLeftX()
-    {
-        return deadzone(xboxController2.getRawAxis(1)); 
-    }
     
-    public static double secondXboxLeftY()
-    {
-        return deadzone(xboxController2.getRawAxis(2));
-    }
 
-    /*
-     * @return the primary controller left x value status: all tested
-     * 1/30/12
+    /**
+     * @return the primary controller left x value
      */
     public static double getUsedLeftX()
     {
@@ -307,22 +395,26 @@ public class OI
     }
 
     /**
-     * @return whether the shoot trigger is depressed on the second Xbox
+     * @return whether the shoot (primary) trigger is depressed on the second Xbox
      */
     public static boolean getPrimaryTrigger()
     {
         return secondXboxRBButton();
     }
 
-    
+    /**
+     *
+     * @return battery voltage on robot
+     */
     public static double getBatteryVoltage()
     {
         return ds.getBatteryVoltage();
     }
 
-    /*
-     * Creates a deadzone for joysticks Status:Untested, must test scaling
-     *
+    /**
+     * Creates a deadzone for joysticks
+     * @param d Number betwenn 0 and 1 to be deadzoned
+     * @return The deadzone value
      */
     private static double deadzone(double d)
     {

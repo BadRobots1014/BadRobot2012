@@ -23,23 +23,43 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class ImageProcessing extends Thread
 {
-    //whether or not it is printing debugging lines to the terminal
-    protected static final boolean LOGGING = false; 
-    //The webcam on top of the shooter
+    /**
+     * whether or not it is printing debugging lines to the terminal
+     */
+    protected static final boolean LOGGING = false;
+
+    /**
+     * The webcam on top of the shooter
+     */
     protected AxisCamera camera;
-    //The particle analysis report which is returned after processing an image
+
+    /**
+     * The particle analysis report which is returned after processing an image
+     */
     protected ParticleAnalysisReport[] toReturn;
-    //How long to wait in between images. Increasing this value decreaces processing power used
+    
+    /**
+     * How long to wait in between images. Increasing this value decreaces processing power used
+     */
     protected int sleepTimer = 100;
-    //Whether or not images are currently being processed
+    
+    /**
+     * Whether or not images are currently being processed
+     */
     protected boolean running;
-    //The coordinates of the detected targets
+    
+    /**
+     * The coordinates of the detected targets
+     */
     protected int[] coords;
-    //Filter used for certain operations. Currently unused
+    
+    /**
+     * Filter used for certain operations. Currently unused
+     */
     protected CriteriaCollection criteria;
 
-    /*
-     *  @Param c AxisCamera being used
+    /**
+     *  @param c AxisCamera being used
      */
     public ImageProcessing(AxisCamera c)
     {
@@ -58,7 +78,7 @@ public class ImageProcessing extends Thread
 
     }
 
-    /*
+    /**
      * This method is called to start the thread, and runs in an infinite loop
      */
     public void run()
@@ -98,8 +118,8 @@ public class ImageProcessing extends Thread
     }
 
 
-    /*
-     * If LOGGING, prints out the string arguement in the terminal with an ImageProcessing tag
+    /**
+     * If LOGGING, prints out the string argument in the terminal with an ImageProcessing tag
      * @param string the intended output.
      */
     protected void println(String string)
@@ -111,6 +131,13 @@ public class ImageProcessing extends Thread
     }
     int i = 0;
 
+    /**
+     * Analyzes an image to meet the backboard requirements. Currently buggy.
+     * @deprecated
+     * @param img Image to analyze
+     * @param binary Memory location for a binary image used partway through the process
+     * @param noSmall Memory location for the final image
+     */
     public void setHoopCoords(ColorImage img, BinaryImage binary, BinaryImage noSmall)
     {
         int current = 0;
@@ -174,8 +201,8 @@ public class ImageProcessing extends Thread
 
     }
 
-    /*
-     * @return the coords of the current lowest image
+    /**
+     * @return coords The coordinates of the current lowest image
      */
     public int[] getCoords()
     {
@@ -186,15 +213,15 @@ public class ImageProcessing extends Thread
                 
     }
 
-    /*
-    * @return whether or not the thread is currently processing images.
+    /**
+    * @return running Whether or not the thread is currently processing images.
     */
     public boolean getRunning()
     {
         return running;
     }
 
-    /*
+    /**
      * @param b Whether or not the thread should be processing images
      */
     public void setRunning(boolean b)
