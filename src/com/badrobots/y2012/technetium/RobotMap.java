@@ -5,32 +5,58 @@ package com.badrobots.y2012.technetium;
  * to a variable name. This provides flexibility changing wiring, makes checking
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
- */
-
-/*
  * @author 1014 Programming Team
  */
 public class RobotMap
 {
 
-    public static final int cRIOsidecar = 1; // port from the cRIO to the digital
-    // sidecar
-    public static final int lFront = 4; // Mike-- 4
-    public static final int rFront = 2; // 2
-    public static final int lBack = 3; // 3
-    public static final int rBack = 1; // 1
+    /**
+     * port from the cRIO to the digital sidecar
+     */
+    public static final int cRIOsidecar = 1;
+    /**
+     * The left front wheel speed controller
+     */
+    public static final int lFront = 4;
+    /**
+     * The right front wheel speed controller
+     */
+    public static final int rFront = 2;
+    /**
+     * The left rear wheel speed controller
+     */
+    public static final int lBack = 3;
+    /**
+     * The right rear wheel speed controller
+     */
+    public static final int rBack = 1;
+    /**
+     * First Logiteck Joystick
+     */
     public static final int leftJoystick = 1;
+    /**
+     * Second Logitech Joystick
+     */
     public static final int rightJoystick = 2;
+    /**
+     * First Xbox controller
+     */
     public static final int controller = 1;
+    /**
+     * Second Xbox controller
+     */
     public static final int controller2 = 2;
-    public static final int shooterJoystick = 4;
+    /**
+     * Ultrasonic output channel
+     */
     public static final int ultrasonicOut = 3; //2 scotty 3 mike
+    /**
+     * Ultrasonic input channel
+     */
     public static final int ultrasonicIn = 2; //3 
-    public static final int topSensor = 9; //5 Scotty
     public static final int bottomSensor = 4; //7
     public static final int camera = 4;
     public static final int horizontalGyro = 1;
-    //public static final int verticalGyro = 10;
     public static final int conveyor = 1;
     public static final int bottomRoller = 2;
     public static final int leftShooter = 5;

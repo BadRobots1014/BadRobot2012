@@ -11,18 +11,54 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class OI
 {
 
+    /**
+     * The left Logitech Joystick
+     */
+    /**
+     * The right Logitech Joystick
+     */
     public static Joystick leftJoystick, rightJoystick;
+   /**
+    * 
+    */
     public static DriverStation ds;
+    /**
+     * The printout area of the DS
+     */
     public static DriverStationLCD screen;
+    /**
+     * The primary Xbox controller
+     */
     public static Joystick xboxController;
+    /**
+     * The secondary Xbox controller
+     */
     public static Joystick xboxController2;
 
     //This is where we will put the on/off functionality booleans
+    /**
+     * If true, the driving PID is activated
+     */
     public static final boolean PIDOn = true;
+    /**
+     * If true, the shooting PID is activated
+     */
     public static final boolean shooterPIDOn = true;
+    /**
+     * If true, the turntable PID is activated
+     */
     public static final boolean turnTablePIDOn = false;
+    /**
+     * If true, the camera is activated (will still appear on dashboard if set to false)
+     */
     public static final boolean cameraOn = false;
+    /**
+     * If true, Smart dashboard should process images. May not be functional
+     */
     public static final boolean smartdashboardImageProcessingOn = false;
+    /**
+     *  If true, BangBang system is activated for shooter
+     */
     public static final boolean bangBangOn = false;
     
     /**
@@ -347,7 +383,7 @@ public class OI
 
     }
 
-    /*
+    /**
      * @return the primary controller left y value
      */
     public static double getUsedLeftY()
@@ -360,7 +396,7 @@ public class OI
         return deadzone(leftJoystick.getY());
     }
 
-    /*
+    /**
      * @return the primary controller right x value
      */
     public static double getUsedRightX()
@@ -373,7 +409,7 @@ public class OI
         return deadzone(rightJoystick.getX());
     }
 
-    /*
+    /**
      * @return the primary controller right y value
      */
     public static double getUsedRightY()
@@ -432,8 +468,8 @@ public class OI
         return d / Math.abs(d) * ((Math.abs(d) - .10) / .90);
     }
 
-    /*
-     * helper method to determine which axis is which on the xbox controller
+    /**
+     * Used to help figure out which controller buttons do what. Prints out all pressed buttons and joysticks
      */
     public static void detectAxis()
     {
@@ -454,7 +490,7 @@ public class OI
         }
     }
 
-    /*
+    /**
      * @return the deadzone for the Joysticks controller, taken from the logitech throttle control
      */
     public static double getJoystickSensitivity()
@@ -462,7 +498,7 @@ public class OI
         return (-leftJoystick.getZ() + 1) / 2;
     }
 
-    /*
+    /**
      * @return the deadzone for the Xbox controller, taken from the logitech throttle control
      */
     public static double getXboxSensitivity()
@@ -470,7 +506,7 @@ public class OI
         return (-rightJoystick.getZ() + 1);
     }
 
-    /*
+    /**
      * @return the factor for which all values taken in by controllers should be
      * multiplied with. it is contorlled by the throttle controls on the
      * joysticks
@@ -513,6 +549,11 @@ public class OI
     }
 
 
+    /**
+     *
+     * @param channel
+     * @return The value of the Digital Input on that channel
+     */
     public static boolean  getDigitalIn(int channel)
     {
         return ds.getDigitalIn(channel);
