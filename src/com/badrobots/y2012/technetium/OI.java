@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
+ * Contains methods and code for interfacing with the driver controls
  * @author 1014 Programming Team
  */
 public class OI

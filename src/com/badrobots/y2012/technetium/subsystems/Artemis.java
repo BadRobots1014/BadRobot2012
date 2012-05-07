@@ -122,11 +122,10 @@ public class Artemis extends Subsystem
         turnTable.set(-speed);
     }
 
-    public void setGearPIDRunning(boolean b)
+    public void setShooterPIDRunning(boolean b)
     {
         if(shooterSensor != null)
             shooterSensor.setRunning(b);
-        //System.out.println("RunningPID: " + b);
     }
 
     public void shootMiddle() // read distance from kinect/ultrasonic

@@ -9,8 +9,8 @@ import com.badrobots.y2012.technetium.commands.InitiateRamp;
 import edu.wpi.first.wpilibj.buttons.Button;
 
 /**
- *
- * @author Jon Buckley
+ * Button to initiate ramping command
+ * @author 1014 Programming team
  */
 public class InitiateRampButton extends Button
 {
@@ -20,7 +20,10 @@ public class InitiateRampButton extends Button
         
         this.whenPressed(new InitiateRamp());
     }
-    
+
+    /**
+     * @return If the button is currently pressed
+     */
     public boolean get()
     {
         if (OI.primaryXboxXButton())

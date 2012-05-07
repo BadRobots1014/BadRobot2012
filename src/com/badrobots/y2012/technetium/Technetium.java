@@ -22,7 +22,6 @@ import com.badrobots.y2012.technetium.commands.DriveToWall;
 import com.badrobots.y2012.technetium.commands.GatherBallsAndManualShoot;
 import com.badrobots.y2012.technetium.commands.ManualBridge;
 import com.badrobots.y2012.technetium.commands.Monitor;
-//import com.badrobots.y2012.technetium.smartdashboard.SendableBatteryVoltage;
 import com.badrobots.y2012.technetium.subsystems.*;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Watchdog;
@@ -46,18 +45,27 @@ import java.io.IOException;
  * directory.
  */
 
-/*
+/**
+ * Main class, contains the methods called by the crio during competition. It all starts here.
  * @author 1014 Programming Team
  */
 public class Technetium extends IterativeRobot
 {
-    protected Command firstCommand;
-    protected Button switchScaling, trackingButton;
+    /**
+     * The button to make the turret autotrack targets
+     */
+    protected Button trackingButton;
+    /**
+     * The thread used to process images
+     */
     protected ImageProcessing imageProcessingThread;
+    /**
+     * The webcam
+     */
     protected AxisCamera camera;
 
     /**
-     * This function is run when the robot is first started up and should be
+     * This function is run when the robot is first booted and should be
      * used for any initialization code.
      */
     public void robotInit()
@@ -77,6 +85,9 @@ public class Technetium extends IterativeRobot
         System.out.println("initializrd robot");
     }
 
+    /**
+     * This method runs once at the beginning of the autonomous mode.
+     */
     public void autonomousInit()
     {
         if(OI.getDigitalIn(6))
@@ -99,18 +110,21 @@ public class Technetium extends IterativeRobot
         Scheduler.getInstance().run();
     }
 
-    /*
-     * Intializes all buttons that should be active during teleop period
+    /**
+     * Initializes all buttons and commands that should run when autonomous starts
      */
     public void teleopInit()
     {
+        //Set all subsystems to the manual control methods.
         Scheduler.getInstance().add(new GatherBallsAndManualShoot());
         Scheduler.getInstance().add(new Monitor());
         Scheduler.getInstance().add(new MechanumDrive());
         Scheduler.getInstance().add(new ManualBridge());
-        
+
+        //Initialize all used buttons
         new InitiateRampButton();
 
+        //If the master boolean for using the camera is set to true, image processing is started
         if(OI.cameraOn)
         {
             System.out.println("ThreadStarted");
@@ -118,10 +132,11 @@ public class Technetium extends IterativeRobot
             imageProcessingThread.setRunning(false);
         }
 
+         //If the master boolean for using shooter PID is true, PID is started
         if(OI.shooterPIDOn)
         {
             System.out.println("EnablingHERE");
-            Artemis.getInstance().setGearPIDRunning(true);
+            Artemis.getInstance().setShooterPIDRunning(true);
         }
         
         //puts all the commands into the SmartDashboard
@@ -144,25 +159,27 @@ public class Technetium extends IterativeRobot
     {
         //Feed it or it dies. And then stops the robot. From the grave. Really it is a poor metaphor.
         //Yes quite a poor metaphor.
+        //A poor methaphor indeed
         Watchdog.getInstance().feed();
         
         //Runs the correct commands with their subsytems
         Scheduler.getInstance().run();     
-        
-        if (trackingButton == null)
-            trackingButton = new TrackingButton(imageProcessingThread);
-
-        //SmartDashboard.putDouble("Testing", .5);
     }
 
+    /**
+     * Shuts down certain systems when called. Automatically called when robot is disabled.
+     */
     public void disabledInit()
     {
+        //Poetic message coutesy of Jon
         System.out.println("Default IterativeRobot.disabledInit() method... Overload yo momma!");
+
+        //Stops the image processing thread
         if (imageProcessingThread != null)
         {
             imageProcessingThread.setRunning(false);
         }
-
-        Artemis.getInstance().setGearPIDRunning(false);
+        //Stops the shooter PID
+        Artemis.getInstance().setShooterPIDRunning(false);
     }
 }

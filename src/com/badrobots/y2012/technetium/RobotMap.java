@@ -53,19 +53,57 @@ public class RobotMap
     /**
      * Ultrasonic input channel
      */
-    public static final int ultrasonicIn = 2; //3 
+    public static final int ultrasonicIn = 2; //3
+    /**
+     * Bottom optical sensor
+     */
     public static final int bottomSensor = 4; //7
+    /**
+     * Webcam
+     */
     public static final int camera = 4;
+    /**
+     * Horizontally oriented gyro
+     */
     public static final int horizontalGyro = 1;
+    /**
+     * Relay for the conveyor system
+     */
     public static final int conveyor = 1;
+    /**
+     * Relay for the bottom roller
+     */
     public static final int bottomRoller = 2;
+    /**
+     * The left shooter motor
+     */
     public static final int leftShooter = 5;
+    /**
+     * The right shooter motor
+     */
     public static final int rightShooter = 6;
+    /**
+     * The victor attached to the bridging arm
+     */
     public static final int bridgingTool = 8;
+    /**
+     * The turntable motor for the shooter
+     */
     public static final int turnTable = 9;
+    /**
+     * The first encoder channel for the encoder on the turntable
+     */
     public static final int turnTableEncoderAChannel = 1;
+    /**
+     * The second channel for the encoder on the turntable
+     */
     public static final int turnTableEncoderBChannel = 2;
-    public static final int shooterGearTooth = 5;
+    /**
+     * The optical sensor to measure the turret wheel speed
+     */
     public static final int opticalSensor = 6;
+    /**
+     * The spike regulating power to the led indicator light
+     */
     public static final int LEDCircle = 3;
 }

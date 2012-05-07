@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.image.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- *
+ * Thread that analyzed images from the webcam to detect rectangles.
  * @author 1014 Team
  */
 public class ImageProcessing extends Thread
