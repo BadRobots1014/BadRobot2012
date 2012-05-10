@@ -8,7 +8,9 @@ import com.badrobots.y2012.technetium.OI;
 import com.badrobots.y2012.technetium.subsystems.Hermes;
 import edu.wpi.first.wpilibj.buttons.Button;
 
-/*
+/**
+ * Resets the gyro angle to 0
+ * @deprecated
  * @author 1014 Programming Team
  */
 public class ResetGyro extends Button

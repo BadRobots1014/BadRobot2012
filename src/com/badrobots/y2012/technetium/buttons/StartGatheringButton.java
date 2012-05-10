@@ -10,8 +10,8 @@ import com.badrobots.y2012.technetium.subsystems.Demeter;
 import edu.wpi.first.wpilibj.buttons.Button;
 
 /**
- *
- * @author Jon Buckley
+ * @deprecated
+ * @author 1014 Programming team
  */
 public class StartGatheringButton extends Button
 {

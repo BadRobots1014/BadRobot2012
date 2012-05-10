@@ -22,7 +22,7 @@ public class InitiateRampButton extends Button
     }
 
     /**
-     * @return If the button is currently pressed
+     * @return True if the button is currently pressed (X button on driver controller)
      */
     public boolean get()
     {

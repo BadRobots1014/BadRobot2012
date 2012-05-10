@@ -8,8 +8,10 @@ import edu.wpi.first.wpilibj.Timer;
 
 
 
-/*
- * @author 1014
+/**
+ * Drives the robot to a specific distance from a wall. For fun only, use AutoDriveBack for autonomous.
+ * @see AutoDriveBack
+ * @author 1014 Programming team
  */
 public class DriveToWall extends CommandBase {
 

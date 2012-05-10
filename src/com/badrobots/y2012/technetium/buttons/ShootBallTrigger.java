@@ -8,8 +8,9 @@ import com.badrobots.y2012.technetium.OI;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Command;
 
-/*
+/**
  * @author 1014 Programming Team
+ * @deprecated 
  */
 public class ShootBallTrigger extends Button
 {

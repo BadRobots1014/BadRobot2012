@@ -13,7 +13,8 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
 /**
- *
+ * This button starts auto tracking. (Code for auto tracking is in GatherBallsAndAutoShoot. Not functional.
+ * @deprecated 
  * @author Jon Buckley
  */
 public class TrackingButton extends Button
@@ -27,6 +28,10 @@ public class TrackingButton extends Button
         super.whenPressed(new GatherBallsAndAutoShoot());   
     }
 
+    /**
+     * If b is pressed, auto tracking starts. When it is released, it halts.
+     * @return If b is pressed and auto tracking is not overridden
+     */
     public boolean get()
     {
         if (!OI.cameraOn)
