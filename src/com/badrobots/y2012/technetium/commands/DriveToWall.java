@@ -18,7 +18,10 @@ public class DriveToWall extends CommandBase {
     Timer timer;
     boolean finished;
     int distance;
-
+    /**
+     * Creates the command to drive to the wall
+     * @param distanceFromWall The distance in mm to maintain from the wall
+     */
     public DriveToWall(int distanceFromWall) {
         requires(driveTrain);
         requires(sensors);
@@ -37,7 +40,6 @@ public class DriveToWall extends CommandBase {
     // Called repeatedly when this Command is scheduled to run
     protected void execute()
     {
-        System.out.println("Ultra: " + sensors.getUltraBackRange());
         driveTrain.autoMechanumDrive(0, .16, 0);
     }
 

@@ -8,13 +8,23 @@ import com.badrobots.y2012.technetium.OI;
 import com.badrobots.y2012.technetium.subsystems.Helios;
 
 /**
- *
+ * Automated ball gathering and shooting. Not currently used.
  * @author Team 1014 Programming Team
+ * @deprecated
  */
 public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
 {
+    /**
+     * Whether or not the turret is aligned with the target
+     */
     private boolean aligned = false;
+    /**
+     * Whether or not the turret is firing
+     */
     protected boolean shooting = false;
+    /**
+     * The beginning shooting speed
+     */
     private double previousSpeed = .45;
     
     public GatherBallsAndAutoShoot() 
@@ -23,14 +33,16 @@ public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
         requires(shooter);
     }
 
-    /*
-     * Checks to see if the top garage sensor is already blocked, sets topBlocked to 
-     * true, if it is
+    /**
+     * Currently does nothing
      */
     protected void initialize() 
     {
     }
-    
+
+    /**
+     * Automatically runs the shooter (not the turret)
+     */
     public void runShootingOperations()
     {
         //if lined up 
@@ -52,47 +64,56 @@ public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
             conveyorUp = false;
 
     }
-    
+
+    /**
+     * Runs the turret automatically
+     */
     public void runTurretingOperations()
     {
-        //System.out.println("turretting");
         autoAlign();
     }
     
-   /* protected void execute()
-    {
-        System.out.println("Executing");
-        runBallGathererOperations();
-        runTurretingOperations();
-        runShootingOperations();
-    }*/
+
+    /**
+     * Records the number of iterations with a positive identification of the target
+     */
     int count = 0;
+    /**
+     * Whether or not the turret is actively turning
+     */
     boolean turning = false;
+    /**
+     * The distance in encoder clicks to the destination. Sign signifies direction
+     */
     int destination = 0;
+    /**
+     * Automatically align the turret to the target using image tracking
+     */
     public void autoAlign()
     {
+        //If the camera isn't activated, don't turn
         if (!OI.cameraOn)
             return;
-        
+
+        //If there is no recorded target
         if (imageProcessor.getCoords() == null || imageProcessor.getCoords()[0] < 0)
         {
             aligned = false;
-            System.out.println("No Target!!!!!!!!!!!!!!!!!!");
             turretTurn = 0;
             return;
         }
-        
-        System.out.println("coords: " + imageProcessor.getCoords()[0]);
-        
+
+        //How far off the center axis the center of the target is
         double offAxis = 80 - imageProcessor.getCoords()[0];
         turretTurn = -offAxis; //TODO - callibrate
-        
+
+        //If the turret is on target
         if (Math.abs(turretTurn) < 8)
         {            
             count++;
-            System.out.println("lined up! -- Artemis execute()");
             turretTurn = 0;
             aligned = false;
+            //Wait for 3 positive results before declaring alignment
             if(count > 3)
                 aligned = true;
         }
@@ -102,6 +123,7 @@ public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
             aligned = false;
         }
 
+        //Update drivers station (now unused)
         OI.setDigitalOutput(1, aligned);
 
         if(aligned)
@@ -122,22 +144,9 @@ public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
         {
             if(shooter.turnByEncoderTo(destination))
             {
-                System.out.println("Arrived");
                 turning = false;
             }
         }
-
-        /*System.out.println("TurretTurn: " + turretTurn);
-        if(turretTurn > .2)
-            turretTurn = .2;
-        else if(turretTurn < -.2)
-            turretTurn = -.2;
-        if(turretTurn < .05 && turretTurn > 0 && !aligned)
-            turretTurn = .05;
-        if(turretTurn > -.05 && turretTurn < 0 && !aligned)
-            turretTurn = -.05;
-         * */
-
     }
     
     public void runBallGathererOperations()
