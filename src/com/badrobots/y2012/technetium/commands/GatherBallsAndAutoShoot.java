@@ -134,6 +134,7 @@ public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
         else if(turretTurn > 0)
             turretTurn = 1;
 
+        //turns to target, then refreshes target
         if(!turning)
         {
             destination = shooter.encoderValue() + (int)turretTurn * 15 ;
@@ -148,46 +149,25 @@ public class GatherBallsAndAutoShoot extends GatherBallsAndManualShoot
             }
         }
     }
-    
+
+    /**
+     * This method is called to control the ball gatherer. It automatically collects balls at all times
+     */
     public void runBallGathererOperations()
     {
-        autoControl();
-    }
-    
-    public void autoControl()
-    {
-        //conveyorUp = false;
-        //conveyorDown = false;
         rollerIn = true;
         rollerOut = false;
 
-         //Ball Spacing
-        /*if(Helios.getInstance().getNumBalls() < 3)
+        if(sensors.bottomChannelBlocked())
         {
-            //System.out.println("Spacing");
-            conveyorUp = false;
-            conveyorDown = false;
-            rollerIn = false;
-            rollerOut = false;
-
-            rollerIn = true;
-            conveyorUp = false;
-            */
-            if(sensors.bottomChannelBlocked())
-            {
-                spaceUp = 35;//was 20
-                conveyorUp = true;
-            }
-        //}
-
+            spaceUp = startingSpaceUp;
+            conveyorUp = true;
+        }
         if(spaceUp > 0)//space the ball
         {
             spaceUp--;
             conveyorUp = true;
         }
-
-        //change speed
-
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -8,58 +8,87 @@ import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
-/*
+/**
+ * This command is used to control the ball collection system while under manual control
  * @author 1014 Programming Team
  */
-public class GatherBallsAndManualShoot extends CommandBase //We need to rename this. Just maybe
-{    
-    protected static boolean done = true;
-    protected int spaceUp = 0;//If delay is needed, make this >1
+public class GatherBallsAndManualShoot extends CommandBase
+{
+    /**
+     * Counts down iteration of the automatic ball spacing to provide a delay
+     */
+    protected int spaceUp = 0;
+    /**
+     * How many iterations of spacing are used
+     */
     protected int startingSpaceUp = 35;
+    /**
+     * Set to true to send the conveyor up
+     */
     protected boolean conveyorUp = false;
+    /**
+     * Set to true to send the conveyor down
+     */
     protected boolean conveyorDown = false;
+    /**
+     * Set to true to roll the roller in
+     */
     protected boolean rollerIn = false;
+    /**
+     * Set to true to roll the roller out
+     */
     protected boolean rollerOut = false;
+    /**
+     * Set to true when the robot is in manual control, false for semi-auto control
+     */
     protected boolean manualOveride = false;
+    /**
+     * The speed at which the shooter moves when under manual operation
+     */
     protected double manualShooterSpeed = .35 ;
+    /**
+     * The speed the shooter is set to
+     */
     protected double shooterSpeed = 0;
+
+    /**
+     * The value the turntable motor is set to
+     */
+    protected double turretTurn = 0;
+    /**
+     * If the shooter is currently running
+     */
+    public static boolean shootingNow = false;
+    protected boolean shooterTriggerDown = false;
+    private static boolean maxPower;
     protected boolean switchSpeedUp;
     protected boolean switchSpeedDown;
-    protected double turretTurn = 0;
-    protected boolean shooterTriggerDown = false;
-    public static boolean shootingNow = false;
-    private static boolean collectingNow = false;
-    private static boolean maxPower;
     
 
-    
+
     public GatherBallsAndManualShoot() 
     {
         requires(ballGatherer);
         requires(shooter);
     }
 
+    /**
+     * Initialize required variables
+     */
     protected void initialize() 
     {
-        //if (Helios.getInstance().topChannelBlocked())
-            //topBlocked = true;
-
         shooterSpeed = .45;
         maxPower = false;
     }
 
-    /*
-     * Gathers Balls -- if the garage door sensor is blocked, then a ball is in the
+    /**
+     * If the garage door sensor is blocked, then a ball is in the
      * gatherer, and the conveyor system runs until the sensor is no longer obsscured.
      * 
      * If the user wants to shoot, he/she first hits the secondary trigger,
      * revving the shooter. Then, while the shooter is revved, if the primary trigger is
      * pressed, the conveyors roll, decreasing the tracked ball count
-     *
-     * LUCAS WARNING: Uncommon circumstances could throw off counts!!
-     * There needs to be greater self correcting added after the collector is built.
      */
-
     protected void execute() 
     {
         
@@ -79,16 +108,13 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
 
         ballGatherer.runBottomRoller(rollerIn, rollerOut);
         ballGatherer.runConveyor(conveyorUp, conveyorDown);
-        //System.out.println("Shooting at: " + shooterSpeed);
 
         shooter.run(shooterSpeed, maxPower);
-
-
-        //System.out.println("HEREAAAAA: s" + sensors.getGyroAngle());
-        
-        //System.out.println("Encoder: " + shooter.encoderValue());
     }
 
+    /**
+     * Runs the ball gatherer based off of operator controls, selects manual or semi-auto control
+     */
     public void runBallGathererOperations()
     {
         //change between auto and manual
@@ -106,7 +132,10 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             DriverStation.getInstance().setDigitalOut(8, false);
         }
     }
-    
+
+    /**
+     * Runs the ball gathering system manually through the driver controls
+     */
     private void manualControl()
     {
         conveyorUp = false;
@@ -143,6 +172,9 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
     }
 
     private boolean switchGather = false;
+    /**
+     * Runs the ball gathering system using a mix of autonomous actions and driver control
+     */
     private void semiAutoControl()
     {
         conveyorUp = false;
@@ -150,10 +182,8 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         rollerIn = false;
         rollerOut = false;
 
-
-        if(OI.secondXboxAButton())
+        if(OI.secondXboxAButton())//AutoCollection
         {
-        //System.out.println("Spacing");
             conveyorUp = false;
             conveyorDown = false;
             rollerIn = false;
@@ -164,7 +194,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
 
             if(sensors.bottomChannelBlocked())
             {
-                spaceUp = startingSpaceUp;//was 20
+                spaceUp = startingSpaceUp;
                 conveyorUp = true;
             }
         }
@@ -173,17 +203,12 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             spaceUp--;
             conveyorUp = true;
         }
-        
 
-       
-        
         if(OI.secondXboxYButton())//Run conveyor down
         {
            conveyorUp = false;
            conveyorDown = true;
         }
-
-        
 
         if (OI.getPrimaryTrigger()) // push balls into shooter
         {
@@ -194,11 +219,18 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
       
     }
 
+    /**
+     * The current speed the shooter is going
+     * @return shooterSpeed
+     */
     public double getShooterSpeed()
     {
         return shooterSpeed;
     }
-    
+
+    /**
+     * Checks to see if the robot should be in manual or semi-auto control
+     */
     public void checkControlSetup()
     {
         if(OI.secondXboxLeftJoyClick())
@@ -209,18 +241,19 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
         ballGatherer.setManualOverride(manualOveride);
     }
 
+    /**
+     * Runs the shooter based off of operator controls
+     */
     public void runShootingOperations()
     {
 
-
+        //When the start button is pressed and released, the shooter speed is incremented up
         if(OI.secondXboxStartButton())
         {
             switchSpeedUp = true;
         }
         else if(switchSpeedUp)
         {
-            System.out.println("speed up");
-
             switchSpeedUp = false;
             if(manualShooterSpeed < 1)
                 manualShooterSpeed += .05;
@@ -228,6 +261,7 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
                 manualShooterSpeed = 1;
         }
 
+        //When the select button is pressed and released, the shooter speed is incremented downward
         if(OI.secondXboxSelectButton())
         {
             switchSpeedDown = true;
@@ -241,17 +275,14 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
             else
                 manualShooterSpeed = .25;
         }
-        
-        
+
 
         if(OI.secondXboxXButton())//Reset to key speed
         {
             manualShooterSpeed = .45;
         }
 
-        
-
-       if (OI.getSecondaryTrigger())   //Toggle Shooter
+       if (OI.getSecondaryTrigger())//Toggle Shooter
        {
             shooterTriggerDown = true;
        }
@@ -262,41 +293,37 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
        }
        if (shootingNow)
        {
-           if(OI.secondXboxLeftTrigger())//run with the manual control
+           if(OI.secondXboxLeftTrigger())//run with the OI speed input
             {
                 shooterSpeed = OI.getAnalogIn(4);
-                System.out.println("##########AnologIN##########");
             }
             else
             {
                 shooterSpeed = manualShooterSpeed;
             }
-
-           if(!manualOveride && OI.secondXboxBButton())
-        {
-            maxPower = true;
+            if(!manualOveride && OI.secondXboxBButton())//Shooter fires at maximum power
+            {
+                maxPower = true;
+            }
+            else
+                maxPower = false;
         }
-        else
-            maxPower = false;
-       }
         else
              shooterSpeed = 0;
 
         UpdateDS(manualShooterSpeed , shootingNow);
-
-        //OI.printToDS("ultra " + sensors.getUltraBackRange());
-        //System.out.println("Manual COntrl: " + manualOveride);
     }
-    
+
+    /**
+     * Turns the turret according to user controls
+     */
     public void runTurretingOperations()
     {
         OI.setDigitalOutput(1, false);
         turretTurn = .3 * OI.secondXboxLeftX();
         if(turretTurn < 0)
             turretTurn *= 1.6;
-        //System.out.println("Turret Turn: " + turretTurn);
         shooter.turn(-turretTurn);
-        //System.out.println("Turreting:" + turretTurn);
     }
 
     
@@ -311,7 +338,12 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
     {
         shootingNow = false;
     }
-    
+
+    /**
+     * Updates the Drivers station with information. Currently the SmartDashboard is in use.
+     * @param speed
+     * @param shooting
+     */
     protected void UpdateDS(double speed, boolean shooting)
     {
         boolean one, two, three, four;
@@ -440,8 +472,9 @@ public class GatherBallsAndManualShoot extends CommandBase //We need to rename t
 
     }
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
+    /**
+     * Stops the shooter if command is interrupted
+     */
     protected void interrupted() 
     {
         shootingNow = false;
