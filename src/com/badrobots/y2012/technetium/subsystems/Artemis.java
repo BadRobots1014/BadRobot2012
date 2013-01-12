@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.image.BinaryImage;
 import edu.wpi.first.wpilibj.image.ColorImage;
 import edu.wpi.first.wpilibj.image.NIVisionException;
 import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
-import edu.wpi.first.wpilibj.smartdashboard.SendablePIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
@@ -39,8 +38,8 @@ public class Artemis extends Subsystem
     
     protected double speedOfShooter = 0; 
     
-    protected SendablePIDController shooterController;
-    protected SendablePIDController turnTableController; 
+    protected PIDController shooterController;
+    protected PIDController turnTableController; 
    
     //public static final double MAX_SPEED = 3600;
     //public static final double TOP_SPEED_PERIOD = .018;
@@ -82,7 +81,7 @@ public class Artemis extends Subsystem
             
             shooterPIDOutput = new SoftPID();
 
-            shooterController = new SendablePIDController(SHOOTER_P, SHOOTER_I, SHOOTER_D, shooterSensor, shooterPIDOutput);  
+            shooterController = new PIDController(SHOOTER_P, SHOOTER_I, SHOOTER_D, shooterSensor, shooterPIDOutput);  
             //shooterController.setInputRange(0, 1.1);
             shooterController.setOutputRange(0, 1);
             
@@ -100,7 +99,7 @@ public class Artemis extends Subsystem
         if (OI.turnTablePIDOn)
         {
             turnTablePIDOutput = new SoftPID();
-            turnTableController = new SendablePIDController(TURNTABLE_P, TURNTABLE_I, TURNTABLE_D, turnTableEncoder, turnTablePIDOutput);
+            turnTableController = new PIDController(TURNTABLE_P, TURNTABLE_I, TURNTABLE_D, turnTableEncoder, turnTablePIDOutput);
             turnTableController.setTolerance(5);
             
             SmartDashboard.putData("TurnTablePID", turnTableController);

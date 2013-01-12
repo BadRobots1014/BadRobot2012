@@ -9,7 +9,6 @@ import com.badrobots.y2012.technetium.OI;
 import com.badrobots.y2012.technetium.RobotMap;
 import com.badrobots.y2012.technetium.commands.TankDrive;
 import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.smartdashboard.SendablePIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /*
@@ -29,7 +28,7 @@ public class Hermes extends Subsystem
     protected static final double I = 0;
     protected static final double D = 0;
     private SoftPID rotationPID;
-    private SendablePIDController pidController;
+    private PIDController pidController;
     private double requestedAngle = 0;
     private double orientation = 1;
     private boolean changeDirection = false;
@@ -62,7 +61,7 @@ public class Hermes extends Subsystem
     private Hermes()
     {
         super();
-
+        
         lFront = new Jaguar(RobotMap.lFront);   //initializes all victors
         lBack = new Jaguar(RobotMap.lBack);
         rFront = new Jaguar(RobotMap.rFront);
@@ -85,7 +84,7 @@ public class Hermes extends Subsystem
             {
                 rotationPID = new SoftPID();
                 //TODO: Set these to constants
-                pidController = new SendablePIDController(P, I, D, horizontalGyro, rotationPID);
+                pidController = new PIDController(P, I, D, horizontalGyro, rotationPID);
                 pidController.setTolerance(10);
             }
             

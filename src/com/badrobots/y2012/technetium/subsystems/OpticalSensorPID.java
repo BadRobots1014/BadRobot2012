@@ -29,7 +29,7 @@ public class OpticalSensorPID extends Thread implements PIDSource
         running = true;
         counter.setMaxPeriod(2);
         
-        SmartDashboard.putDouble("Period", rate);
+        //SmartDashboard.putDouble("Period", rate);
     }
     
     public void run()

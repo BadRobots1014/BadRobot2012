@@ -33,7 +33,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
 import edu.wpi.first.wpilibj.camera.AxisCameraException;
-import edu.wpi.first.wpilibj.networktables.NetworkTableKeyNotDefined;
 import java.io.IOException;
 
 //import com.badrobots.y2012.technetium.buttons.ResetGyro;
@@ -140,16 +139,9 @@ public class Technetium extends IterativeRobot
         }
         
         //puts all the commands into the SmartDashboard
-        SmartDashboard.putData(Scheduler.getInstance());
-       
-        try
-        {
-            System.out.println("Dashboard boolean: " + SmartDashboard.getBoolean("TurnTablePIDOn"));
-        }
-        catch (NetworkTableKeyNotDefined ex)
-        {
-            ex.printStackTrace();
-        }
+        //SmartDashboard.putData(Scheduler.getInstance());
+        
+        Scheduler.getInstance().enable();
     }
 
     /**
@@ -164,6 +156,18 @@ public class Technetium extends IterativeRobot
         
         //Runs the correct commands with their subsytems
         Scheduler.getInstance().run();     
+        
+        System.out.println("teleoping");
+    }
+    
+    public void testPeriodic()
+    {
+        
+    }
+    
+    public void testInit()
+    {
+        
     }
 
     /**
