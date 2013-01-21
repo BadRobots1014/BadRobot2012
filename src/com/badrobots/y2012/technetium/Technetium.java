@@ -142,11 +142,14 @@ public class Technetium extends IterativeRobot
         //SmartDashboard.putData(Scheduler.getInstance());
         
         Scheduler.getInstance().enable();
+        
+        
     }
 
     /**
      * This function is called periodically during operator control
      */
+    int i =0;
     public void teleopPeriodic()
     {
         //Feed it or it dies. And then stops the robot. From the grave. Really it is a poor metaphor.
@@ -155,9 +158,10 @@ public class Technetium extends IterativeRobot
         Watchdog.getInstance().feed();
         
         //Runs the correct commands with their subsytems
-        Scheduler.getInstance().run();     
+        Scheduler.getInstance().run();
         
-        System.out.println("teleoping");
+        SmartDashboard.putNumber("Random Number", i);
+        i++;
     }
     
     public void testPeriodic()
