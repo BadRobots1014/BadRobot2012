@@ -2,8 +2,6 @@
 package com.badrobots.y2012.technetium.buttons;
 
 import edu.wpi.first.wpilibj.buttons.Button;
-import com.badrobots.y2012.technetium.OI;
-import com.badrobots.y2012.technetium.commands.ManualAim;
 import com.badrobots.y2012.technetium.commands.TankDrive;
 
 /**
