@@ -6,10 +6,8 @@
 package com.badrobots.y2012.technetium.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import com.badrobots.y2012.technetium.RobotMap;
 import com.badrobots.y2012.technetium.commands.ManualBridge;
 import edu.wpi.first.wpilibj.Gyro;
-import edu.wpi.first.wpilibj.Jaguar;
 
 /*
  * @author 1014 Programming Team

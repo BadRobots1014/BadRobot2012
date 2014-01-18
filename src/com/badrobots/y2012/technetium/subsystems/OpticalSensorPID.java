@@ -69,7 +69,7 @@ public class OpticalSensorPID extends Thread implements PIDSource
         
         if(1/rate < 1)//1/rate for bb
         {
-            System.out.println("rate1:" + 1);
+            //System.out.println("rate1:" + 1);
             return 1;
         }
 

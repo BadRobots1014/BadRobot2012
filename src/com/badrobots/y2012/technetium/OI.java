@@ -172,7 +172,7 @@ public class OI
      * @return The deadzone corrected left stick y value
      */
     public static double getPrimaryXboxLeftY()
-    {
+    {        
         return deadzone(xboxController.getRawAxis(2));
     }
 
