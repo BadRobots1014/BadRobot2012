@@ -18,7 +18,7 @@ public class Shooter extends Subsystem
 {
     private static Shooter instance;
     private static Victor victorRightShooterMotor, victorLeftShooterMotoer; //MIKE RIGHT MOTOR IS NEGATIZED, LEFT IS POSITIVE
-    private static Servo servoTurnTable; 
+    private static Victor servoTurnTable; 
     private static Ultrasonic ranger;
     
     private static OpticalSensorPID opticalSensorShooter;
@@ -95,7 +95,7 @@ public class Shooter extends Subsystem
             SmartDashboard.putData("TurnTablePID", turnTableController);
         }
         
-        servoTurnTable = new Servo(RobotMap.Sidecar.PWMOut9);
+        servoTurnTable = new Victor(RobotMap.Sidecar.PWMOut9);
     }
 
     
