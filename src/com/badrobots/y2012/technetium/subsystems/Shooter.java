@@ -280,7 +280,7 @@ public class Shooter extends Subsystem
 
         if(Math.abs(currentAngle - value) <= 8)
         {
-            turn(0.50);
+            turn(0);
             return true;
         }
         else if(currentAngle - value > 0)
