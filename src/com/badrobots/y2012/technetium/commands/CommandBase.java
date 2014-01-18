@@ -18,23 +18,23 @@ public abstract class CommandBase extends Command
     /**
      * The stored instance of the driveTrain
      */
-    public static Hermes driveTrain;
+    public static DriveTrain driveTrain;
     /**
      * The stored instance of the shooter
      */
-    public static Artemis shooter;
+    public static Shooter shooter;
     /**
      * The stored instance of the bridging tool
      */
-    public static Xerxes bridgeTool;
+    public static BridgingArm bridgeTool;
     /**
      * The stored instance of the sensor array
      */
-    public static Helios sensors;
+    public static Sensors sensors;
     /**
      * The stored instance of the ball gathering system
      */
-    public static Demeter ballGatherer;
+    public static BallGatherer ballGatherer;
     /**
      * The image processing thread
      */
@@ -47,11 +47,11 @@ public abstract class CommandBase extends Command
     public static void init( ImageProcessing processor)
     {
         OI.init();
-        driveTrain = Hermes.getInstance();
-        sensors = Helios.getInstance();
-        bridgeTool = Xerxes.getInstance();
-        shooter = Artemis.getInstance();
-        ballGatherer = Demeter.getInstance();
+        driveTrain = DriveTrain.getInstance();
+        sensors = Sensors.getInstance();
+        bridgeTool = BridgingArm.getInstance();
+        shooter = Shooter.getInstance();
+        ballGatherer = BallGatherer.getInstance();
         imageProcessor = processor;
         SmartDashboard.putData(driveTrain);
     }

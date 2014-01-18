@@ -6,7 +6,7 @@ package com.badrobots.y2012.technetium.buttons;
 
 import com.badrobots.y2012.technetium.OI;
 import com.badrobots.y2012.technetium.commands.GatherBallsAndManualShoot;
-import com.badrobots.y2012.technetium.subsystems.Demeter;
+import com.badrobots.y2012.technetium.subsystems.BallGatherer;
 import edu.wpi.first.wpilibj.buttons.Button;
 
 /**

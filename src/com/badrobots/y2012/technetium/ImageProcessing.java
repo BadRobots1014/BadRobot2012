@@ -10,12 +10,8 @@
  */
 package com.badrobots.y2012.technetium;
 
-import edu.wpi.first.wpilibj.DriverStationLCD;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
-import edu.wpi.first.wpilibj.camera.AxisCameraException;
 import edu.wpi.first.wpilibj.image.*;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Thread that analyzed images from the webcam to detect rectangles.

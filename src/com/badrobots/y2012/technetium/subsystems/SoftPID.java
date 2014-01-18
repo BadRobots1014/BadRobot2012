@@ -9,23 +9,26 @@ import edu.wpi.first.wpilibj.PIDOutput;
 /**
  *
  * @author Jon Buckley
+ * 
+ * PID = Proportional Integral Derivative
+ * Curve Smoothing
  */
 public class SoftPID implements PIDOutput
+{
+
+    double output = 0;
+
+    public SoftPID()
     {
-
-        double output = 0;
-
-        public SoftPID()
-        {
-        }
-
-        public double getValue()
-        {
-            return this.output;
-        }
-
-        public void pidWrite(double output)
-        {
-            this.output = output;
-        }
     }
+
+    public double getValue()
+    {
+        return this.output;
+    }
+
+    public void pidWrite(double output)
+    {
+        this.output = output;
+    }
+}

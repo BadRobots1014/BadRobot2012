@@ -1,3 +1,6 @@
+// QUESTION: Is this Copyright correct for this file?
+// -vidovichn 18 Jan 2014
+
 /*----------------------------------------------------------------------------*/
 /* Copyright (c) FIRST 2008. All Rights Reserved.                             */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
@@ -8,17 +11,11 @@ package com.badrobots.y2012.technetium;
 
 import com.badrobots.y2012.technetium.buttons.*;
 import com.badrobots.y2012.technetium.commands.autonomousCommands.AutoDriveToAndDumpMedBasket;
-import com.badrobots.y2012.technetium.commands.autonomousCommands.AutoDriveToWallGyroCorrection;
-import com.badrobots.y2012.technetium.commands.autonomousCommands.AutoGoToTeamBridge;
-import com.badrobots.y2012.technetium.commands.autonomousCommands.AutoOrient;
 import com.badrobots.y2012.technetium.commands.autonomousCommands.AutoShootHighKey;
 import com.badrobots.y2012.technetium.commands.autonomousCommands.AutoShootHighKeyDriveBack;
 import com.badrobots.y2012.technetium.commands.autonomousCommands.AutoShootHighKeyNoBridge;
-import com.badrobots.y2012.technetium.commands.PolarMechanumDrive;
-import com.badrobots.y2012.technetium.commands.TankDrive;
 import com.badrobots.y2012.technetium.commands.MechanumDrive;
 import com.badrobots.y2012.technetium.commands.CommandBase;
-import com.badrobots.y2012.technetium.commands.DriveToWall;
 import com.badrobots.y2012.technetium.commands.GatherBallsAndManualShoot;
 import com.badrobots.y2012.technetium.commands.ManualBridge;
 import com.badrobots.y2012.technetium.commands.Monitor;
@@ -26,14 +23,9 @@ import com.badrobots.y2012.technetium.subsystems.*;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Watchdog;
 import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.DriverStationLCD;
 import edu.wpi.first.wpilibj.camera.AxisCamera;
-import edu.wpi.first.wpilibj.camera.AxisCameraException;
-import java.io.IOException;
 
 //import com.badrobots.y2012.technetium.buttons.ResetGyro;
 /**
@@ -135,7 +127,7 @@ public class Technetium extends IterativeRobot
         if(OI.shooterPIDOn)
         {
             System.out.println("EnablingHERE");
-            Artemis.getInstance().setShooterPIDRunning(true);
+            Shooter.getInstance().setShooterPIDRunning(false);
         }
         
         //puts all the commands into the SmartDashboard
@@ -188,6 +180,6 @@ public class Technetium extends IterativeRobot
             imageProcessingThread.setRunning(false);
         }
         //Stops the shooter PID
-        Artemis.getInstance().setShooterPIDRunning(false);
+        Shooter.getInstance().setShooterPIDRunning(false);
     }
 }

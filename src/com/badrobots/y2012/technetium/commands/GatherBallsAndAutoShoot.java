@@ -5,7 +5,7 @@
 package com.badrobots.y2012.technetium.commands;
 
 import com.badrobots.y2012.technetium.OI;
-import com.badrobots.y2012.technetium.subsystems.Helios;
+import com.badrobots.y2012.technetium.subsystems.Sensors;
 
 /**
  * Automated ball gathering and shooting. Not currently used.
