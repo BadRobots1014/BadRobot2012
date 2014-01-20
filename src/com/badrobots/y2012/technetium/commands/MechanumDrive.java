@@ -4,8 +4,6 @@
  */
 package com.badrobots.y2012.technetium.commands;
 
-import com.badrobots.y2012.technetium.OI;
-
 /*
  * @author 1014 Programming Team
  */

@@ -69,14 +69,10 @@ public class OI
     {
         try
         {
-            leftJoystick = new Joystick(RobotMap.leftJoystick);
-            rightJoystick = new Joystick(RobotMap.rightJoystick);
-            xboxController = new Joystick(RobotMap.controller);
-            xboxController2 = new Joystick(RobotMap.controller2);
+            xboxController = new Joystick(RobotMap.DriverStation_ControllerPort1);
+            xboxController2 = new Joystick(RobotMap.DriverStation_ControllerPort2);
             ds = DriverStation.getInstance();//Drivers Station
             screen = DriverStationLCD.getInstance();//Output on DS
-
-
         } catch (Exception e)
         {
             System.out.println(e);
@@ -176,7 +172,7 @@ public class OI
      * @return The deadzone corrected left stick y value
      */
     public static double getPrimaryXboxLeftY()
-    {
+    {        
         return deadzone(xboxController.getRawAxis(2));
     }
 
@@ -268,7 +264,7 @@ public class OI
      */
     public static double secondXboxLeftX()
     {
-        return deadzone(xboxController2.getRawAxis(1));
+        return deadzone(-xboxController2.getRawAxis(1));
     }
 
     /**
@@ -375,13 +371,7 @@ public class OI
      */
     public static double getUsedLeftX()
     {
-        if (xboxControl())
-        {
             return deadzone(xboxController.getRawAxis(1));
-        }
-
-        return deadzone(leftJoystick.getX());
-
     }
 
     /**
@@ -389,12 +379,7 @@ public class OI
      */
     public static double getUsedLeftY()
     {
-        if (xboxControl())
-        {
             return deadzone(xboxController.getRawAxis(2));
-        }
-
-        return deadzone(leftJoystick.getY());
     }
 
     /**
@@ -402,12 +387,7 @@ public class OI
      */
     public static double getUsedRightX()
     {
-        if (xboxControl())
-        {
             return deadzone(xboxController.getRawAxis(4));
-        }
-
-        return deadzone(rightJoystick.getX());
     }
 
     /**
@@ -415,12 +395,7 @@ public class OI
      */
     public static double getUsedRightY()
     {
-        if (xboxControl())
-        {
             return deadzone(xboxController.getRawAxis(5));
-        }
-
-        return deadzone(rightJoystick.getY());
     }
 
     /**

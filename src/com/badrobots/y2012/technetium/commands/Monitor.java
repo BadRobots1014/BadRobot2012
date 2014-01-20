@@ -5,9 +5,9 @@
 package com.badrobots.y2012.technetium.commands;
 
 import com.badrobots.y2012.technetium.OI;
-import com.badrobots.y2012.technetium.subsystems.Artemis;
-import com.badrobots.y2012.technetium.subsystems.Helios;
-import com.badrobots.y2012.technetium.subsystems.Demeter;
+import com.badrobots.y2012.technetium.subsystems.Shooter;
+import com.badrobots.y2012.technetium.subsystems.Sensors;
+import com.badrobots.y2012.technetium.subsystems.BallGatherer;
 import edu.wpi.first.wpilibj.DriverStation;
 
 /**

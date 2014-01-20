@@ -19,22 +19,22 @@ public class OpticalSensorPID extends Thread implements PIDSource
     protected double rate = 0;
     protected int count = 0;
     protected boolean blocked = false;
-    protected Counter counter;
+    protected Counter opticalSensorCounterForShooter;
     protected boolean running = false;
     private long sleepTime = 50;
 
     public OpticalSensorPID()
     {
-        counter = new Counter(RobotMap.opticalSensor);
+        opticalSensorCounterForShooter = new Counter(RobotMap.Sidecar.DIO6);
         running = true;
-        counter.setMaxPeriod(2);
+        opticalSensorCounterForShooter.setMaxPeriod(2);
         
         //SmartDashboard.putDouble("Period", rate);
     }
     
     public void run()
     {
-        counter.start();
+        opticalSensorCounterForShooter.start();
 
         while (true)
         {
@@ -42,7 +42,7 @@ public class OpticalSensorPID extends Thread implements PIDSource
             {                
                 //this is the variable we will use to PID. The smaller this value is,
                 //the faster the wheel is turning
-                rate = counter.getPeriod();
+                rate = opticalSensorCounterForShooter.getPeriod();
                 SmartDashboard.putDouble("Period", rate);
                 //System.out.println("Rate: " + rate);
             }
@@ -69,7 +69,7 @@ public class OpticalSensorPID extends Thread implements PIDSource
         
         if(1/rate < 1)//1/rate for bb
         {
-            System.out.println("rate1:" + 1);
+            //System.out.println("rate1:" + 1);
             return 1;
         }
 

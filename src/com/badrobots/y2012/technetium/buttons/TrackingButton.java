@@ -8,7 +8,7 @@ import com.badrobots.y2012.technetium.ImageProcessing;
 import com.badrobots.y2012.technetium.OI;
 import com.badrobots.y2012.technetium.commands.GatherBallsAndAutoShoot;
 import com.badrobots.y2012.technetium.commands.GatherBallsAndManualShoot;
-import com.badrobots.y2012.technetium.subsystems.Demeter;
+import com.badrobots.y2012.technetium.subsystems.BallGatherer;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
@@ -37,7 +37,7 @@ public class TrackingButton extends Button
         if (!OI.cameraOn)
             return false;
         
-        if (Demeter.getInstance().manualOverride())
+        if (BallGatherer.getInstance().manualOverride())
         {
             //System.out.println("manual mode, no button");
             imageProcessor.setRunning(false);

@@ -6,7 +6,6 @@ package com.badrobots.y2012.technetium.subsystems;
 
 import edu.wpi.first.wpilibj.GearTooth;
 import edu.wpi.first.wpilibj.PIDSource;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
