@@ -82,6 +82,8 @@ public class OI
         SmartDashboard.putBoolean("HermesPIDOn", PIDOn);
         SmartDashboard.putBoolean("TurnTablePIDOn", turnTablePIDOn);
         SmartDashboard.putBoolean("ShooterPIDOn", shooterPIDOn);
+        
+        ds.setDigitalOut(1, true);
     }
 
     /**
@@ -119,6 +121,11 @@ public class OI
     public static boolean rightStrafe()
     {
         return ds.getDigitalIn(2);
+    }
+    
+    public static boolean lightRingStatus()
+    {
+        return ds.getDigitalIn(3);
     }
 
     /**

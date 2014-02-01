@@ -155,8 +155,8 @@ public class ImageProcessing extends Thread
             ParticleAnalysisReport[] report = noSmall.getOrderedParticleAnalysisReports();
 
 
-            //Finds the lowest image
-            int size = report.length;
+            int size = report.length;            //Finds the lowest image
+
             if (size > 0)
             {
                 double lowest = report[0].center_mass_y;
