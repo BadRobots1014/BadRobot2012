@@ -23,5 +23,5 @@ public class RobotMap
     /**
      * The spike regulating power to the led indicator light
      */
-    public static final int LEDCircle = 3;
+    public static final int LEDCircle = Sidecar.RELAY3;
 }

@@ -19,6 +19,7 @@ import com.badrobots.y2012.technetium.commands.CommandBase;
 import com.badrobots.y2012.technetium.commands.GatherBallsAndManualShoot;
 import com.badrobots.y2012.technetium.commands.ManualBridge;
 import com.badrobots.y2012.technetium.commands.Monitor;
+import com.badrobots.y2012.technetium.commands.UseLightsAndCamera;
 import com.badrobots.y2012.technetium.subsystems.*;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Watchdog;
@@ -111,6 +112,7 @@ public class Technetium extends IterativeRobot
         Scheduler.getInstance().add(new Monitor());
         Scheduler.getInstance().add(new MechanumDrive());
         Scheduler.getInstance().add(new ManualBridge());
+        Scheduler.getInstance().add(new UseLightsAndCamera());
 
         //Initialize all used buttons
         new InitiateRampButton();

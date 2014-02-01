@@ -44,6 +44,8 @@ public class Sidecar
     
     public static final int RELAY1 = 1;
     public static final int RELAY2 = 2;    
+    public static final int RELAY3 = 3;
+    public static final int RELAY4 = 4;
 }
 
 
