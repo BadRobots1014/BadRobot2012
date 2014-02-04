@@ -127,6 +127,11 @@ public class OI
     {
         return ds.getDigitalIn(3);
     }
+    
+    public static boolean takePicture()
+    {
+        return ds.getDigitalIn(4);
+    }
 
     /**
      * Used with the Logitech controllers

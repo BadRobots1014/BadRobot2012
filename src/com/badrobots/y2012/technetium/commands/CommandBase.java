@@ -39,8 +39,6 @@ public abstract class CommandBase extends Command
      * The image processing thread
      */
     public static ImageProcessing imageProcessor;
-    
-    public static CameraAndLights lightsAndCamera;
 
     /**
      * Created instances of all the subsystems. Must be called before any other actions are performed on the robot.
@@ -55,7 +53,6 @@ public abstract class CommandBase extends Command
         shooter = Shooter.getInstance();
         ballGatherer = BallGatherer.getInstance();
         imageProcessor = processor;
-        lightsAndCamera = CameraAndLights.getInstance();
         SmartDashboard.putData(driveTrain);
     }
 

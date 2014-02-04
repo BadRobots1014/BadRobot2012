@@ -22,14 +22,18 @@ public class UseLightsAndCamera extends CommandBase {
 
     protected void execute() 
     {
-        System.out.println(OI.lightRingStatus());
         if(OI.lightRingStatus())
         {
-            lightsAndCamera.turnOnLight(true);
+            CameraAndLights.getInstance().turnOnLight(true);
         }
         else
         {
-            lightsAndCamera.turnOnLight(false);
+            CameraAndLights.getInstance().turnOnLight(false);
+        }
+        
+        if (OI.takePicture())
+        {
+            CameraAndLights.getInstance().saveImageToDesktop();
         }
     }
 

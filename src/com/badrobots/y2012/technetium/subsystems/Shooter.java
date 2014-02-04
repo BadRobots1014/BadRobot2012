@@ -106,8 +106,7 @@ public class Shooter extends Subsystem
      * 1 is full speed clockwise
      */
     public void turn(double speed)
-    {    
-        System.out.println(speed);
+    {
         speed = clampMotorValues(speed);
         servoTurnTable.set(-speed);
     }
